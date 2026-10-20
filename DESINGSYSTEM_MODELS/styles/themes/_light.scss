@@ -1,0 +1,119 @@
+@use "sass:map";
+@use "../tokens/primitives" as p;
+
+// ---------------------------------------------------------------------------
+// Light theme
+// Page is a soft cool gray so white work surfaces (tables, forms) read as the
+// place where work happens. Shadows are almost absent: borders do the work.
+// ---------------------------------------------------------------------------
+@mixin tokens {
+  color-scheme: light;
+
+  // Backgrounds
+  --color-bg-page: #{map.get(p.$gray, 50)};
+  --color-bg-surface: #{map.get(p.$gray, 0)};
+  --color-bg-surface-alt: #{map.get(p.$gray, 25)};   // table header, section bands
+  --color-bg-sunken: #{map.get(p.$gray, 100)};       // read-only fields, tracks
+  --color-bg-elevated: #{map.get(p.$gray, 0)};       // menus, popovers, dialogs
+  --color-bg-hover: rgba(23, 33, 45, 0.045);
+  --color-bg-active: rgba(23, 33, 45, 0.085);
+  --color-bg-selected: #{map.get(p.$blue, 50)};
+  --color-bg-selected-hover: #e3edfa;
+  --color-bg-overlay: rgba(14, 20, 28, 0.42);
+  --color-bg-inverse: #{map.get(p.$gray, 850)};
+
+  // Text
+  --color-text-primary: #{map.get(p.$gray, 900)};
+  --color-text-secondary: #{map.get(p.$gray, 600)};
+  --color-text-muted: #{map.get(p.$gray, 500)};
+  --color-text-disabled: #{map.get(p.$gray, 400)};
+  --color-text-inverse: #{map.get(p.$gray, 0)};
+  --color-text-link: #{map.get(p.$blue, 600)};
+  --color-text-link-hover: #{map.get(p.$blue, 800)};
+  --color-text-on-primary: #{map.get(p.$gray, 0)};
+
+  // Borders
+  --color-border-subtle: #{map.get(p.$gray, 100)};   // row dividers
+  --color-border: #{map.get(p.$gray, 150)};          // panel & section outlines
+  --color-border-strong: #{map.get(p.$gray, 300)};   // emphasis, toolbar dividers
+  --color-border-input: #8a929e;                     // form control outline (3.2:1 vs surface)
+  --color-border-input-hover: #{map.get(p.$gray, 500)};
+  --color-focus-ring: #{map.get(p.$blue, 500)};
+
+  // Brand / primary
+  --color-primary: #{map.get(p.$blue, 600)};
+  --color-primary-hover: #{map.get(p.$blue, 700)};
+  --color-primary-active: #{map.get(p.$blue, 800)};
+  --color-primary-subtle: #{map.get(p.$blue, 50)};
+  --color-primary-subtle-hover: #{map.get(p.$blue, 100)};
+  --color-primary-border: #{map.get(p.$blue, 200)};
+  --color-primary-text: #{map.get(p.$blue, 700)};
+
+  // Semantic — "-text" variants are tuned for >= 4.5:1 on surface and on "-subtle"
+  --color-success: #{map.get(p.$green, 600)};
+  --color-success-subtle: #{map.get(p.$green, 50)};
+  --color-success-border: #{map.get(p.$green, 100)};
+  --color-success-text: #{map.get(p.$green, 700)};
+
+  --color-warning: #{map.get(p.$amber, 500)};
+  --color-warning-subtle: #{map.get(p.$amber, 50)};
+  --color-warning-border: #{map.get(p.$amber, 100)};
+  --color-warning-text: #{map.get(p.$amber, 700)};
+
+  --color-error: #{map.get(p.$red, 600)};
+  --color-error-hover: #{map.get(p.$red, 700)};
+  --color-error-subtle: #{map.get(p.$red, 50)};
+  --color-error-border: #{map.get(p.$red, 100)};
+  --color-error-text: #{map.get(p.$red, 700)};
+
+  --color-info: #{map.get(p.$cyan, 600)};
+  --color-info-subtle: #{map.get(p.$cyan, 50)};
+  --color-info-border: #{map.get(p.$cyan, 100)};
+  --color-info-text: #{map.get(p.$cyan, 700)};
+
+  --color-neutral: #{map.get(p.$gray, 500)};
+  --color-neutral-subtle: #{map.get(p.$gray, 100)};
+  --color-neutral-border: #{map.get(p.$gray, 200)};
+  --color-neutral-text: #{map.get(p.$gray, 700)};
+
+  // Application shell (header)
+  --color-shell-bg: #{map.get(p.$ink, light)};
+  --color-shell-hover: #{map.get(p.$ink, light-hover)};
+  --color-shell-border: #{map.get(p.$ink, light-border)};
+  --color-shell-text: #e7ebf0;
+  --color-shell-text-muted: #a3adba;
+  --color-shell-field: rgba(255, 255, 255, 0.08);
+  --color-shell-field-hover: rgba(255, 255, 255, 0.13);
+
+  // Sidebar
+  --color-nav-bg: #{map.get(p.$gray, 0)};
+  --color-nav-text: #{map.get(p.$gray, 700)};
+  --color-nav-group: #{map.get(p.$gray, 500)};
+  --color-nav-active-bg: #{map.get(p.$blue, 50)};
+  --color-nav-active-text: #{map.get(p.$blue, 700)};
+  --color-nav-indicator: #{map.get(p.$blue, 600)};
+
+  // Data visualisation — one hue for magnitude, gray for comparison/target
+  --color-chart-primary: #{map.get(p.$blue, 600)};
+  --color-chart-primary-muted: #{map.get(p.$blue, 200)};
+  --color-chart-compare: #{map.get(p.$gray, 400)};
+  --color-chart-grid: #{map.get(p.$gray, 150)};
+  --color-chart-axis: #{map.get(p.$gray, 300)};
+
+  // Elevation — light theme leans on borders; shadows only separate layers
+  --shadow-xs: 0 1px 1px rgba(23, 33, 45, 0.04);
+  --shadow-sm: 0 1px 2px rgba(23, 33, 45, 0.08);
+  --shadow-md: 0 4px 12px rgba(23, 33, 45, 0.1), 0 1px 3px rgba(23, 33, 45, 0.08);
+  --shadow-lg: 0 12px 32px rgba(23, 33, 45, 0.16), 0 2px 6px rgba(23, 33, 45, 0.08);
+  --shadow-sticky: 0 1px 0 var(--color-border), 0 2px 4px rgba(23, 33, 45, 0.04);
+
+  // Avatars: four muted tints, assigned by hash of the person's id
+  --color-avatar-1-bg: #dfe8f3;
+  --color-avatar-1-fg: #24476f;
+  --color-avatar-2-bg: #e2ece4;
+  --color-avatar-2-fg: #2a5136;
+  --color-avatar-3-bg: #efe6dc;
+  --color-avatar-3-fg: #66421f;
+  --color-avatar-4-bg: #e7e3ef;
+  --color-avatar-4-fg: #45386a;
+}

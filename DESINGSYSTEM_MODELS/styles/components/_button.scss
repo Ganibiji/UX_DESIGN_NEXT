@@ -1,0 +1,256 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Button
+// Hierarchy: one primary per region · secondary for everything else · subtle
+// for toolbar and row actions · danger only for irreversible operations.
+// States: default · hover · active · focus-visible · selected (aria-pressed /
+// aria-expanded) · disabled · loading (.is-loading keeps width, adds spinner).
+// ---------------------------------------------------------------------------
+.k-btn {
+  @include reset-button;
+  --btn-bg: var(--color-bg-surface);
+  --btn-bg-hover: var(--color-bg-surface-alt);
+  --btn-bg-active: var(--color-bg-sunken);
+  --btn-fg: var(--color-text-primary);
+  --btn-border: var(--color-border-strong);
+  --btn-border-hover: var(--color-border-input);
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1-5);
+  height: var(--control-height);
+  padding: 0 var(--control-pad-x);
+  border: 1px solid var(--btn-border);
+  border-radius: var(--radius-sm);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  white-space: nowrap;
+  user-select: none;
+  transition:
+    background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+
+  &:hover {
+    background: var(--btn-bg-hover);
+    border-color: var(--btn-border-hover);
+    text-decoration: none;
+    color: var(--btn-fg);
+  }
+
+  &:active {
+    background: var(--btn-bg-active);
+  }
+
+  &:focus-visible {
+    @include focus-ring(2px);
+  }
+
+  // Toggle buttons and open menu triggers
+  &[aria-pressed="true"],
+  &.is-selected {
+    --btn-bg: var(--color-primary-subtle);
+    --btn-bg-hover: var(--color-primary-subtle-hover);
+    --btn-fg: var(--color-primary-text);
+    --btn-border: var(--color-primary-border);
+    --btn-border-hover: var(--color-primary-border);
+  }
+
+  &[aria-expanded="true"] {
+    background: var(--btn-bg-active);
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    --btn-bg: var(--color-bg-sunken);
+    --btn-bg-hover: var(--color-bg-sunken);
+    --btn-fg: var(--color-text-disabled);
+    --btn-border: var(--color-border);
+    --btn-border-hover: var(--color-border);
+    cursor: not-allowed;
+  }
+
+  // ---- Variants --------------------------------------------------------
+  &--primary {
+    --btn-bg: var(--color-primary);
+    --btn-bg-hover: var(--color-primary-hover);
+    --btn-bg-active: var(--color-primary-active);
+    --btn-fg: var(--color-text-on-primary);
+    --btn-border: transparent;
+    --btn-border-hover: transparent;
+  }
+
+  &--danger {
+    --btn-bg: var(--color-error);
+    --btn-bg-hover: var(--color-error-hover);
+    --btn-bg-active: var(--color-error-hover);
+    --btn-fg: #fff;
+    --btn-border: transparent;
+    --btn-border-hover: transparent;
+  }
+
+  // Danger action that is not the main action (e.g. "Cancel order" in a toolbar)
+  &--danger-outline {
+    --btn-fg: var(--color-error-text);
+    --btn-border: var(--color-error-border);
+    --btn-border-hover: var(--color-error);
+    --btn-bg-hover: var(--color-error-subtle);
+  }
+
+  &--subtle {
+    --btn-bg: transparent;
+    --btn-bg-hover: var(--color-bg-hover);
+    --btn-bg-active: var(--color-bg-active);
+    --btn-border: transparent;
+    --btn-border-hover: transparent;
+    --btn-fg: var(--color-text-secondary);
+
+    &:hover { color: var(--color-text-primary); }
+  }
+
+  &--link {
+    --btn-bg: transparent;
+    --btn-bg-hover: transparent;
+    --btn-bg-active: transparent;
+    --btn-border: transparent;
+    --btn-border-hover: transparent;
+    --btn-fg: var(--color-text-link);
+    height: auto;
+    padding: 0;
+
+    &:hover {
+      color: var(--color-text-link-hover);
+      text-decoration: underline;
+    }
+  }
+
+  // ---- Sizes -----------------------------------------------------------
+  &--sm {
+    height: var(--control-height-sm);
+    padding: 0 var(--space-2);
+    font-size: var(--font-size-sm);
+    gap: var(--space-1);
+  }
+
+  &--icon {
+    width: var(--control-height);
+    padding: 0;
+
+    &.k-btn--sm { width: var(--control-height-sm); }
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  // ---- Loading ---------------------------------------------------------
+  &.is-loading {
+    color: transparent;
+    pointer-events: none;
+
+    > * { visibility: hidden; }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      margin: auto;
+      width: 14px;
+      height: 14px;
+      border: 2px solid var(--btn-fg);
+      border-right-color: transparent;
+      border-radius: 50%;
+      animation: k-spin 0.7s linear infinite;
+    }
+  }
+
+  &__count {
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: var(--radius-xs);
+    background: var(--color-bg-sunken);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: 18px;
+    @include numeric;
+  }
+
+  &--primary &__count {
+    background: rgba(255, 255, 255, 0.2);
+    color: inherit;
+  }
+}
+
+// Shortcut hint shown inside a button ("Save  Ctrl S")
+.k-btn__kbd {
+  margin-left: var(--space-1);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-regular);
+  opacity: 0.75;
+}
+
+// ---------------------------------------------------------------------------
+// Split button — main action + menu of related actions
+// ---------------------------------------------------------------------------
+.k-split {
+  display: inline-flex;
+
+  > .k-btn:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  > .k-btn:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-left: -1px;
+    width: calc(var(--control-height) - 4px);
+    padding: 0;
+  }
+
+  > .k-btn--primary:last-child {
+    margin-left: 1px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Button group / segmented control (view switchers: Table | Board)
+// ---------------------------------------------------------------------------
+.k-btn-group {
+  display: inline-flex;
+
+  > .k-btn {
+    border-radius: 0;
+
+    + .k-btn { margin-left: -1px; }
+    &:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+    &:last-child { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+    &[aria-pressed="true"],
+    &.is-selected { z-index: 1; }
+    &:focus-visible { z-index: 2; }
+  }
+}
+
+@keyframes k-spin {
+  to { transform: rotate(360deg); }
+}
+
+.k-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-border-strong);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: k-spin 0.7s linear infinite;
+  vertical-align: middle;
+
+  &--sm { width: 12px; height: 12px; border-width: 1.5px; }
+}

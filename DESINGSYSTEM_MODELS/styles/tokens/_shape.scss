@@ -1,0 +1,12 @@
+// Small radii. Large radii read as consumer/marketing UI.
+:root {
+  --radius-none: 0;
+  --radius-xs: 2px;   // badges, checkboxes, table chips
+  --radius-sm: 3px;   // buttons, inputs
+  --radius-md: 4px;   // panels, menus, popovers
+  --radius-lg: 6px;   // dialogs, drawers' inner cards
+  --radius-full: 999px; // avatars, switch track — nothing else
+
+  --border-width: 1px;
+  --border-width-strong: 2px;
+}

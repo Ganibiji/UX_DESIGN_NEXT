@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PR-2026-0418 · Purchase request · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="approvals">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page k-page--flush">
+
+  <header class="k-record-header">
+    <div class="k-record-header__inner">
+      <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="dashboard.html">Home</a></li><li><a href="#">My approvals</a></li><li><span aria-current="page">PR-2026-0418</span></li></ol></nav>
+      <div class="k-record-header__row">
+        <div class="k-record-header__identity">
+          <div class="u-min-w-0">
+            <div class="k-record-header__type">Purchase request · 1 of 4 waiting for you</div>
+            <h1 class="k-record-header__title">Demo &amp; trial kits — Q3 customer trials <span class="k-status k-status--strong" data-tone="progress" id="pr-status">Under review</span></h1>
+            <div class="k-record-header__sub"><span class="k-id">PR-2026-0418</span> · Requested by Rohit Kulkarni · Cost centre <span class="k-id">CC-SW-310</span> Sales West</div>
+          </div>
+        </div>
+        <div class="k-record-header__actions">
+          <a class="k-btn k-btn--subtle" href="#" aria-label="Previous request"><svg class="k-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></a>
+          <a class="k-btn k-btn--subtle" href="#" aria-label="Next request"><svg class="k-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></a>
+          <div class="k-dropdown">
+            <button class="k-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="m-pr" data-menu><span>More</span><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+            <div class="k-menu k-menu--end" id="m-pr" role="menu" hidden style="min-width:220px">
+              <button class="k-menu__item" role="menuitem">Reassign to…</button>
+              <button class="k-menu__item" role="menuitem">Ask a question</button>
+              <button class="k-menu__item" role="menuitem"><svg class="k-icon" aria-hidden="true"><use href="#i-printer"/></svg>Print</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <dl class="k-facts">
+        <div class="k-facts__hero"><dt>Estimated value</dt><dd>₹3,86,400 <span class="u-muted" style="font-weight:400;font-size:var(--font-size-sm)">excl. GST</span></dd></div>
+        <div><dt>Needed by</dt><dd>05 Nov 2026</dd></div>
+        <div><dt>Requested</dt><dd>20 Oct 2026, 09:52</dd></div>
+        <div><dt>Deliver to</dt><dd>Pune Main Warehouse</dd></div>
+        <div><dt>Budget after this</dt><dd>84% used</dd></div>
+      </dl>
+      <div class="k-tabs" role="tablist" aria-label="Request sections">
+        <button class="k-tab" role="tab" aria-selected="true" aria-controls="p-details" id="pt-details">Details</button>
+        <button class="k-tab" role="tab" aria-selected="false" aria-controls="p-history" id="pt-history">History</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="k-tabpanel" role="tabpanel" id="p-details" aria-labelledby="pt-details" tabindex="0">
+    <div class="k-detail-body">
+      <div class="k-detail-body__main">
+
+        <div class="k-decision" id="decision" role="region" aria-label="Your decision">
+          <div class="k-decision__text">
+            <strong>Approve as cost centre owner</strong>
+            <small>After you, it goes to Procurement (Suresh Menon) because the value is above ₹2,00,000. Finance approval isn’t needed below ₹5,00,000.</small>
+          </div>
+          <div class="k-decision__actions">
+            <button class="k-btn" data-open-dialog="changes-dialog">Request changes</button>
+            <button class="k-btn k-btn--danger-outline" data-open-dialog="reject-dialog">Reject</button>
+            <button class="k-btn k-btn--primary" id="approve-btn">Approve</button>
+          </div>
+        </div>
+
+        <!-- Procure-to-pay: where this request sits -->
+        <section aria-labelledby="p2p-t">
+          <h2 class="k-text-label u-mb-2" id="p2p-t">Procure to pay</h2>
+          <ol class="k-flow" id="p2p">
+            <li class="k-flow__step is-done"><span class="k-flow__name">Purchase request</span><span class="k-flow__doc">PR-2026-0418 · submitted</span></li>
+            <li class="k-flow__step is-current" aria-current="step"><span class="k-flow__name">Approval</span><span class="k-flow__doc">Step 2 of 3 · you</span></li>
+            <li class="k-flow__step"><span class="k-flow__name">Purchase order</span><span class="k-flow__doc">Created by Procurement</span></li>
+            <li class="k-flow__step"><span class="k-flow__name">Goods receipt</span><span class="k-flow__doc">At Pune Main Warehouse</span></li>
+            <li class="k-flow__step"><span class="k-flow__name">Supplier invoice</span><span class="k-flow__doc">3-way match</span></li>
+            <li class="k-flow__step"><span class="k-flow__name">Payment</span><span class="k-flow__doc">Per supplier terms</span></li>
+          </ol>
+        </section>
+
+        <section class="k-panel" aria-labelledby="just-t">
+          <div class="k-panel__header"><h2 class="k-panel__title" id="just-t">Justification</h2></div>
+          <div class="k-panel__body">
+            <p>Four portable servo demo kits for on-site trials at Kaveri Agro Foods, Pinnacle Infra and two prospects in Q3. Current demo units (bought 2021) use the discontinued SD-500 drive and can’t run the new EtherCAT firmware customers are asking about.</p>
+            <p class="u-sm u-muted u-mt-2">Linked opportunities: <a href="pipeline.html">Cold-chain expansion</a> (₹48.5 L), <a href="pipeline.html">Plant 4 automation package</a> (₹62.0 L)</p>
+          </div>
+        </section>
+
+        <section class="k-panel" aria-labelledby="pl-t">
+          <div class="k-panel__header"><h2 class="k-panel__title" id="pl-t">Items <small>5 lines</small></h2></div>
+          <div class="k-grid__scroll">
+            <table class="k-table k-table--plain k-table--stack">
+              <colgroup><col style="width:36px"><col><col style="width:108px"><col style="width:52px"><col style="width:96px"><col style="width:104px"><col style="width:190px"></colgroup>
+              <thead><tr><th class="is-num">#</th><th>Item</th><th>Code</th><th class="is-num">Qty</th><th class="is-num">Est. rate</th><th class="is-num">Amount</th><th>Suggested supplier</th></tr></thead>
+              <tbody>
+                <tr><td class="is-num u-muted k-mobile-hide">1</td><td class="k-table__primary is-wrap">Servo motor 0.75 kW, demo grade</td><td class="is-id" data-label="Code">SM-0750</td><td class="is-num" data-label="Qty">4</td><td class="is-num" data-label="Rate">₹28,500</td><td class="is-num" data-label="Amount">₹1,14,000</td><td class="is-wrap" data-label="Supplier">Arihant Motion Controls <span class="k-badge">Contract</span></td></tr>
+                <tr><td class="is-num u-muted k-mobile-hide">2</td><td class="k-table__primary is-wrap">Servo drive 0.75 kW, EtherCAT</td><td class="is-id" data-label="Code">SD-0750</td><td class="is-num" data-label="Qty">4</td><td class="is-num" data-label="Rate">₹19,800</td><td class="is-num" data-label="Amount">₹79,200</td><td class="is-wrap" data-label="Supplier">Arihant Motion Controls <span class="k-badge">Contract</span></td></tr>
+                <tr><td class="is-num u-muted k-mobile-hide">3</td><td class="k-table__primary is-wrap">Portable demo enclosure with 7" HMI</td><td class="is-id" data-label="Code">FAB-DEMO-02</td><td class="is-num" data-label="Qty">2</td><td class="is-num" data-label="Rate">₹48,000</td><td class="is-num" data-label="Amount">₹96,000</td><td class="is-wrap" data-label="Supplier">Precision Sheetmetal Works <span class="k-text-warning u-sm">· 1 quote</span></td></tr>
+                <tr><td class="is-num u-muted k-mobile-hide">4</td><td class="k-table__primary is-wrap">Transit flight case, foam insert</td><td class="is-id" data-label="Code">CASE-FL-60</td><td class="is-num" data-label="Qty">4</td><td class="is-num" data-label="Rate">₹9,300</td><td class="is-num" data-label="Amount">₹37,200</td><td class="is-wrap" data-label="Supplier">Any approved vendor</td></tr>
+                <tr><td class="is-num u-muted k-mobile-hide">5</td><td class="k-table__primary is-wrap">Cable &amp; connector kit</td><td class="is-id" data-label="Code">KIT-CBL-DM</td><td class="is-num" data-label="Qty">4</td><td class="is-num" data-label="Rate">₹15,000</td><td class="is-num" data-label="Amount">₹60,000</td><td class="is-wrap" data-label="Supplier">Arihant Motion Controls</td></tr>
+              </tbody>
+              <tfoot><tr><td></td><td colspan="4">Total estimated (excl. GST)</td><td class="is-num">₹3,86,400</td><td></td></tr></tfoot>
+            </table>
+          </div>
+        </section>
+
+        <div class="k-alert" data-tone="info">
+          <svg class="k-icon" aria-hidden="true"><use href="#i-info"/></svg>
+          <div class="k-alert__body"><div class="k-alert__title">Line 3 has a single quotation</div><div class="k-alert__text">Policy asks for 3 quotes above ₹50,000 for custom fabrication. Procurement will source two more before raising the PO — this doesn’t block your approval.</div></div>
+        </div>
+
+        <section class="k-panel" aria-labelledby="att-t">
+          <div class="k-panel__header"><h2 class="k-panel__title" id="att-t">Attachments <small>2</small></h2></div>
+          <ul class="k-upload__list" style="list-style:none;margin:0;padding:0;border:0">
+            <li class="k-upload__file"><svg class="k-icon" aria-hidden="true"><use href="#i-file"/></svg><a class="k-upload__name" href="#">Arihant_quote_AMC-Q-2210.pdf</a><span class="k-upload__meta">186 KB</span><span></span></li>
+            <li class="k-upload__file"><svg class="k-icon" aria-hidden="true"><use href="#i-file"/></svg><a class="k-upload__name" href="#">Demo_enclosure_drawing_rev2.pdf</a><span class="k-upload__meta">1.1 MB</span><span></span></li>
+          </ul>
+        </section>
+      </div>
+
+      <aside class="k-detail-body__side" aria-label="Approval context">
+        <section class="k-panel" aria-labelledby="chain-t">
+          <div class="k-panel__header"><h2 class="k-panel__title" id="chain-t">Approval chain</h2></div>
+          <div class="k-panel__body" style="padding-top:4px;padding-bottom:4px">
+            <ol class="k-approval" id="chain">
+              <li class="k-approval__step"><span class="k-approval__badge" data-state="approved" aria-label="Done"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-check"/></svg></span>
+                <div class="k-approval__who"><div class="k-approval__name">Rohit Kulkarni</div><div class="k-approval__role">Requester · Sr. Account Executive</div></div><div class="k-approval__when">20 Oct<br>09:52</div></li>
+              <li class="k-approval__step" id="step-me"><span class="k-approval__badge" data-state="current" aria-label="Waiting for you">2</span>
+                <div class="k-approval__who"><div class="k-approval__name">Priya Deshmukh (you)</div><div class="k-approval__role">Cost centre owner · CC-SW-310</div><div class="k-approval__rule">Rule: all requests on own cost centre</div></div><div class="k-approval__when">Waiting<br>3 h</div></li>
+              <li class="k-approval__step"><span class="k-approval__badge" aria-label="Upcoming">3</span>
+                <div class="k-approval__who"><div class="k-approval__name">Suresh Menon</div><div class="k-approval__role">Head of Procurement</div><div class="k-approval__rule">Rule: value &gt; ₹2,00,000</div></div><div class="k-approval__when">Next</div></li>
+              <li class="k-approval__step"><span class="k-approval__badge" data-state="skipped" aria-label="Not required">–</span>
+                <div class="k-approval__who"><div class="k-approval__name u-muted">Finance Controller</div><div class="k-approval__role">Not required · value below ₹5,00,000</div></div><div class="k-approval__when"></div></li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="k-panel" aria-labelledby="bud-t">
+          <div class="k-panel__header"><h2 class="k-panel__title" id="bud-t">Budget check</h2><span class="k-status" data-tone="success">Within budget</span></div>
+          <div class="k-panel__body">
+            <div class="u-sm u-secondary">CC-SW-310 · Demo equipment · FY 2026-27</div>
+            <div class="k-progress u-mt-2" style="height:8px;display:flex;gap:2px;background:var(--color-bg-sunken)" role="img" aria-label="Budget: 62% consumed, 22% this request, 16% remaining">
+              <span style="width:62%;border-radius:3px 0 0 3px"></span><span style="width:22%;background:var(--color-chart-primary-muted);border-radius:0"></span>
+            </div>
+            <table class="k-totals u-mt-3" style="min-width:0;width:100%;font-size:var(--font-size-sm)"><tbody>
+              <tr><th scope="row">Annual budget</th><td>₹18,00,000</td></tr>
+              <tr><th scope="row">Consumed + committed</th><td>₹11,20,000</td></tr>
+              <tr><th scope="row">This request</th><td>₹3,86,400</td></tr>
+              <tr class="k-totals__grand"><th scope="row">Remaining after</th><td style="font-size:inherit">₹2,93,600</td></tr>
+            </tbody></table>
+          </div>
+        </section>
+
+        <section class="k-panel" aria-labelledby="sup-t">
+          <div class="k-panel__header"><h2 class="k-panel__title" id="sup-t">Main supplier</h2></div>
+          <div class="k-panel__body">
+            <div class="u-strong">Arihant Motion Controls</div>
+            <dl class="k-dl k-dl--horizontal u-sm u-mt-2">
+              <div><dt>Rate contract</dt><dd>Valid to 31 Mar 2027</dd></div>
+              <div><dt>On-time delivery</dt><dd>94% (last 12 months)</dd></div>
+              <div><dt>Lead time</dt><dd>8–10 working days</dd></div>
+              <div><dt>Payment terms</dt><dd>Net 45</dd></div>
+            </dl>
+          </div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div class="k-tabpanel" role="tabpanel" id="p-history" aria-labelledby="pt-history" tabindex="0" hidden>
+    <div class="k-detail-body k-detail-body--single">
+      <section class="k-panel">
+        <table class="k-audit">
+          <thead><tr><th style="width:160px">When</th><th style="width:170px">Who</th><th style="width:150px">Event</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td>20 Oct 2026, 09:52</td><td>Rohit Kulkarni</td><td class="k-audit__field">Submitted</td><td>Routed to Priya Deshmukh (cost centre owner)</td></tr>
+            <tr><td>20 Oct 2026, 09:47</td><td>System</td><td class="k-audit__field">Budget check</td><td>Passed — 84% of CC-SW-310 after this request</td></tr>
+            <tr><td>19 Oct 2026, 18:10</td><td>Rohit Kulkarni</td><td class="k-audit__field">Line 3 · Qty</td><td><span class="k-audit__old">4</span><span class="k-audit__arrow">→</span><span class="k-audit__new">2</span></td></tr>
+            <tr><td>19 Oct 2026, 17:55</td><td>Rohit Kulkarni</td><td class="k-audit__field">Created</td><td>Draft saved</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+  </div>
+
+  <div class="k-actionbar">
+    <button class="k-btn" data-open-dialog="reject-dialog">Reject</button>
+    <button class="k-btn k-btn--primary" id="approve-btn-m">Approve</button>
+    <button class="k-btn k-btn--icon" aria-label="Request changes" data-open-dialog="changes-dialog"><svg class="k-icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+  </div>
+</div>
+</main>
+</div>
+
+<dialog class="k-modal k-modal--sm" id="reject-dialog" aria-labelledby="rj-t">
+  <form method="dialog" id="reject-form">
+    <div class="k-modal__header"><h2 class="k-modal__title" id="rj-t">Reject PR-2026-0418</h2></div>
+    <div class="k-modal__body">
+      <p>Rohit will be notified and the request closes. To let him fix and resubmit, use <strong>Request changes</strong> instead.</p>
+      <div class="k-field"><label class="k-label" for="rj-reason">Reason <span class="k-label__req" aria-hidden="true">*</span></label>
+        <textarea class="k-textarea" id="rj-reason" required aria-required="true" aria-describedby="rj-m" style="min-height:72px"></textarea>
+        <span class="k-field__message k-field__message--error" id="rj-m" hidden><svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Add a reason so the requester knows what to do next</span></div>
+    </div>
+    <div class="k-modal__footer"><button class="k-btn" value="cancel" formnovalidate>Cancel</button><button class="k-btn k-btn--danger" value="reject" id="rj-submit">Reject request</button></div>
+  </form>
+</dialog>
+
+<dialog class="k-modal k-modal--sm" id="changes-dialog" aria-labelledby="ch-t">
+  <form method="dialog">
+    <div class="k-modal__header"><h2 class="k-modal__title" id="ch-t">Request changes</h2></div>
+    <div class="k-modal__body">
+      <p>The request goes back to Rohit as a draft. Approvals restart from step 2 when he resubmits.</p>
+      <div class="k-field"><label class="k-label" for="ch-note">What should change? <span class="k-label__req" aria-hidden="true">*</span></label><textarea class="k-textarea" id="ch-note" required style="min-height:72px" placeholder="e.g. Reduce to 3 kits — one existing kit can be upgraded"></textarea></div>
+    </div>
+    <div class="k-modal__footer"><button class="k-btn" value="cancel" formnovalidate>Cancel</button><button class="k-btn k-btn--primary" value="send">Send back</button></div>
+  </form>
+</dialog>
+
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("k-ready", () => {
+  const $ = (s) => document.querySelector(s);
+  const approve = () => {
+    // No confirmation: approval is the expected, reversible-until-PO action. Undo is offered instead.
+    const step = $("#step-me");
+    const saved = step.innerHTML;
+    step.querySelector(".k-approval__badge").dataset.state = "approved";
+    step.querySelector(".k-approval__badge").innerHTML = '<svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-check"/></svg>';
+    step.querySelector(".k-approval__when").innerHTML = "Today<br>just now";
+    $("#decision").hidden = true;
+    $("#pr-status").textContent = "Pending procurement";
+    K.toast({
+      text: "Approved. Sent to Suresh Menon (Procurement).", action: "Undo",
+      onAction: () => { step.innerHTML = saved; $("#decision").hidden = false; $("#pr-status").textContent = "Under review"; },
+      timeout: 10000,
+    });
+  };
+  $("#approve-btn").addEventListener("click", approve);
+  $("#approve-btn-m").addEventListener("click", approve);
+  $("#reject-form").addEventListener("submit", (e) => {
+    if (e.submitter && e.submitter.value === "reject" && !$("#rj-reason").value.trim()) {
+      e.preventDefault(); $("#rj-m").hidden = false; $("#rj-reason").setAttribute("aria-invalid", "true"); $("#rj-reason").focus();
+    }
+  });
+  $("#reject-dialog").addEventListener("close", (e) => { if (e.target.returnValue === "reject") { $("#decision").hidden = true; $("#pr-status").textContent = "Rejected"; $("#pr-status").dataset.tone = "danger"; K.toast({ text: "Request rejected. Rohit has been notified.", tone: "neutral" }); } });
+  $("#changes-dialog").addEventListener("close", (e) => { if (e.target.returnValue === "send") { $("#decision").hidden = true; $("#pr-status").textContent = "Changes requested"; $("#pr-status").dataset.tone = "warning"; K.toast({ text: "Sent back to Rohit for changes." }); } });
+});
+</script>
+</body>
+</html>

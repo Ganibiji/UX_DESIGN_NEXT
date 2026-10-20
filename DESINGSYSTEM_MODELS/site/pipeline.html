@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opportunities · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+<style>
+  /* Page-level layout only: the board fills the viewport under the header */
+  .pipeline-page { height: 100%; }
+  .pipeline-page .k-board { flex: 1; min-height: 0; }
+  /* Work stages share the width; outcome columns are narrower but visible */
+  .pipeline-page .k-board { grid-auto-flow: initial; grid-template-columns: repeat(4, minmax(224px, 1fr)) repeat(2, minmax(176px, 0.7fr)); }
+  .k-board__col[data-stage="prospecting"] { --stage-color: var(--color-border-strong); }
+  .k-board__col[data-stage="qualification"] { --stage-color: var(--color-info); }
+  .k-board__col[data-stage="proposal"] { --stage-color: var(--color-primary); }
+  .k-board__col[data-stage="negotiation"] { --stage-color: var(--color-primary-active); }
+  .k-board__col[data-stage="won"] { --stage-color: var(--color-success); }
+  .k-board__col[data-stage="lost"] { --stage-color: var(--color-error); }
+</style>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="crm.opportunities">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page k-page--fill pipeline-page">
+
+  <div class="k-page-header">
+    <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="dashboard.html">Home</a></li><li><a href="#">CRM</a></li><li><span aria-current="page">Opportunities</span></li></ol></nav>
+    <div class="k-page-header__row">
+      <div class="k-page-header__titles">
+        <h1 class="k-page-header__title">Opportunities</h1>
+        <p class="k-page-header__desc"><span class="u-num">76 open · ₹6.84 Cr total · ₹2.63 Cr weighted</span> · closing this quarter, Sales West</p>
+      </div>
+      <div class="k-page-header__actions">
+        <div class="k-btn-group" role="group" aria-label="View">
+          <button class="k-btn" aria-pressed="true"><svg class="k-icon" aria-hidden="true"><use href="#i-board"/></svg><span>Board</span></button>
+          <button class="k-btn" aria-pressed="false" data-action="toast:List view uses the same grid as Accounts"><svg class="k-icon" aria-hidden="true"><use href="#i-list"/></svg><span>List</span></button>
+        </div>
+        <a class="k-btn k-btn--primary" href="#" data-shortcut="alt+n"><svg class="k-icon" aria-hidden="true"><use href="#i-plus"/></svg><span>New opportunity</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-toolbar" role="toolbar" aria-label="Board filters">
+    <div class="k-search" style="width:240px"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg><input class="k-input k-input--sm" type="search" placeholder="Opportunity or account" aria-label="Search opportunities" id="opp-search"></div>
+    <div class="k-quickfilters" role="group" aria-label="Quick filters">
+      <button aria-pressed="false">My deals <span>18</span></button>
+      <button aria-pressed="true">Team <span>76</span></button>
+      <button aria-pressed="false">Closing in 30 days <span>23</span></button>
+      <button aria-pressed="false">Stale <span>5</span></button>
+    </div>
+    <span class="k-toolbar__spacer"></span>
+    <span class="u-sm u-muted u-hide-md" id="board-hint">Drag cards, or focus a card and press <kbd>Alt</kbd> + <kbd>←</kbd>/<kbd>→</kbd> to change stage</span>
+  </div>
+
+  <div class="k-board" id="board" aria-label="Opportunity pipeline by stage">
+    <section class="k-board__col" data-stage="prospecting" data-prob="10" aria-labelledby="h-pro"><header class="k-board__head"><h2 class="k-board__title" id="h-pro">Prospecting <span class="k-board__count">31</span></h2><div class="k-board__sum">₹1.92 Cr <span>· 10%</span></div></header><ul class="k-board__list"></ul><div class="k-board__more"><a href="#">Show 27 more</a></div></section>
+    <section class="k-board__col" data-stage="qualification" data-prob="25" aria-labelledby="h-qua"><header class="k-board__head"><h2 class="k-board__title" id="h-qua">Qualification <span class="k-board__count">22</span></h2><div class="k-board__sum">₹1.64 Cr <span>· 25%</span></div></header><ul class="k-board__list"></ul><div class="k-board__more"><a href="#">Show 18 more</a></div></section>
+    <section class="k-board__col" data-stage="proposal" data-prob="50" aria-labelledby="h-prp"><header class="k-board__head"><h2 class="k-board__title" id="h-prp">Proposal <span class="k-board__count">14</span></h2><div class="k-board__sum">₹1.71 Cr <span>· 50%</span></div></header><ul class="k-board__list"></ul><div class="k-board__more"><a href="#">Show 10 more</a></div></section>
+    <section class="k-board__col" data-stage="negotiation" data-prob="75" aria-labelledby="h-neg"><header class="k-board__head"><h2 class="k-board__title" id="h-neg">Negotiation <span class="k-board__count">9</span></h2><div class="k-board__sum">₹1.57 Cr <span>· 75%</span></div></header><ul class="k-board__list"></ul><div class="k-board__more"><a href="#">Show 5 more</a></div></section>
+    <section class="k-board__col k-board__col--closed" data-stage="won" data-prob="100" aria-labelledby="h-won"><header class="k-board__head"><h2 class="k-board__title" id="h-won">Won <span class="k-board__count">9</span></h2><div class="k-board__sum">₹1.18 Cr <span>· this quarter</span></div></header><ul class="k-board__list"></ul></section>
+    <section class="k-board__col k-board__col--closed" data-stage="lost" data-prob="0" aria-labelledby="h-lost"><header class="k-board__head"><h2 class="k-board__title" id="h-lost">Lost <span class="k-board__count">23</span></h2><div class="k-board__sum">₹2.04 Cr <span>· this quarter</span></div></header><ul class="k-board__list"></ul></section>
+  </div>
+</div>
+</main>
+</div>
+
+<dialog class="k-modal k-modal--sm" id="lost-dialog" aria-labelledby="lost-title">
+  <form method="dialog">
+    <div class="k-modal__header"><h2 class="k-modal__title" id="lost-title">Mark as lost</h2></div>
+    <div class="k-modal__body">
+      <p id="lost-desc">Loss reasons feed the win-rate report. Pick the main reason.</p>
+      <fieldset class="k-choice-group"><legend class="k-label">Main reason <span class="k-label__req" aria-hidden="true">*</span></legend>
+        <label class="k-radio"><input type="radio" name="reason" value="price" required><span>Price</span></label>
+        <label class="k-radio"><input type="radio" name="reason" value="competitor"><span>Chose a competitor’s product</span></label>
+        <label class="k-radio"><input type="radio" name="reason" value="timing"><span>No budget / project postponed</span></label>
+        <label class="k-radio"><input type="radio" name="reason" value="lead"><span>Delivery lead time</span></label>
+        <label class="k-radio"><input type="radio" name="reason" value="other"><span>Other</span></label>
+      </fieldset>
+      <div class="k-field"><label class="k-label" for="lost-comp">Competitor <span class="k-label__optional">optional</span></label><input class="k-input" id="lost-comp" placeholder="e.g. regional distributor"></div>
+    </div>
+    <div class="k-modal__footer"><button class="k-btn" value="cancel" formnovalidate>Keep open</button><button class="k-btn k-btn--danger" value="lost">Mark as lost</button></div>
+  </form>
+</dialog>
+
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+<script>
+const DEALS = {
+  prospecting: [["Dryer line energy audit", "Shree Balaji Polymers", 1450000, "18 Dec", "MS", 2, "Intro call 22 Oct"], ["Warehouse WMS scanners", "Yashoda Cold Storage", 820000, "20 Dec", "IS", 4, "Discovery call booked"], ["Spare parts rate contract", "Rudra Electricals", 640000, "31 Dec", "RK", 3, null], ["Resort BMS upgrade", "Orchid Hotels & Resorts", 2100000, "15 Jan", "MS", 2, "Send capability deck"]],
+  qualification: [["Line 4 servo upgrade", "ABC Technologies Pvt Ltd", 2200000, "12 Dec", "AN", 2, "Technical survey 24 Oct"], ["Cold room monitoring", "Konkan Marine Exports", 960000, "05 Dec", "RK", 3, null, "stale"], ["Fleet telematics pilot", "Northgate Logistics", 1150000, "19 Dec", "IS", 4, "Pilot scope pending"], ["Clean-room HVAC controls", "Zenith Medical Devices", 3400000, "20 Dec", "PD", 1, "Meet QA head 23 Oct"]],
+  proposal: [["Plant 4 automation package", "Pinnacle Infra Projects", 6200000, "15 Nov", "RK", 3, "Proposal review 21 Oct"], ["Warehouse conveyor retrofit", "Northgate Logistics", 2740000, "28 Nov", "IS", 4, "Revised layout due"], ["Packaging line PLC migration", "Trident Packaging Industries", 1875000, "30 Nov", "IS", 4, null, "stale"], ["Boiler feed pump VFDs", "Kaveri Agro Foods", 1260000, "22 Nov", "AN", 2, "Follow up on quote"]],
+  negotiation: [["Cold-chain expansion", "Kaveri Agro Foods", 4850000, "31 Oct", "AN", 2, "Revised quote today", "due"], ["Hospital wing HVAC controls", "Lumina Healthcare Systems", 3680000, "07 Nov", "PD", 1, "Site visit tomorrow"], ["Annual maintenance — 3 plants", "Deccan Auto Components", 1980000, "14 Nov", "RK", 3, "Legal review of SLA"]],
+  won: [["Boiler controls AMC", "Deccan Auto Components", 840000, "20 Oct", "RK", 3], ["Line 3 automation retrofit", "ABC Technologies Pvt Ltd", 845000, "12 Oct", "AN", 2]],
+  lost: [["Cooling tower VFDs", "Mahalaxmi Textiles", 620000, "19 Oct", "IS", 4, "Price"]],
+};
+const lakh = (n) => n >= 10000000 ? `₹${(n / 10000000).toFixed(2)} Cr` : `₹${(n / 100000).toFixed(1)} L`;
+const NAMES = { AN: "Anjali Nair", RK: "Rohit Kulkarni", IS: "Imran Shaikh", PD: "Priya Deshmukh", MS: "Meghna Sathe" };
+let n = 0;
+function card([title, account, amt, close, owner, tint, next, flag], stage) {
+  const closed = stage === "won" || stage === "lost";
+  const nextHtml = closed ? (stage === "lost" ? `<span>Reason: ${next}</span>` : `<span class="k-text-success">Closed ${close}</span>`)
+    : next ? `<span class="${flag === "due" ? "k-due k-due--today" : ""}">${next}</span>` : `<span class="k-text-warning"><svg class="k-icon k-icon--xs" aria-hidden="true" style="display:inline"><use href="#i-alert-triangle"/></svg> No next step</span>`;
+  return `<li class="k-kcard ${flag === "stale" ? "is-stale" : ""}" draggable="${!closed}" tabindex="0" id="c-${n++}" data-amt="${amt}"
+    aria-label="${title}, ${account}, ${lakh(amt)}, closes ${close}${flag === "stale" ? ", no activity in 14 days" : ""}">
+    <a class="k-kcard__title" href="#" tabindex="-1">${title}</a>
+    <span class="k-kcard__account">${account}</span>
+    <div class="k-kcard__row"><span class="k-kcard__value">${lakh(amt)}</span><span>· ${close}</span>
+      <span class="k-kcard__end"><span class="k-avatar k-avatar--xs" data-tint="${tint}" title="${NAMES[owner]}">${owner}</span></span></div>
+    <div class="k-kcard__row">${nextHtml}${flag === "stale" ? '<span class="k-kcard__end k-text-warning u-xs">19 d idle</span>' : ""}</div>
+  </li>`;
+}
+document.querySelectorAll(".k-board__col").forEach((col) => {
+  col.querySelector(".k-board__list").innerHTML = DEALS[col.dataset.stage].map((d) => card(d, col.dataset.stage)).join("");
+});
+
+document.addEventListener("k-ready", () => {
+  const board = document.getElementById("board");
+  const cols = [...board.querySelectorAll(".k-board__col")];
+  const label = (col) => col.querySelector(".k-board__title").firstChild.textContent.trim();
+
+  function move(cardEl, toCol, fromCol, silent) {
+    if (toCol === fromCol) return;
+    if (toCol.dataset.stage === "lost" && !silent) {
+      const dlg = document.getElementById("lost-dialog");
+      dlg.returnValue = "";
+      dlg.showModal();
+      dlg.addEventListener("close", function h() {
+        dlg.removeEventListener("close", h);
+        if (dlg.returnValue === "lost") move(cardEl, toCol, fromCol, true);
+        else cardEl.focus();
+      });
+      return;
+    }
+    toCol.querySelector(".k-board__list").prepend(cardEl);
+    [toCol, fromCol].forEach((c) => {
+      const cnt = c.querySelector(".k-board__count");
+      cnt.textContent = +cnt.textContent + (c === toCol ? 1 : -1);
+    });
+    cardEl.focus();
+    const title = cardEl.querySelector(".k-kcard__title").textContent;
+    K.toast({
+      text: `<strong>${title}</strong> moved to ${label(toCol)}${toCol.dataset.prob > 0 && toCol.dataset.prob < 100 ? ` · probability ${toCol.dataset.prob}%` : ""}`,
+      action: "Undo", onAction: () => move(cardEl, fromCol, toCol, true),
+    });
+  }
+
+  // Pointer drag & drop
+  let dragged = null;
+  board.addEventListener("dragstart", (e) => { const c = e.target.closest(".k-kcard"); if (!c) return; dragged = c; c.classList.add("is-dragging"); e.dataTransfer.effectAllowed = "move"; });
+  board.addEventListener("dragend", () => { dragged && dragged.classList.remove("is-dragging"); cols.forEach((c) => c.classList.remove("is-drop-target")); });
+  cols.forEach((col) => {
+    col.addEventListener("dragover", (e) => { if (!dragged) return; e.preventDefault(); cols.forEach((c) => c.classList.toggle("is-drop-target", c === col)); });
+    col.addEventListener("drop", (e) => { e.preventDefault(); col.classList.remove("is-drop-target"); if (dragged) move(dragged, col, dragged.closest(".k-board__col")); dragged = null; });
+  });
+
+  // Keyboard alternative (WCAG 2.5.7 Dragging Movements)
+  board.addEventListener("keydown", (e) => {
+    const c = e.target.closest(".k-kcard");
+    if (!c) return;
+    const from = c.closest(".k-board__col"), i = cols.indexOf(from);
+    if (e.altKey && (e.key === "ArrowRight" || e.key === "ArrowLeft")) {
+      e.preventDefault();
+      const to = cols[i + (e.key === "ArrowRight" ? 1 : -1)];
+      if (to) move(c, to, from);
+    } else if (!e.altKey && (e.key === "ArrowDown" || e.key === "ArrowUp")) {
+      e.preventDefault();
+      const sib = e.key === "ArrowDown" ? c.nextElementSibling : c.previousElementSibling;
+      sib && sib.focus();
+    } else if (e.key === "Enter") {
+      K.toast({ text: "Opens the opportunity record (not part of this prototype).", tone: "neutral" });
+    }
+  });
+
+  document.getElementById("opp-search").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    board.querySelectorAll(".k-kcard").forEach((c) => (c.hidden = q && !c.textContent.toLowerCase().includes(q)));
+  });
+  document.querySelectorAll(".k-quickfilters button").forEach((b) => b.addEventListener("click", () =>
+    document.querySelectorAll(".k-quickfilters button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)))));
+});
+</script>
+</body>
+</html>

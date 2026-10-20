@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales dashboard · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="dashboard">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page">
+
+  <div class="k-page-header">
+    <div class="k-page-header__row">
+      <div class="k-page-header__titles">
+        <h1 class="k-page-header__title">Sales — West region</h1>
+        <p class="k-page-header__desc">Good morning, Priya. You have <a href="purchase-request.html">4 approvals</a> and <a href="#followups">2 overdue follow-ups</a>.</p>
+      </div>
+      <div class="k-page-header__actions">
+        <div class="k-dropdown">
+          <button class="k-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="m-dash" data-menu><span>Sales dashboard</span><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <div class="k-menu k-menu--end" id="m-dash" role="menu" hidden>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="true">Sales dashboard</button>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="false">Receivables &amp; collections</button>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="false">Inventory health</button>
+            <div class="k-menu__sep" role="separator"></div>
+            <button class="k-menu__item" role="menuitem">Set as my home page</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- One filter row drives every panel -->
+  <div class="k-dash-filters" role="group" aria-label="Dashboard filters">
+    <div class="k-btn-group" role="group" aria-label="Period">
+      <button class="k-btn k-btn--sm" aria-pressed="false">This month</button>
+      <button class="k-btn k-btn--sm" aria-pressed="true">This quarter</button>
+      <button class="k-btn k-btn--sm" aria-pressed="false">FY 2026-27</button>
+    </div>
+    <select class="k-select k-select--sm" style="width:auto" aria-label="Team"><option>Team: Sales West (6)</option><option>Only me</option><option>All regions</option></select>
+    <select class="k-select k-select--sm" style="width:auto" aria-label="Compare with"><option>Compare: previous quarter</option><option>Compare: same quarter last year</option></select>
+    <span class="k-dash-filters__updated">Q3 · 1 Oct – 31 Dec 2026 · updated 6 min ago <button class="k-btn k-btn--subtle k-btn--sm k-btn--icon" aria-label="Refresh data" data-action="toast:Dashboard refreshed"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-refresh"/></svg></button></span>
+  </div>
+
+  <!-- 1 · KPIs -->
+  <section class="k-kpis" aria-label="Key figures">
+    <a class="k-kpi" href="#">
+      <span class="k-kpi__label">Revenue, quarter to date</span>
+      <span class="k-kpi__value">₹96.4 <small>L</small></span>
+      <span class="k-kpi__meta">of ₹4.50 Cr target · <span class="k-kpi__delta" data-trend="flat">On pace</span></span>
+      <div class="k-kpi__bar"><div class="k-meter"><div class="k-progress" role="progressbar" aria-label="Target attained" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"><span style="width:21%"></span></div><span>21% · day 20 of 92</span></div></div>
+    </a>
+    <a class="k-kpi" href="pipeline.html">
+      <span class="k-kpi__label">Open pipeline</span>
+      <span class="k-kpi__value">₹6.84 <small>Cr</small></span>
+      <span class="k-kpi__meta">76 deals · weighted ₹2.63 Cr</span>
+      <span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="up-good"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-up"/></svg>1.9×</span> coverage of remaining target</span>
+    </a>
+    <a class="k-kpi" href="pipeline.html">
+      <span class="k-kpi__label">Won deals</span>
+      <span class="k-kpi__value">9 <small>· ₹1.18 Cr</small></span>
+      <span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="up-good"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-up"/></svg>+2</span> vs same point in Q2</span>
+    </a>
+    <a class="k-kpi" href="#">
+      <span class="k-kpi__label">Win rate, last 90 days</span>
+      <span class="k-kpi__value">28%</span>
+      <span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="down-bad"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-down"/></svg>3 pts</span> vs Q2 (31%) · 4 lost on price</span>
+    </a>
+  </section>
+
+  <div class="k-dash">
+    <!-- 2 · Trends -->
+    <section class="k-panel k-col-8" aria-labelledby="rev-t">
+      <div class="k-panel__header">
+        <h2 class="k-panel__title" id="rev-t">Revenue by month <small>FY 2026-27 · invoiced, excl. GST · ₹ lakh</small></h2>
+        <div class="k-btn-group" role="group" aria-label="Chart view">
+          <button class="k-btn k-btn--sm" aria-pressed="true" data-chart-view="chart">Chart</button>
+          <button class="k-btn k-btn--sm" aria-pressed="false" data-chart-view="table">Table</button>
+        </div>
+      </div>
+      <div class="k-panel__body">
+        <div class="k-legend u-mb-3" aria-hidden="true">
+          <span class="k-legend__item"><span class="k-legend__swatch"></span>Invoiced</span>
+          <span class="k-legend__item"><span class="k-legend__swatch k-legend__swatch--muted"></span>Month to date</span>
+          <span class="k-legend__item"><span class="k-legend__swatch k-legend__swatch--line"></span>Target</span>
+        </div>
+        <div class="k-chart" id="rev-chart" role="img" aria-label="Revenue by month, April to October 2026. Above target in May, August and September; October is month to date at 96 lakh against 150 target."></div>
+        <table class="k-table k-table--plain" id="rev-table" hidden>
+          <thead><tr><th>Month</th><th class="is-num">Invoiced (₹ L)</th><th class="is-num">Target (₹ L)</th><th class="is-num">Attainment</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="k-panel k-col-4" aria-labelledby="pipe-t">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="pipe-t">Pipeline by stage <small>open · ₹ Cr</small></h2><a class="k-btn k-btn--subtle k-btn--sm" href="pipeline.html">Board</a></div>
+      <div class="k-panel__body">
+        <ul class="k-barlist" aria-label="Open pipeline by stage">
+          <li><span class="k-barlist__label">Prospecting</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:100%"></span><span class="k-barlist__fill" style="width:10%"></span></span><span class="k-barlist__value">1.92<small>31 deals</small></span></li>
+          <li><span class="k-barlist__label">Qualification</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:85%"></span><span class="k-barlist__fill" style="width:21%"></span></span><span class="k-barlist__value">1.64<small>22 deals</small></span></li>
+          <li><span class="k-barlist__label">Proposal</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:89%"></span><span class="k-barlist__fill" style="width:45%"></span></span><span class="k-barlist__value">1.71<small>14 deals</small></span></li>
+          <li><span class="k-barlist__label">Negotiation</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:82%"></span><span class="k-barlist__fill" style="width:61%"></span></span><span class="k-barlist__value">1.57<small>9 deals</small></span></li>
+        </ul>
+        <div class="k-legend u-mt-4">
+          <span class="k-legend__item"><span class="k-legend__swatch"></span>Weighted by stage probability</span>
+          <span class="k-legend__item"><span class="k-legend__swatch k-legend__swatch--muted"></span>Total</span>
+        </div>
+        <p class="u-sm u-muted u-mt-3">Average deal age in Proposal: 34 days (target 21). 5 deals have no activity in 14+ days.</p>
+      </div>
+    </section>
+
+    <!-- 3 · Operational -->
+    <section class="k-panel k-col-8" aria-labelledby="opps-t">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="opps-t">Top opportunities closing this quarter</h2><a class="k-btn k-btn--subtle k-btn--sm" href="pipeline.html">View all 41</a></div>
+      <div class="k-grid__scroll">
+        <table class="k-table k-table--stack">
+          <colgroup><col style="width:30%"><col style="width:120px"><col style="width:120px"><col style="width:104px"><col style="width:64px"><col style="width:140px"></colgroup>
+          <thead><tr><th scope="col">Opportunity</th><th scope="col">Stage</th><th scope="col" class="is-num">Amount</th><th scope="col">Close date</th><th scope="col" class="is-num">Prob.</th><th scope="col">Owner</th></tr></thead>
+          <tbody>
+            <tr><td class="k-table__primary"><div class="k-cell-stack"><a href="pipeline.html">Cold-chain expansion</a><small>Kaveri Agro Foods</small></div></td><td data-label="Stage"><span class="k-status" data-tone="progress">Negotiation</span></td><td class="is-num" data-label="Amount">₹48,50,000</td><td data-label="Close">31 Oct 2026</td><td class="is-num" data-label="Probability">75%</td><td data-label="Owner"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="2">AN</span><span class="k-person__name">Anjali Nair</span></span></td></tr>
+            <tr><td class="k-table__primary"><div class="k-cell-stack"><a href="pipeline.html">Plant 4 automation package</a><small>Pinnacle Infra Projects</small></div></td><td data-label="Stage"><span class="k-status" data-tone="info">Proposal</span></td><td class="is-num" data-label="Amount">₹62,00,000</td><td data-label="Close">15 Nov 2026</td><td class="is-num" data-label="Probability">50%</td><td data-label="Owner"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="3">RK</span><span class="k-person__name">Rohit Kulkarni</span></span></td></tr>
+            <tr><td class="k-table__primary"><div class="k-cell-stack"><a href="pipeline.html">Hospital wing HVAC controls</a><small>Lumina Healthcare Systems</small></div></td><td data-label="Stage"><span class="k-status" data-tone="progress">Negotiation</span></td><td class="is-num" data-label="Amount">₹36,80,000</td><td data-label="Close">07 Nov 2026</td><td class="is-num" data-label="Probability">75%</td><td data-label="Owner"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="1">PD</span><span class="k-person__name">Priya Deshmukh</span></span></td></tr>
+            <tr class="is-attention"><td class="k-table__primary"><div class="k-cell-stack"><a href="pipeline.html">Packaging line PLC migration</a><small>Trident Packaging · <span class="k-text-warning">no activity 19 days</span></small></div></td><td data-label="Stage"><span class="k-status" data-tone="info">Proposal</span></td><td class="is-num" data-label="Amount">₹18,75,000</td><td data-label="Close">30 Nov 2026</td><td class="is-num" data-label="Probability">50%</td><td data-label="Owner"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="4">IS</span><span class="k-person__name">Imran Shaikh</span></span></td></tr>
+            <tr><td class="k-table__primary"><div class="k-cell-stack"><a href="pipeline.html">Warehouse conveyor retrofit</a><small>Northgate Logistics</small></div></td><td data-label="Stage"><span class="k-status" data-tone="info">Proposal</span></td><td class="is-num" data-label="Amount">₹27,40,000</td><td data-label="Close">28 Nov 2026</td><td class="is-num" data-label="Probability">50%</td><td data-label="Owner"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="4">IS</span><span class="k-person__name">Imran Shaikh</span></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="k-panel k-col-4" id="followups" aria-labelledby="fu-t">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="fu-t">My follow-ups <small>7 open</small></h2><button class="k-btn k-btn--subtle k-btn--sm k-btn--icon" aria-label="Add follow-up" data-tip="Add follow-up" data-tip-pos="end"><svg class="k-icon" aria-hidden="true"><use href="#i-plus"/></svg></button></div>
+      <ul class="k-list" id="fu-list">
+        <li class="k-list__item"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Mark done: Call Sunil Patil about overdue invoice"></label><span class="k-list__main"><span class="k-list__title">Call Sunil Patil — overdue ₹4,62,300</span><span class="k-list__meta">Ganesh Hardware &amp; Tools · credit hold</span></span><span class="k-due k-due--overdue">2 days overdue</span></li>
+        <li class="k-list__item"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Mark done: Chase PO from Mahalaxmi Textiles"></label><span class="k-list__main"><span class="k-list__title">Chase signed PO</span><span class="k-list__meta">Mahalaxmi Textiles</span></span><span class="k-due k-due--overdue">Yesterday</span></li>
+        <li class="k-list__item"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Mark done: Send revised quote to Kaveri Agro Foods"></label><span class="k-list__main"><span class="k-list__title">Send revised quote QT-5590</span><span class="k-list__meta">Kaveri Agro Foods · Cold-chain expansion</span></span><span class="k-due k-due--today">Today</span></li>
+        <li class="k-list__item"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Mark done: Approve SO-10234 revision"></label><span class="k-list__main"><span class="k-list__title"><a href="sales-order.html">Approve SO-10234 Rev 2</a></span><span class="k-list__meta">Requested by Anjali Nair</span></span><span class="k-due k-due--today">Today</span></li>
+        <li class="k-list__item"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Mark done: Site visit Lumina Healthcare"></label><span class="k-list__main"><span class="k-list__title">Site visit — HVAC scope walk-through</span><span class="k-list__meta">Lumina Healthcare · Andheri, Mumbai</span></span><span class="k-due">Tomorrow 11:00</span></li>
+      </ul>
+      <div class="k-panel__footer"><a href="#">All tasks</a></div>
+    </section>
+
+    <!-- 4 · Detail -->
+    <section class="k-panel k-col-7" aria-labelledby="team-t">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="team-t">Team performance <small>quarter to date</small></h2></div>
+      <div class="k-grid__scroll">
+        <table class="k-table">
+          <colgroup><col style="width:170px"><col style="width:110px"><col><col style="width:104px"><col style="width:80px"></colgroup>
+          <thead><tr><th scope="col">Sales rep</th><th scope="col" class="is-num">Won</th><th scope="col">Quota attainment</th><th scope="col" class="is-num">Pipeline</th><th scope="col" class="is-num">Win rate</th></tr></thead>
+          <tbody>
+            <tr><td><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="2">AN</span><span class="k-person__name">Anjali Nair</span></span></td><td class="is-num">₹38.2 L</td><td><div class="k-meter"><div class="k-progress"><span style="width:42%"></span></div><span>42%</span></div></td><td class="is-num">₹1.86 Cr</td><td class="is-num">34%</td></tr>
+            <tr><td><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="3">RK</span><span class="k-person__name">Rohit Kulkarni</span></span></td><td class="is-num">₹24.5 L</td><td><div class="k-meter"><div class="k-progress"><span style="width:27%"></span></div><span>27%</span></div></td><td class="is-num">₹1.72 Cr</td><td class="is-num">29%</td></tr>
+            <tr><td><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="1">PD</span><span class="k-person__name">Priya Deshmukh</span></span></td><td class="is-num">₹21.0 L</td><td><div class="k-meter"><div class="k-progress"><span style="width:28%"></span></div><span>28%</span></div></td><td class="is-num">₹1.12 Cr</td><td class="is-num">31%</td></tr>
+            <tr><td><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="4">IS</span><span class="k-person__name">Imran Shaikh</span></span></td><td class="is-num">₹9.6 L</td><td><div class="k-meter"><div class="k-progress k-progress--warning"><span style="width:12%"></span></div><span>12%</span></div></td><td class="is-num">₹1.31 Cr</td><td class="is-num">19%</td></tr>
+            <tr><td><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="2">MS</span><span class="k-person__name">Meghna Sathe</span></span></td><td class="is-num">₹3.1 L</td><td><div class="k-meter"><div class="k-progress"><span style="width:6%"></span></div><span>6% · joined 1 Oct</span></div></td><td class="is-num">₹0.83 Cr</td><td class="is-num u-muted">—</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="k-panel k-col-5" aria-labelledby="act-t">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="act-t">Recent team activity</h2></div>
+      <div class="k-panel__body">
+        <ol class="k-timeline">
+          <li class="k-timeline__item"><span class="k-timeline__marker" data-tone="success"><svg class="k-icon" aria-hidden="true"><use href="#i-check"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Rohit</strong> won <a href="#">Boiler controls AMC</a> · ₹8.4 L</span><span class="k-timeline__time">11:20</span></div><div class="k-timeline__body u-sm">Deccan Auto Components</div></div></li>
+          <li class="k-timeline__item"><span class="k-timeline__marker"><svg class="k-icon" aria-hidden="true"><use href="#i-phone"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Anjali</strong> logged a call with Rahul Mehta</span><span class="k-timeline__time">09:15</span></div><div class="k-timeline__body u-sm">ABC Technologies · commissioning confirmed for 28 Oct</div></div></li>
+          <li class="k-timeline__item"><span class="k-timeline__marker" data-tone="danger"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Imran</strong> lost <a href="#">Cooling tower VFDs</a> · ₹6.2 L</span><span class="k-timeline__time">Yesterday</span></div><div class="k-timeline__body u-sm">Reason: price — competitor 11% lower</div></div></li>
+          <li class="k-timeline__item"><span class="k-timeline__marker" data-tone="primary"><svg class="k-icon" aria-hidden="true"><use href="#i-file"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Meghna</strong> sent quotation <a href="#">QT-5588</a></span><span class="k-timeline__time">Yesterday</span></div><div class="k-timeline__body u-sm">Orchid Hotels &amp; Resorts · ₹4.9 L</div></div></li>
+        </ol>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+</div>
+
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+<script>
+// Revenue chart — inline SVG, one hue for actuals, gray dashed target, hover tooltip, table alternative.
+document.addEventListener("k-ready", () => {
+  const data = [["Apr", 118, 140], ["May", 152, 140], ["Jun", 131, 140], ["Jul", 126, 145], ["Aug", 149, 145], ["Sep", 171, 145], ["Oct", 96, 150, true]];
+  const W = 720, H = 230, pad = { l: 36, r: 12, t: 12, b: 26 }, max = 200;
+  const iw = W - pad.l - pad.r, ih = H - pad.t - pad.b, band = iw / data.length, bw = Math.min(44, band * 0.5);
+  const y = (v) => pad.t + ih - (v / max) * ih;
+  let s = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><g class="k-chart__grid">`;
+  for (let v = 0; v <= max; v += 50) s += `<line x1="${pad.l}" x2="${W - pad.r}" y1="${y(v)}" y2="${y(v)}"/><text class="k-chart__tick" x="${pad.l - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+  s += `</g>`;
+  // Target as a step line
+  let path = "";
+  data.forEach(([, , t], i) => { const x0 = pad.l + i * band, x1 = x0 + band; path += `${i ? "L" : "M"}${x0},${y(t)} L${x1},${y(t)} `; });
+  data.forEach(([m, v, t, partial], i) => {
+    const cx = pad.l + i * band + band / 2, h = y(0) - y(v), r = 3;
+    s += `<path class="k-chart__bar ${partial ? "is-forecast" : ""}" data-i="${i}" d="M${cx - bw / 2},${y(0)} V${y(v) + r} q0,-${r} ${r},-${r} H${cx + bw / 2 - r} q${r},0 ${r},${r} V${y(0)} Z"/>`;
+    s += `<text class="k-chart__tick" x="${cx}" y="${H - 8}" text-anchor="middle">${m}</text>`;
+  });
+  s += `<path class="k-chart__target" d="${path}"/>`;
+  // Direct label on the latest point only
+  const last = data[data.length - 1], lx = pad.l + (data.length - 1) * band + band / 2;
+  s += `<text class="k-chart__label" x="${lx}" y="${y(last[1]) - 6}" text-anchor="middle">${last[1]} MTD</text>`;
+  data.forEach((_, i) => (s += `<rect class="k-chart__hit" data-i="${i}" x="${pad.l + i * band}" y="${pad.t}" width="${band}" height="${ih}"/>`));
+  s += `</svg><div class="k-chart__tooltip" hidden></div>`;
+  const el = document.getElementById("rev-chart");
+  el.innerHTML = s;
+  const tip = el.querySelector(".k-chart__tooltip");
+  el.addEventListener("pointermove", (e) => {
+    const hit = e.target.closest(".k-chart__hit");
+    if (!hit) return;
+    const i = +hit.dataset.i, [m, v, t, partial] = data[i];
+    el.classList.add("is-hovering");
+    el.querySelectorAll(".k-chart__bar").forEach((b) => b.classList.toggle("is-hover", +b.dataset.i === i));
+    const rect = el.getBoundingClientRect(), svgScale = rect.width / W;
+    tip.hidden = false;
+    tip.style.left = (pad.l + i * band + band / 2) * svgScale + "px";
+    tip.style.top = y(Math.max(v, t)) * svgScale + "px";
+    tip.innerHTML = `<strong>${m} 2026${partial ? " · month to date" : ""}</strong><dl><dt>Invoiced</dt><dd>₹${v} L</dd><dt>Target</dt><dd>₹${t} L</dd><dt>Attainment</dt><dd>${Math.round((v / t) * 100)}%</dd></dl>`;
+  });
+  el.addEventListener("pointerleave", () => { tip.hidden = true; el.classList.remove("is-hovering"); });
+
+  document.querySelector("#rev-table tbody").innerHTML = data.map(([m, v, t, p]) => `<tr><td>${m} 2026${p ? " (MTD)" : ""}</td><td class="is-num">${v}</td><td class="is-num">${t}</td><td class="is-num">${Math.round((v / t) * 100)}%</td></tr>`).join("");
+  document.querySelectorAll("[data-chart-view]").forEach((b) => b.addEventListener("click", () => {
+    const table = b.dataset.chartView === "table";
+    document.querySelectorAll("[data-chart-view]").forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+    el.hidden = table; document.getElementById("rev-table").hidden = !table;
+  }));
+
+  // Period buttons behave as a single-choice group
+  document.querySelectorAll('[aria-label="Period"] .k-btn').forEach((b) => b.addEventListener("click", () => {
+    document.querySelectorAll('[aria-label="Period"] .k-btn').forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  }));
+
+  // Completing a follow-up: strike, then remove with undo
+  document.getElementById("fu-list").addEventListener("change", (e) => {
+    const li = e.target.closest("li");
+    if (!e.target.checked) return;
+    li.style.opacity = ".5";
+    setTimeout(() => { li.hidden = true; }, 600);
+    K.toast({ text: "Follow-up marked done.", action: "Undo", onAction: () => { li.hidden = false; li.style.opacity = ""; e.target.checked = false; } });
+  });
+});
+</script>
+</body>
+</html>

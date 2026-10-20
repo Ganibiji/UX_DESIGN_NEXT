@@ -1,0 +1,70 @@
+// ---------------------------------------------------------------------------
+// Density
+// Set on <html data-density="…">. Only geometry changes — never type size of
+// body copy below 12px, never colour. Comfortable is the default; Compact is
+// offered to power users (finance, inventory operators) in Display settings.
+// ---------------------------------------------------------------------------
+
+@mixin comfortable {
+  --density: comfortable;
+  --control-height: 32px;
+  --control-height-sm: 26px;
+  --control-pad-x: 10px;
+  --row-height: 36px;
+  --cell-pad-x: 10px;
+  --cell-pad-y: 7px;
+  --table-font-size: var(--font-size-md);
+  --form-row-gap: 16px;
+  --form-col-gap: 24px;
+  --section-gap: 24px;
+  --page-pad-x: 24px;
+  --page-pad-y: 16px;
+  --panel-pad: 16px;
+}
+
+:root,
+[data-density="comfortable"] {
+  @include comfortable;
+}
+
+[data-density="compact"] {
+  --density: compact;
+  --control-height: 28px;
+  --control-height-sm: 22px;
+  --control-pad-x: 8px;
+  --row-height: 28px;
+  --cell-pad-x: 8px;
+  --cell-pad-y: 4px;
+  --table-font-size: var(--font-size-sm);
+  --form-row-gap: 10px;
+  --form-col-gap: 16px;
+  --section-gap: 16px;
+  --page-pad-x: 16px;
+  --page-pad-y: 12px;
+  --panel-pad: 12px;
+}
+
+[data-density="spacious"] {
+  --density: spacious;
+  --control-height: 36px;
+  --control-height-sm: 30px;
+  --control-pad-x: 12px;
+  --row-height: 44px;
+  --cell-pad-x: 12px;
+  --cell-pad-y: 11px;
+  --table-font-size: var(--font-size-md);
+  --form-row-gap: 20px;
+  --form-col-gap: 32px;
+  --section-gap: 32px;
+  --page-pad-x: 32px;
+  --page-pad-y: 20px;
+  --panel-pad: 20px;
+}
+
+// Touch devices never go below comfortable hit targets, whatever the setting.
+@media (pointer: coarse) {
+  [data-density="compact"] {
+    --control-height: 36px;
+    --row-height: 40px;
+  }
+}

@@ -1,0 +1,447 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Panel — the default grouping container. A panel is a *region of a page*,
+// not a floating card: flat, bordered, header optional. Cards (.k-card) are
+// only for items the user moves or picks between (kanban, choice tiles).
+// ---------------------------------------------------------------------------
+.k-panel {
+  min-width: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    min-height: 44px;
+    padding: var(--space-2) var(--panel-pad);
+    border-bottom: 1px solid var(--color-border-subtle);
+  }
+
+  &__title {
+    flex: 1;
+    min-width: 0;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    @include truncate;
+
+    small {
+      margin-left: var(--space-2);
+      color: var(--color-text-muted);
+      font-weight: var(--font-weight-regular);
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  &__body {
+    padding: var(--panel-pad);
+
+    &--flush { padding: 0; }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--panel-pad);
+    border-top: 1px solid var(--color-border-subtle);
+    font-size: var(--font-size-sm);
+  }
+
+  // Header-less panel sitting on page background with its title outside
+  &--plain {
+    border: 0;
+    background: transparent;
+  }
+}
+
+.k-card {
+  display: block;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  color: inherit;
+
+  &--interactive {
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--color-border-strong);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    &:focus-visible { @include focus-ring(1px); }
+  }
+
+  &.is-selected {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 1px var(--color-primary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Description list — record facts. Label above value in grids, or side by
+// side in narrow side panels (.k-dl--horizontal).
+// ---------------------------------------------------------------------------
+.k-dl {
+  display: grid;
+  grid-template-columns: repeat(var(--dl-cols, 3), minmax(0, 1fr));
+  gap: var(--space-3) var(--form-col-gap);
+
+  &--2 { --dl-cols: 2; }
+  &--4 { --dl-cols: 4; }
+
+  > div { min-width: 0; }
+
+  dt {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-snug);
+    margin-bottom: 2px;
+  }
+
+  dd {
+    color: var(--color-text-primary);
+    overflow-wrap: anywhere;
+
+    &.is-empty { color: var(--color-text-muted); }
+  }
+
+  &--horizontal {
+    grid-template-columns: minmax(110px, 40%) 1fr;
+    gap: 6px var(--space-3);
+
+    > div { display: contents; }
+    dt { margin: 0; }
+  }
+
+  @include down(md) { --dl-cols: 2; }
+  @include down(sm) { --dl-cols: 1; }
+}
+
+// ---------------------------------------------------------------------------
+// List — recently viewed, related records, notifications
+// ---------------------------------------------------------------------------
+.k-list {
+  @include reset-list;
+
+  > li + li { border-top: 1px solid var(--color-border-subtle); }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    min-height: var(--row-height);
+    padding: 8px var(--panel-pad);
+    color: inherit;
+
+    &:is(a, button) {
+      @include reset-button;
+      width: 100%;
+      &:hover { background: var(--color-bg-hover); text-decoration: none; color: inherit; }
+      &:focus-visible { @include focus-ring-inset; }
+    }
+
+    &.is-unread {
+      background: var(--color-primary-subtle);
+      .k-list__title { font-weight: var(--font-weight-semibold); }
+    }
+  }
+
+  &__main { flex: 1; min-width: 0; }
+
+  &__title {
+    display: block;
+    color: var(--color-text-primary);
+    @include truncate;
+  }
+
+  &__meta {
+    display: block;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    @include truncate;
+  }
+
+  &__end {
+    flex: none;
+    text-align: right;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    @include numeric;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tree — chart of accounts, warehouse > zone > bin, product categories
+// role="tree" / "treeitem" with aria-expanded and aria-level
+// ---------------------------------------------------------------------------
+.k-tree {
+  @include reset-list;
+  font-size: var(--font-size-md);
+
+  ul { @include reset-list; }
+
+  &__row {
+    @include reset-button;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    height: 28px;
+    padding-right: var(--space-2);
+    padding-left: calc(var(--level, 0) * 16px + 4px);
+    border-radius: var(--radius-xs);
+    color: var(--color-text-primary);
+
+    &:hover { background: var(--color-bg-hover); }
+    &:focus-visible { @include focus-ring-inset; }
+  }
+
+  [aria-selected="true"] > &__row {
+    background: var(--color-bg-selected);
+    color: var(--color-primary-text);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__toggle {
+    display: inline-flex;
+    width: 16px;
+    color: var(--color-text-muted);
+    transition: transform var(--duration-fast);
+  }
+
+  [aria-expanded="true"] > .k-tree__row .k-tree__toggle { transform: rotate(90deg); }
+  [aria-expanded="false"] > ul { display: none; }
+
+  &__leaf-spacer { width: 16px; display: inline-block; }
+
+  &__label { flex: 1; min-width: 0; @include truncate; }
+
+  &__meta {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    @include numeric;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Timeline — the story of a record. Icons are typed (system / user / comment
+// / status change) so the scan pattern is predictable.
+// ---------------------------------------------------------------------------
+.k-timeline {
+  @include reset-list;
+  position: relative;
+
+  &__item {
+    position: relative;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+
+    &::before {
+      content: "";
+      position: absolute;
+      left: 11.5px;
+      top: 24px;
+      bottom: 0;
+      width: 1px;
+      background: var(--color-border);
+    }
+
+    &:last-child {
+      padding-bottom: 0;
+      &::before { display: none; }
+    }
+  }
+
+  &__marker {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    background: var(--color-bg-surface);
+    color: var(--color-text-muted);
+
+    .k-icon { width: 12px; height: 12px; stroke-width: 2; }
+
+    &[data-tone="success"] { border-color: var(--color-success-border); background: var(--color-success-subtle); color: var(--color-success); }
+    &[data-tone="warning"] { border-color: var(--color-warning-border); background: var(--color-warning-subtle); color: var(--color-warning-text); }
+    &[data-tone="danger"] { border-color: var(--color-error-border); background: var(--color-error-subtle); color: var(--color-error); }
+    &[data-tone="primary"] { border-color: var(--color-primary-border); background: var(--color-primary-subtle); color: var(--color-primary); }
+  }
+
+  &__content { min-width: 0; padding-top: 2px; }
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0 var(--space-2);
+    color: var(--color-text-primary);
+
+    strong { font-weight: var(--font-weight-semibold); }
+  }
+
+  &__time {
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+  }
+
+  &__body {
+    margin-top: 4px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-md);
+  }
+
+  &__quote {
+    margin-top: 6px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-surface-alt);
+    border: 1px solid var(--color-border-subtle);
+    color: var(--color-text-primary);
+    white-space: pre-line;
+  }
+
+  // Day separators: "Today", "12 Oct 2026"
+  &__day {
+    margin: 0 0 var(--space-3) 36px;
+    @include caps-label;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// KPI — figure, comparison, and the period it refers to. The comparison
+// always states its baseline ("vs Q2") so the arrow is never ambiguous.
+// ---------------------------------------------------------------------------
+.k-kpis {
+  display: grid;
+  grid-template-columns: repeat(var(--kpi-cols, 4), minmax(0, 1fr));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+
+  > .k-kpi + .k-kpi { border-left: 1px solid var(--color-border-subtle); }
+
+  @include down(lg) {
+    --kpi-cols: 2;
+    > .k-kpi:nth-child(odd) { border-left: 0; }
+    > .k-kpi:nth-child(n + 3) { border-top: 1px solid var(--color-border-subtle); }
+  }
+
+  @include down(sm) {
+    --kpi-cols: 1;
+    > .k-kpi { border-left: 0 !important; }
+    > .k-kpi + .k-kpi { border-top: 1px solid var(--color-border-subtle); }
+  }
+}
+
+.k-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding: var(--space-3) var(--panel-pad);
+  color: inherit;
+
+  &:is(a):hover { background: var(--color-bg-hover); text-decoration: none; color: inherit; }
+
+  &__label {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__value {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-3xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    @include numeric;
+
+    small {
+      font-size: var(--font-size-lg);
+      font-weight: var(--font-weight-medium);
+      color: var(--color-text-secondary);
+      letter-spacing: 0;
+    }
+  }
+
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  &__delta {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    font-weight: var(--font-weight-semibold);
+    @include numeric;
+
+    &[data-trend="up-good"], &[data-trend="down-good"] { color: var(--color-success-text); }
+    &[data-trend="up-bad"], &[data-trend="down-bad"] { color: var(--color-error-text); }
+    &[data-trend="flat"] { color: var(--color-text-secondary); }
+  }
+
+  &__bar { margin-top: 6px; }
+}
+
+// Inline meter for quota/credit usage
+.k-meter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  @include numeric;
+
+  .k-progress { flex: 1; min-width: 48px; }
+}
+
+// ---------------------------------------------------------------------------
+// Totals — document summary (subtotal, taxes, round-off, total)
+// ---------------------------------------------------------------------------
+.k-totals {
+  min-width: 300px;
+  font-size: var(--font-size-md);
+  @include numeric;
+
+  th, td { padding: 3px 0; }
+
+  th {
+    padding-right: var(--space-8);
+    color: var(--color-text-secondary);
+    font-weight: var(--font-weight-regular);
+    text-align: left;
+  }
+
+  td { text-align: right; white-space: nowrap; }
+
+  .k-totals__grand {
+    th, td {
+      padding-top: 8px;
+      border-top: 1px solid var(--color-border-strong);
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    td { font-size: var(--font-size-lg); }
+  }
+}

@@ -1,0 +1,211 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Alert — inline message scoped to a section or form.
+// Banner — page/app-wide condition (offline, read-only period, maintenance).
+// Toast — transient confirmation of an action the user just took; may offer Undo.
+// ---------------------------------------------------------------------------
+%k-message-tone {
+  --msg-accent: var(--color-info);
+  --msg-bg: var(--color-info-subtle);
+  --msg-border: var(--color-info-border);
+  --msg-icon: var(--color-info);
+
+  &[data-tone="success"] {
+    --msg-accent: var(--color-success);
+    --msg-bg: var(--color-success-subtle);
+    --msg-border: var(--color-success-border);
+    --msg-icon: var(--color-success);
+  }
+
+  &[data-tone="warning"] {
+    --msg-accent: var(--color-warning);
+    --msg-bg: var(--color-warning-subtle);
+    --msg-border: var(--color-warning-border);
+    --msg-icon: var(--color-warning-text);
+  }
+
+  &[data-tone="error"] {
+    --msg-accent: var(--color-error);
+    --msg-bg: var(--color-error-subtle);
+    --msg-border: var(--color-error-border);
+    --msg-icon: var(--color-error);
+  }
+
+  &[data-tone="neutral"] {
+    --msg-accent: var(--color-border-strong);
+    --msg-bg: var(--color-bg-surface-alt);
+    --msg-border: var(--color-border);
+    --msg-icon: var(--color-text-muted);
+  }
+}
+
+.k-alert {
+  @extend %k-message-tone;
+  display: flex;
+  gap: var(--space-2);
+  padding: 10px var(--space-3);
+  border: 1px solid var(--msg-border);
+  border-left: 3px solid var(--msg-accent);
+  border-radius: var(--radius-sm);
+  background: var(--msg-bg);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-snug);
+
+  > .k-icon { margin-top: 1px; color: var(--msg-icon); }
+
+  &__body { flex: 1; min-width: 0; }
+
+  &__title {
+    font-weight: var(--font-weight-semibold);
+    + * { margin-top: 2px; }
+  }
+
+  &__text { color: var(--color-text-secondary); }
+
+  &__list {
+    margin: 4px 0 0;
+    padding-left: 18px;
+    color: var(--color-text-secondary);
+
+    a { color: inherit; text-decoration: underline; }
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-2);
+    align-items: center;
+    margin-top: var(--space-2);
+  }
+
+  &__close { margin: -4px -6px -4px 0; }
+}
+
+.k-banner {
+  @extend %k-message-tone;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 36px;
+  padding: 6px var(--page-pad-x);
+  border-bottom: 1px solid var(--msg-border);
+  background: var(--msg-bg);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+
+  > .k-icon { color: var(--msg-icon); }
+
+  &__text { flex: 1; min-width: 0; }
+
+  strong { font-weight: var(--font-weight-semibold); }
+}
+
+// ---------------------------------------------------------------------------
+// Toast
+// ---------------------------------------------------------------------------
+.k-toast-region {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-6);
+  z-index: var(--z-toast);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: var(--space-2);
+  transform: translateX(-50%);
+  pointer-events: none;
+
+  @include down(sm) {
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: calc(72px + env(safe-area-inset-bottom));
+    transform: none;
+  }
+}
+
+.k-toast {
+  @extend %k-message-tone;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 320px;
+  max-width: 560px;
+  padding: 8px 8px 8px 12px;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+  box-shadow: var(--shadow-lg);
+  font-size: var(--font-size-md);
+  pointer-events: auto;
+  animation: k-toast-in var(--duration-normal) var(--ease-standard);
+
+  > .k-icon { color: var(--msg-accent); }
+
+  &__text { flex: 1; }
+
+  &__action {
+    @include reset-button;
+    padding: 4px 8px;
+    border-radius: var(--radius-xs);
+    color: var(--color-text-inverse);
+    font-weight: var(--font-weight-semibold);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+
+    &:hover { background: rgba(127, 127, 127, 0.2); }
+    &:focus-visible { @include focus-ring(0); }
+  }
+
+  &__close {
+    @include reset-button;
+    display: inline-flex;
+    padding: 4px;
+    border-radius: var(--radius-xs);
+    color: inherit;
+    opacity: 0.7;
+
+    &:hover { opacity: 1; background: rgba(127, 127, 127, 0.2); }
+  }
+
+  &--static { animation: none; }
+
+  &.is-leaving { opacity: 0; transition: opacity var(--duration-normal); }
+
+  @include down(sm) { min-width: 0; max-width: none; }
+}
+
+@keyframes k-toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+// ---------------------------------------------------------------------------
+// Skeleton — mirrors the shape of real content; shown only after 300ms so
+// fast responses never flash a skeleton.
+// ---------------------------------------------------------------------------
+.k-skeleton {
+  display: block;
+  height: 12px;
+  border-radius: var(--radius-xs);
+  background: linear-gradient(90deg,
+    var(--color-bg-sunken) 0%,
+    var(--color-bg-surface-alt) 40%,
+    var(--color-bg-sunken) 80%);
+  background-size: 300% 100%;
+  animation: k-shimmer 1.4s ease-in-out infinite;
+
+  &--text { height: 10px; margin: 4px 0; }
+  &--title { height: 16px; width: 40%; }
+  &--circle { width: 24px; height: 24px; border-radius: 50%; }
+  &--block { height: 64px; }
+}
+
+@keyframes k-shimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -50% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .k-skeleton { animation: none; }
+}

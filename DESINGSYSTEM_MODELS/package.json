@@ -1,0 +1,27 @@
+{
+  "name": "kestrel-design-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Kestrel — enterprise design system for the Kestrel ERP + CRM suite (HTML, SCSS, CSS variables, React + TypeScript).",
+  "type": "module",
+  "scripts": {
+    "build:css": "sass styles/main.scss dist/kestrel.css --no-source-map && sass styles/main.scss dist/kestrel.min.css --style=compressed --no-source-map",
+    "watch:css": "sass --watch styles/main.scss dist/kestrel.css",
+    "typecheck": "tsc --noEmit",
+    "dev": "vite",
+    "build": "npm run build:css && tsc --noEmit && vite build",
+    "build:demo": "npm run build:css && node demo/src/build-demo.mjs"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.11",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "sass": "^1.80.6",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

@@ -1,0 +1,250 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Breadcrumb — location, not history. Last item is the current page.
+// ---------------------------------------------------------------------------
+.k-breadcrumb {
+  > ol {
+    @include reset-list;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-muted);
+  }
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    min-width: 0;
+
+    + li::before {
+      content: "/";
+      padding: 0 4px;
+      color: var(--color-border-strong);
+    }
+  }
+
+  a {
+    color: var(--color-text-secondary);
+    @include truncate;
+    max-width: 220px;
+
+    &:hover { color: var(--color-text-link-hover); }
+  }
+
+  [aria-current="page"] {
+    color: var(--color-text-muted);
+  }
+
+  @include down(sm) {
+    // On phones only the parent is shown, as a back link
+    li:not(:nth-last-child(2)) { display: none; }
+    li:nth-last-child(2)::before { content: "‹"; padding: 0 4px 0 0; }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tabs — switch views of one record. Underline indicator; counts in muted.
+// Keyboard: ←/→ move, Home/End jump (handled in JS / React Tabs).
+// ---------------------------------------------------------------------------
+.k-tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+
+  &--flush { border-bottom: 0; }
+}
+
+.k-tab {
+  @include reset-button;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  height: 36px;
+  padding: 0 var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: var(--space-2);
+    right: var(--space-2);
+    bottom: -1px;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+    background: transparent;
+  }
+
+  &:hover {
+    color: var(--color-text-primary);
+    text-decoration: none;
+
+    &::after { background: var(--color-border-strong); }
+  }
+
+  &:focus-visible { @include focus-ring-inset; }
+
+  &[aria-selected="true"],
+  &[aria-current="page"] {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+
+    &::after { background: var(--color-primary); }
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    &::after { background: transparent; }
+  }
+
+  &__count {
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+    font-size: var(--font-size-sm);
+    @include numeric;
+  }
+
+  // Indicates errors inside a tab's fields after a failed save
+  &__error {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-error);
+  }
+}
+
+.k-tabs--sm .k-tab {
+  height: 30px;
+  padding: 0 var(--space-2);
+  font-size: var(--font-size-sm);
+}
+
+.k-tabpanel:focus-visible {
+  @include focus-ring-inset;
+}
+
+// ---------------------------------------------------------------------------
+// Pagination — always shows the range and total; page size is remembered.
+// ---------------------------------------------------------------------------
+.k-pagination {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+
+  &__range {
+    @include numeric;
+    strong { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
+  }
+
+  &__size {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+
+    .k-select { width: auto; }
+  }
+
+  &__pages {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: auto;
+  }
+
+  &__page {
+    @include reset-button;
+    min-width: var(--control-height-sm);
+    height: var(--control-height-sm);
+    padding: 0 6px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    text-align: center;
+    @include numeric;
+
+    &:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
+    &:focus-visible { @include focus-ring(0); }
+
+    &[aria-current="page"] {
+      background: var(--color-primary-subtle);
+      color: var(--color-primary-text);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    &:disabled { color: var(--color-text-disabled); cursor: not-allowed; background: none; }
+  }
+
+  &__gap { padding: 0 2px; color: var(--color-text-muted); }
+
+  @include down(md) {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    .k-pagination__size { display: none; }
+    .k-pagination__page:not([aria-current]):not(.k-pagination__step) { display: none; }
+    .k-pagination__gap { display: none; }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Steps (in-page wizard, e.g. Import data: Upload · Map · Validate · Import)
+// ---------------------------------------------------------------------------
+.k-steps {
+  @include reset-list;
+  display: flex;
+  gap: var(--space-2);
+  counter-reset: step;
+  font-size: var(--font-size-sm);
+
+  > li {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+    counter-increment: step;
+
+    &::before {
+      content: counter(step);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--color-border-strong);
+      border-radius: 50%;
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    &:not(:last-child)::after {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: var(--color-border-strong);
+    }
+
+    &[aria-current="step"] {
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+      &::before { background: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+    }
+
+    &.is-done {
+      color: var(--color-text-secondary);
+      &::before { content: "✓"; background: var(--color-success-subtle); border-color: var(--color-success); color: var(--color-success-text); }
+    }
+  }
+}

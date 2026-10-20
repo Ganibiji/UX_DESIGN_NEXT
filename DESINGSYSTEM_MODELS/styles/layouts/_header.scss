@@ -1,0 +1,226 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Header — dark ink bar that frames the workspace. Left: where am I (product,
+// organisation, environment). Centre: find anything. Right: create, inbox,
+// help, me.
+// ---------------------------------------------------------------------------
+.k-header {
+  position: relative;
+  z-index: var(--z-header);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: var(--header-height);
+  padding: 0 var(--space-2) 0 var(--space-3);
+  background: var(--color-shell-bg);
+  border-bottom: 1px solid var(--color-shell-border);
+  color: var(--color-shell-text);
+
+  :focus-visible { outline-color: #9cc2f2; }
+}
+
+.k-header__btn {
+  @include reset-button;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0 8px;
+  border-radius: var(--radius-sm);
+  color: var(--color-shell-text);
+  font-size: var(--font-size-md);
+  white-space: nowrap;
+
+  &:hover,
+  &[aria-expanded="true"] { background: var(--color-shell-hover); color: #fff; text-decoration: none; }
+  &:focus-visible { @include focus-ring(0); outline-color: #9cc2f2; }
+
+  > .k-badge {
+    position: absolute;
+    top: 3px;
+    right: 2px;
+    height: 15px;
+    min-width: 15px;
+    padding: 0 4px;
+    justify-content: center;
+    font-size: 10px;
+    box-shadow: 0 0 0 2px var(--color-shell-bg);
+  }
+}
+
+.k-header__menu {
+  @include up(lg) { display: none; }
+}
+
+.k-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-right: var(--space-2);
+  color: #fff;
+
+  &:hover { color: #fff; text-decoration: none; }
+
+  svg { width: 22px; height: 22px; }
+}
+
+.k-header__product {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-lg);
+  letter-spacing: -0.01em;
+}
+
+.k-header__app {
+  color: var(--color-shell-text-muted);
+  font-size: var(--font-size-md);
+
+  @include down(xl) { display: none; }
+}
+
+.k-header__org {
+  max-width: 260px;
+  padding-left: var(--space-3);
+  border-left: 1px solid var(--color-shell-border);
+  border-radius: 0;
+
+  .k-header__org-name { @include truncate; }
+  .k-header__org-unit { color: var(--color-shell-text-muted); }
+
+  @include down(md) { display: none; }
+}
+
+// Environment marker — prevents "I thought this was the test system".
+// Production shows no marker by design.
+.k-env {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border: 1px solid #c9922f;
+  border-radius: var(--radius-xs);
+  color: #f0c064;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--letter-spacing-caps);
+  text-transform: uppercase;
+
+  &[data-env="sandbox"] { border-color: #6c8fb5; color: #a9c9f4; }
+}
+
+.k-header__search {
+  position: relative;
+  flex: 1;
+  max-width: 560px;
+  margin: 0 auto;
+
+  > .k-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-shell-text-muted);
+    pointer-events: none;
+  }
+
+  input {
+    width: 100%;
+    height: 30px;
+    padding: 0 40px 0 32px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--color-shell-field);
+    color: #fff;
+    font-size: var(--font-size-md);
+
+    &::placeholder { color: var(--color-shell-text-muted); }
+    &:hover { background: var(--color-shell-field-hover); }
+    &:focus {
+      outline: none;
+      background: var(--color-bg-surface);
+      color: var(--color-text-primary);
+      border-color: var(--color-focus-ring);
+
+      &::placeholder { color: var(--color-text-muted); }
+    }
+  }
+
+  kbd {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border-color: var(--color-shell-border);
+    color: var(--color-shell-text-muted);
+  }
+
+  input:focus ~ kbd { display: none; }
+
+  // Search results popover
+  .k-search-results {
+    @include floating-surface;
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    padding: 4px;
+    color: var(--color-text-primary);
+    z-index: var(--z-dropdown);
+  }
+
+  @include down(md) {
+    flex: 0;
+    margin: 0 0 0 auto;
+
+    input,
+    kbd { display: none; }
+
+    > .k-icon { display: none; }
+  }
+}
+
+.k-header__search-btn {
+  display: none;
+
+  @include down(md) { display: inline-flex; }
+}
+
+.k-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: auto;
+
+  .k-header__search + & { margin-left: 0; }
+}
+
+.k-header__create {
+  border: 1px solid var(--color-shell-border);
+  margin-right: var(--space-1);
+
+  @include down(sm) {
+    .k-header__create-label { display: none; }
+  }
+}
+
+.k-header__user {
+  gap: 8px;
+  padding-left: 4px;
+
+  .k-avatar { box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15); }
+  .k-header__user-name { @include down(xl) { display: none; } }
+}
+
+// Dropdown menus inside the header use normal (light/dark) surfaces
+.k-header .k-menu {
+  color: var(--color-text-primary);
+}
+
+.k-header .k-menu,
+.k-header .k-popover {
+  top: calc(100% + 6px);
+}

@@ -1,0 +1,28 @@
+@use "light";
+@use "dark";
+
+// Explicit choice wins. With no attribute, follow the OS.
+:root,
+[data-theme="light"] {
+  @include light.tokens;
+}
+
+[data-theme="dark"] {
+  @include dark.tokens;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark.tokens;
+  }
+}
+
+// Windows High Contrast / forced colours: let the OS palette through and keep
+// borders visible where we normally rely on tinted fills.
+@media (forced-colors: active) {
+  :root {
+    --color-focus-ring: Highlight;
+    --color-border: CanvasText;
+    --color-border-subtle: GrayText;
+  }
+}

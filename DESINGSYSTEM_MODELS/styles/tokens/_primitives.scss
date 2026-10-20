@@ -1,0 +1,88 @@
+// ---------------------------------------------------------------------------
+// Primitive palette
+// Raw values only. Components never read these — themes map them to semantic
+// tokens. Neutrals carry a slight blue cast so white surfaces don't look sterile
+// next to the ink-blue shell.
+// ---------------------------------------------------------------------------
+
+$gray: (
+  0: #ffffff,
+  25: #fafbfc,
+  50: #f4f5f7,
+  100: #eceef1,
+  150: #e3e6ea,
+  200: #d6dae0,
+  300: #bcc2cb,
+  400: #969eaa,
+  500: #646d7a,
+  600: #4f5764,
+  700: #3b424d,
+  800: #2b313a,
+  850: #232932,
+  900: #1b2027,
+  925: #171b21,
+  950: #121519,
+  975: #0e1114,
+);
+
+// Brand: "Kestrel blue". Deliberately less saturated than consumer SaaS blues.
+$blue: (
+  50: #eef4fc,
+  100: #dae6f7,
+  200: #b5cdef,
+  300: #84ade3,
+  400: #5b93d9,
+  500: #3572c4,
+  600: #1f5ead,
+  700: #1a4d8f,
+  800: #163e72,
+  900: #11305a,
+);
+
+$green: (
+  50: #ebf6ef,
+  100: #cfeada,
+  400: #5fbf8a,
+  500: #2e8b57,
+  600: #22744a,
+  700: #1b5e3c,
+);
+
+$amber: (
+  50: #fdf5e6,
+  100: #f9e5bd,
+  300: #e9b85c,
+  400: #e0a84a,
+  500: #c98410,
+  600: #a86b00,
+  700: #8a5600,
+);
+
+$red: (
+  50: #fcefee,
+  100: #f6d5d2,
+  300: #f08a80,
+  400: #e5736b,
+  500: #d2453b,
+  600: #b8342b,
+  700: #962a23,
+);
+
+$cyan: (
+  50: #e8f4f8,
+  100: #c9e5ee,
+  400: #5fb8d4,
+  600: #0b6a87,
+  700: #08556c,
+);
+
+// Application shell ink (header). Separate from neutrals so the shell can be
+// tuned without moving every border in the product.
+$ink: (
+  light: #17212d,
+  light-hover: #233040,
+  light-border: #2a3746,
+  dark: #0c0f13,
+  dark-hover: #191e25,
+  dark-border: #232932,
+);

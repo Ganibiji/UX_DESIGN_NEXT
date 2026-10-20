@@ -1,0 +1,220 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Reset + base
+// ---------------------------------------------------------------------------
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--color-bg-page);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-sans);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-normal);
+}
+
+h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd {
+  margin: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+img, svg, video {
+  display: block;
+  max-width: 100%;
+}
+
+svg {
+  flex-shrink: 0;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-4) 0;
+}
+
+a {
+  color: var(--color-text-link);
+  text-decoration: none;
+  text-underline-offset: 2px;
+
+  &:hover {
+    color: var(--color-text-link-hover);
+    text-decoration: underline;
+  }
+}
+
+// Inline links inside running text stay underlined (WCAG 1.4.1).
+p a,
+.k-prose a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+
+::selection {
+  background: var(--color-primary-subtle-hover);
+  color: var(--color-text-primary);
+}
+
+[hidden] {
+  display: none !important;
+}
+
+// ---------------------------------------------------------------------------
+// Focus — one visible, consistent ring everywhere. Never removed, only moved.
+// ---------------------------------------------------------------------------
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  @include focus-ring;
+}
+
+// ---------------------------------------------------------------------------
+// Typography roles. Use these classes, not raw sizes, in feature code.
+// ---------------------------------------------------------------------------
+.k-text-page-title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+  letter-spacing: -0.01em;
+}
+
+.k-text-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-tight);
+}
+
+.k-text-section {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  line-height: var(--line-height-snug);
+}
+
+.k-text-subsection {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.k-text-body {
+  font-size: var(--font-size-md);
+}
+
+.k-text-small {
+  font-size: var(--font-size-sm);
+}
+
+.k-text-caption {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}
+
+.k-text-label {
+  @include caps-label;
+}
+
+.k-text-secondary { color: var(--color-text-secondary); }
+.k-text-muted { color: var(--color-text-muted); }
+.k-text-error { color: var(--color-error-text); }
+.k-text-success { color: var(--color-success-text); }
+.k-text-warning { color: var(--color-warning-text); }
+
+// Identifiers (SO-10234, GSTIN, SKU) are mono so characters like 0/O, 1/l are unambiguous.
+.k-id,
+code,
+kbd {
+  font-family: var(--font-family-mono);
+  font-size: 0.92em;
+  letter-spacing: 0;
+}
+
+.k-num {
+  @include numeric;
+  white-space: nowrap;
+}
+
+kbd {
+  display: inline-flex;
+  align-items: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border: 1px solid var(--color-border-strong);
+  border-bottom-width: 2px;
+  border-radius: var(--radius-xs);
+  background: var(--color-bg-surface-alt);
+  color: var(--color-text-secondary);
+  font-size: 10.5px;
+  line-height: 1;
+  justify-content: center;
+}
+
+// ---------------------------------------------------------------------------
+// Icons — inline SVG sprite, 16px default, stroke follows currentColor
+// ---------------------------------------------------------------------------
+.k-icon {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vertical-align: middle;
+
+  &--sm { width: 14px; height: 14px; stroke-width: 2.1; }
+  &--xs { width: 12px; height: 12px; stroke-width: 2.4; }
+  &--lg { width: 20px; height: 20px; stroke-width: 1.8; }
+}
+
+// Screen-reader only
+.k-sr-only {
+  @include visually-hidden;
+}
+
+.k-skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -100px;
+  z-index: 1000;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-elevated);
+  color: var(--color-text-primary);
+  border: 2px solid var(--color-focus-ring);
+  border-radius: var(--radius-sm);
+  font-weight: var(--font-weight-semibold);
+
+  &:focus {
+    top: var(--space-2);
+  }
+}

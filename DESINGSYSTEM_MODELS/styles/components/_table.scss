@@ -1,0 +1,532 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Data grid
+//
+//  .k-grid                    container (border, surface)
+//    .k-grid__toolbar         search · filters · view · columns · export
+//    .k-grid__bulkbar         replaces toolbar actions while rows are selected
+//    .k-grid__scroll          the scroll viewport — sticky header lives here
+//      table.k-table
+//    .k-grid__footer          pagination · totals
+//
+// Rules
+//  · Column widths come from content, not equality (set via <colgroup>).
+//  · Text left, numbers/currency right with tabular figures, status left.
+//  · Dates are always "DD MMM YYYY"; time only where it matters.
+//  · Truncate with ellipsis + title attribute; never wrap mid-row.
+//  · Row actions are always visible (muted) — hover-only actions are
+//    invisible to touch and keyboard users.
+// ---------------------------------------------------------------------------
+.k-grid {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+
+  &--flush {
+    border-width: 1px 0 0;
+    border-radius: 0;
+  }
+
+  // Grid that fills the remaining viewport height (list pages)
+  &--fill {
+    flex: 1;
+    .k-grid__scroll { flex: 1; }
+  }
+
+  &__toolbar,
+  &__bulkbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    min-height: calc(var(--control-height) + 16px);
+    padding: var(--space-2) var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  &__bulkbar {
+    background: var(--color-bg-selected);
+    border-bottom-color: var(--color-primary-border);
+
+    .k-grid__selection {
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-primary-text);
+      @include numeric;
+    }
+  }
+
+  &__spacer { flex: 1; }
+
+  &__divider {
+    width: 1px;
+    height: 20px;
+    background: var(--color-border-strong);
+  }
+
+  &__scroll {
+    position: relative;
+    min-height: 0;
+    overflow: auto;
+    overscroll-behavior: contain;
+
+    &:focus-visible { @include focus-ring-inset; }
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    min-height: 44px;
+    padding: 6px var(--space-3);
+    border-top: 1px solid var(--color-border);
+  }
+
+  // Loading overlay for re-fetches (keeps old rows visible, dims them)
+  &.is-refreshing .k-table tbody {
+    opacity: 0.5;
+    transition: opacity var(--duration-normal);
+  }
+
+  &__progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: calc(var(--z-sticky) + 1);
+    height: 2px;
+    overflow: hidden;
+
+    &::after {
+      content: "";
+      display: block;
+      width: 30%;
+      height: 100%;
+      background: var(--color-primary);
+      animation: k-indeterminate 1.1s ease-in-out infinite;
+    }
+  }
+}
+
+@keyframes k-indeterminate {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(400%); }
+}
+
+// ---------------------------------------------------------------------------
+// Table
+// ---------------------------------------------------------------------------
+.k-table {
+  width: 100%;
+  table-layout: fixed;
+  font-size: var(--table-font-size);
+  line-height: var(--line-height-snug);
+  color: var(--color-text-primary);
+
+  &--auto { table-layout: auto; }
+
+  th,
+  td {
+    height: var(--row-height);
+    padding: var(--cell-pad-y) var(--cell-pad-x);
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-align: left;
+    vertical-align: middle;
+    @include truncate;
+  }
+
+  // ---- Header -----------------------------------------------------------
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+    height: calc(var(--row-height) + 2px);
+    background: var(--color-bg-surface-alt);
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+    user-select: none;
+
+    &[draggable="true"] { cursor: grab; }
+    &.is-drag-over { box-shadow: inset 2px 0 0 var(--color-primary); }
+    &.is-dragging { opacity: 0.5; }
+  }
+
+  // Column group header row ("Billing" spanning several columns)
+  thead tr.k-table__colgroup th {
+    height: 24px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    @include caps-label;
+    border-bottom-color: var(--color-border-subtle);
+  }
+
+  // Sortable header button
+  .k-th {
+    @include reset-button;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    margin: -4px -6px;
+    padding: 4px 6px;
+    border-radius: var(--radius-xs);
+    font-weight: inherit;
+
+    > span { @include truncate; }
+
+    &:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
+    &:focus-visible { @include focus-ring(0); }
+
+    .k-th__sort {
+      flex: none;
+      color: var(--color-text-disabled);
+      opacity: 0;
+    }
+
+    &:hover .k-th__sort { opacity: 1; }
+  }
+
+  th[aria-sort="ascending"],
+  th[aria-sort="descending"] {
+    color: var(--color-text-primary);
+
+    .k-th__sort { opacity: 1; color: var(--color-primary); }
+  }
+
+  th[aria-sort="descending"] .k-th__sort { transform: scaleY(-1); }
+
+  // Multi-sort priority (1, 2…) shown when more than one column is sorted
+  .k-th__priority {
+    min-width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    background: var(--color-primary-subtle);
+    color: var(--color-primary-text);
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+  }
+
+  // Filtered column indicator
+  .k-th__filtered {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-primary);
+  }
+
+  // Column resize handle
+  .k-table__resizer {
+    position: absolute;
+    top: 0;
+    right: -3px;
+    z-index: 1;
+    width: 7px;
+    height: 100%;
+    cursor: col-resize;
+    touch-action: none;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 25%;
+      bottom: 25%;
+      left: 3px;
+      width: 1px;
+      background: var(--color-border);
+    }
+
+    &:hover::after,
+    &.is-resizing::after {
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      left: 2.5px;
+      background: var(--color-primary);
+    }
+  }
+
+  // ---- Body -------------------------------------------------------------
+  tbody tr {
+    transition: background-color var(--duration-instant);
+
+    &:hover { background: var(--color-bg-hover); }
+
+    &.is-selected {
+      background: var(--color-bg-selected);
+      td:first-child { box-shadow: inset 2px 0 0 var(--color-primary); }
+      &:hover { background: var(--color-bg-selected-hover); }
+    }
+
+    // Row-level warning (credit hold, overdue) — tint is supplementary to the
+    // text/icon in the row, never the only signal.
+    &.is-attention td:first-child { box-shadow: inset 2px 0 0 var(--color-warning); }
+
+    &.is-muted td { color: var(--color-text-muted); }
+
+    // New row just created/updated — fades from highlighted to normal
+    &.is-flash { animation: k-row-flash 2.4s var(--ease-standard); }
+  }
+
+  tbody tr:last-child td { border-bottom-color: transparent; }
+
+  td a { font-weight: var(--font-weight-medium); }
+
+  // ---- Cell types ---------------------------------------------------------
+  .is-num {
+    text-align: right;
+    @include numeric;
+  }
+
+  .is-center { text-align: center; }
+
+  .is-id {
+    font-family: var(--font-family-mono);
+    font-size: 0.94em;
+    color: var(--color-text-secondary);
+  }
+
+  .is-secondary { color: var(--color-text-secondary); }
+
+  .is-negative { color: var(--color-error-text); }
+
+  // Allow wrapping in cells where full text matters (item descriptions)
+  .is-wrap {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  // Two-line primary cell: name + supporting identifier
+  .k-cell-stack {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    > * { @include truncate; }
+
+    > small {
+      color: var(--color-text-muted);
+      font-size: var(--font-size-sm);
+    }
+  }
+
+  // Currency code shown muted and in front, value right-aligned
+  .k-cur {
+    color: var(--color-text-muted);
+    margin-right: 2px;
+    font-size: 0.92em;
+  }
+
+  // ---- Selection & control columns ---------------------------------------
+  .k-table__select,
+  .k-table__expand {
+    width: 36px;
+    padding-left: 10px;
+    padding-right: 0;
+    text-align: left;
+  }
+
+  .k-table__actions {
+    width: 44px;
+    padding: 0 6px;
+    text-align: center;
+  }
+
+  // Sticky columns (selection + primary at start, actions at end)
+  .is-sticky-start,
+  .is-sticky-end {
+    position: sticky;
+    z-index: 1;
+    background: var(--color-bg-surface);
+  }
+
+  thead .is-sticky-start,
+  thead .is-sticky-end {
+    z-index: calc(var(--z-sticky) + 1);
+    background: var(--color-bg-surface-alt);
+  }
+
+  .is-sticky-end {
+    right: 0;
+    box-shadow: inset 1px 0 0 var(--color-border-subtle);
+  }
+
+  tbody tr:hover .is-sticky-start,
+  tbody tr:hover .is-sticky-end { background: inherit; }
+
+  // The sticky cells need an opaque version of the hover/selected colours
+  tbody tr:hover > .is-sticky-start,
+  tbody tr:hover > .is-sticky-end {
+    background: linear-gradient(var(--color-bg-hover), var(--color-bg-hover)), var(--color-bg-surface);
+  }
+
+  tbody tr.is-selected > .is-sticky-start,
+  tbody tr.is-selected > .is-sticky-end { background: var(--color-bg-selected); }
+
+  // ---- Expandable rows ------------------------------------------------------
+  .k-expand-btn {
+    @include reset-button;
+    display: inline-flex;
+    padding: 2px;
+    border-radius: var(--radius-xs);
+    color: var(--color-text-muted);
+    transition: transform var(--duration-fast);
+
+    &:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
+    &:focus-visible { @include focus-ring(0); }
+    &[aria-expanded="true"] { transform: rotate(90deg); }
+  }
+
+  tr.k-table__detail {
+    > td {
+      height: auto;
+      padding: var(--space-3) var(--space-4) var(--space-3) 46px;
+      background: var(--color-bg-surface-alt);
+      white-space: normal;
+      overflow: visible;
+    }
+
+    &:hover { background: none; }
+  }
+
+  // ---- Group rows ---------------------------------------------------------------
+  tr.k-table__group > td {
+    height: 28px;
+    background: var(--color-bg-surface-alt);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  // ---- Inline edit ---------------------------------------------------------------
+  td.is-editable {
+    cursor: text;
+    position: relative;
+
+    &:hover {
+      box-shadow: inset 0 0 0 1px var(--color-border-input);
+    }
+
+    &:focus-visible { @include focus-ring-inset; }
+  }
+
+  td.is-editing {
+    padding: 2px;
+    overflow: visible;
+
+    .k-input,
+    .k-select {
+      height: calc(var(--row-height) - 4px);
+      border-color: var(--color-focus-ring);
+      box-shadow: 0 0 0 1px var(--color-focus-ring);
+    }
+  }
+
+  td.is-saving { color: var(--color-text-muted); }
+
+  td.has-error {
+    box-shadow: inset 0 -2px 0 var(--color-error);
+    color: var(--color-error-text);
+  }
+
+  // ---- Footer totals --------------------------------------------------------------
+  tfoot td {
+    position: sticky;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    background: var(--color-bg-surface-alt);
+    border-top: 1px solid var(--color-border-strong);
+    border-bottom: 0;
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+@keyframes k-row-flash {
+  0%, 30% { background: var(--color-primary-subtle); }
+  100% { background: transparent; }
+}
+
+// Cell-level row action button
+.k-row-action {
+  @include reset-button;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+
+  &:hover { background: var(--color-bg-active); color: var(--color-text-primary); }
+  &:focus-visible { @include focus-ring(0); }
+  &[aria-expanded="true"] { background: var(--color-bg-active); color: var(--color-text-primary); }
+}
+
+// Simple key-value table used inside detail pages (line items, tax breakdown)
+.k-table--plain {
+  thead th {
+    position: static;
+    background: transparent;
+    border-bottom-color: var(--color-border);
+  }
+
+  tbody tr:hover { background: transparent; }
+}
+
+// ---------------------------------------------------------------------------
+// Responsive: on phones, rows become stacked cards using data-label.
+// Use for lists where the user picks a record; keep horizontal scroll for
+// spreadsheets-like grids (journal entries, stock ledger).
+// ---------------------------------------------------------------------------
+@include down(sm) {
+  .k-table--stack {
+    table-layout: auto;
+
+    colgroup, thead { display: none; }
+
+    tbody,
+    tr,
+    td { display: block; width: 100%; }
+
+    tbody tr {
+      position: relative;
+      padding: var(--space-3) var(--space-4) var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+
+      &.is-selected td:first-child { box-shadow: none; }
+      &.is-selected { box-shadow: inset 3px 0 0 var(--color-primary); }
+    }
+
+    td {
+      height: auto;
+      padding: 1px 0;
+      border: 0;
+      white-space: normal;
+
+      &[data-label] {
+        display: flex;
+        gap: var(--space-2);
+        font-size: var(--font-size-sm);
+
+        &::before {
+          content: attr(data-label);
+          flex: 0 0 96px;
+          color: var(--color-text-muted);
+        }
+      }
+
+      &.is-num { text-align: left; }
+      &.k-table__primary { font-size: var(--font-size-lg); margin-bottom: 4px; padding-right: 40px; }
+      &.k-table__select { position: absolute; top: var(--space-3); right: 44px; width: auto; padding: 0; }
+      &.k-table__actions { position: absolute; top: 8px; right: 8px; width: auto; }
+      &.is-sticky-start, &.is-sticky-end { position: static; background: transparent; box-shadow: none; }
+      &.k-table__actions.is-sticky-end { position: absolute; }
+      &.k-mobile-hide { display: none; }
+    }
+  }
+}

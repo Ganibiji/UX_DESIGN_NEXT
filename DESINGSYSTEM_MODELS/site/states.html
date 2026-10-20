@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UX states · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+<style>
+  .state-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  @media (max-width: 899px) { .state-grid { grid-template-columns: 1fr; } }
+  .state-note { padding: 8px var(--panel-pad); border-top: 1px solid var(--color-border-subtle); color: var(--color-text-muted); font-size: var(--font-size-sm); }
+  .state-note strong { color: var(--color-text-secondary); font-weight: 600; }
+</style>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="states">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page">
+  <div class="k-page-header">
+    <div class="k-page-header__row">
+      <div class="k-page-header__titles">
+        <h1 class="k-page-header__title">UX states</h1>
+        <p class="k-page-header__desc">Every screen handles these. Each state says what happened, why, and what to do next — in one sentence and one action.</p>
+      </div>
+      <div class="k-page-header__actions">
+        <button class="k-btn" id="toggle-offline"><svg class="k-icon" aria-hidden="true"><use href="#i-wifi-off"/></svg><span>Simulate offline</span></button>
+        <button class="k-btn" id="show-session"><svg class="k-icon" aria-hidden="true"><use href="#i-lock"/></svg><span>Simulate session expiry</span></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="state-grid">
+
+    <!-- Loading -->
+    <section class="k-panel" aria-labelledby="s-loading">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-loading">Loading <small>first load · skeleton after 300 ms</small></h2></div>
+      <div aria-busy="true" aria-label="Loading invoices">
+        <table class="k-table" aria-hidden="true">
+          <colgroup><col style="width:40%"><col style="width:20%"><col style="width:20%"><col></colgroup>
+          <thead><tr><th>Invoice</th><th>Date</th><th class="is-num">Amount</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td><span class="k-skeleton" style="width:70%"></span></td><td><span class="k-skeleton" style="width:80%"></span></td><td><span class="k-skeleton" style="width:60%;margin-left:auto"></span></td><td><span class="k-skeleton" style="width:50%"></span></td></tr>
+            <tr><td><span class="k-skeleton" style="width:55%"></span></td><td><span class="k-skeleton" style="width:80%"></span></td><td><span class="k-skeleton" style="width:70%;margin-left:auto"></span></td><td><span class="k-skeleton" style="width:40%"></span></td></tr>
+            <tr><td><span class="k-skeleton" style="width:65%"></span></td><td><span class="k-skeleton" style="width:80%"></span></td><td><span class="k-skeleton" style="width:50%;margin-left:auto"></span></td><td><span class="k-skeleton" style="width:55%"></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="state-note"><strong>Why:</strong> skeleton mirrors the real columns, so layout doesn’t jump. Re-fetches keep old rows and show a 2px progress bar instead.</p>
+    </section>
+
+    <!-- Empty: first use -->
+    <section class="k-panel" aria-labelledby="s-empty">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-empty">Empty <small>first use</small></h2></div>
+      <div class="k-empty k-empty--compact">
+        <span class="k-empty__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-truck"/></svg></span>
+        <h3 class="k-empty__title">No suppliers yet</h3>
+        <p class="k-empty__text">Add the suppliers you buy from to raise purchase orders. You can import them from Excel with GSTIN and bank details.</p>
+        <div class="k-empty__actions"><button class="k-btn k-btn--primary">Add supplier</button><button class="k-btn">Import from Excel</button></div>
+      </div>
+      <p class="state-note"><strong>Why:</strong> first-use empty states teach the next step. No illustration — the action is the content.</p>
+    </section>
+
+    <!-- No results -->
+    <section class="k-panel" aria-labelledby="s-nores">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-nores">No search results</h2></div>
+      <div class="k-filterbar"><span class="k-filterbar__label">Filtered by</span><span class="k-tag"><span class="k-tag__key">Status:</span><span class="k-tag__value">Overdue</span></span><span class="k-tag"><span class="k-tag__key">Region:</span><span class="k-tag__value">East</span></span></div>
+      <div class="k-empty k-empty--compact">
+        <span class="k-empty__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+        <h3 class="k-empty__title">No customers match your current filters</h3>
+        <p class="k-empty__text">2 filters are applied. 46 customers match “Overdue” in other regions.</p>
+        <div class="k-empty__actions"><button class="k-btn">Clear filters</button><button class="k-btn k-btn--subtle">Remove “Region: East”</button></div>
+      </div>
+      <p class="state-note"><strong>Why:</strong> names the filters that caused it and offers the smallest change that produces results.</p>
+    </section>
+
+    <!-- No permission -->
+    <section class="k-panel" aria-labelledby="s-perm">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-perm">No permission</h2></div>
+      <div class="k-empty k-empty--compact">
+        <span class="k-empty__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-lock"/></svg></span>
+        <h3 class="k-empty__title">You don’t have access to Payables</h3>
+        <p class="k-empty__text">Your role (Sales Manager) can view Receivables only. Access is managed by Finance administrators.</p>
+        <div class="k-empty__actions"><button class="k-btn k-btn--primary" id="req-access">Request access</button><a class="k-btn k-btn--subtle" href="dashboard.html">Go to dashboard</a></div>
+        <p class="k-empty__meta">Approver: Kavita Iyer, Finance Controller</p>
+      </div>
+      <p class="state-note"><strong>Why:</strong> says whose decision it is. Menu items the user can’t use are hidden; deep links land here instead of a blank page.</p>
+    </section>
+
+    <!-- Error -->
+    <section class="k-panel" aria-labelledby="s-error">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-error">Error <small>could not load</small></h2></div>
+      <div class="k-empty k-empty--compact" role="alert">
+        <span class="k-empty__icon" data-tone="error"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg></span>
+        <h3 class="k-empty__title">Couldn’t load stock levels</h3>
+        <p class="k-empty__text">The inventory service didn’t respond. Your other work is unaffected. We retried twice.</p>
+        <div class="k-empty__actions"><button class="k-btn k-btn--primary" id="retry">Try again</button><button class="k-btn k-btn--subtle" data-action="toast:Error ID copied: ERR-INV-504-7F3A2">Copy error ID</button></div>
+        <p class="k-empty__meta">Error ID <span class="k-id">ERR-INV-504-7F3A2</span> · 10:42:17 IST</p>
+      </div>
+      <p class="state-note"><strong>Why:</strong> plain language first, technical ID last for support. Never “Something went wrong.”</p>
+    </section>
+
+    <!-- Partial data -->
+    <section class="k-panel" aria-labelledby="s-partial">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-partial">Partial data</h2><span class="k-partial"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-alert-triangle"/></svg>Chennai figures delayed</span></div>
+      <div class="k-panel__body">
+        <ul class="k-barlist">
+          <li><span class="k-barlist__label">Pune Main</span><span class="k-barlist__track"><span class="k-barlist__fill" style="width:100%"></span></span><span class="k-barlist__value">₹2.91 Cr</span></li>
+          <li><span class="k-barlist__label">Chakan</span><span class="k-barlist__track"><span class="k-barlist__fill" style="width:38%"></span></span><span class="k-barlist__value">₹1.12 Cr</span></li>
+          <li><span class="k-barlist__label">Chennai Plant</span><span class="k-barlist__track" style="background:repeating-linear-gradient(45deg,var(--color-bg-sunken) 0 6px,transparent 6px 12px)"></span><span class="k-barlist__value u-muted">Not synced</span></li>
+        </ul>
+        <div class="k-alert u-mt-3" data-tone="warning"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg><div class="k-alert__body"><div class="k-alert__text">Chennai last synced 06:10 today. Totals exclude it (approx. ₹0.71 Cr). <a href="#">See sync status</a></div></div></div>
+      </div>
+      <p class="state-note"><strong>Why:</strong> show what we have, mark what’s missing visibly (hatched, labelled) — never silently under-report a total.</p>
+    </section>
+
+    <!-- Success + warning -->
+    <section class="k-panel" aria-labelledby="s-success">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-success">Success &amp; warning</h2></div>
+      <div class="k-panel__body u-flex u-col u-gap-3">
+        <div class="k-toast k-toast--static" data-tone="success" role="status" style="min-width:0"><svg class="k-icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span class="k-toast__text">Invoice <strong>INV-26-04420</strong> posted · ₹4,76,248</span><button class="k-toast__action">View</button></div>
+        <div class="k-alert" data-tone="success"><svg class="k-icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="k-alert__body"><div class="k-alert__title">Bank reconciliation complete</div><div class="k-alert__text">HDFC current a/c ··4417 — 214 of 214 lines matched for September.</div></div></div>
+        <div class="k-alert" data-tone="warning"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg><div class="k-alert__body"><div class="k-alert__title">This customer is 6 days past due</div><div class="k-alert__text">Ganesh Hardware &amp; Tools owes ₹4,62,300. New orders will be held for Finance release.</div><div class="k-alert__actions"><button class="k-btn k-btn--sm">Send reminder</button><button class="k-btn k-btn--subtle k-btn--sm">View statement</button></div></div></div>
+      </div>
+      <p class="state-note"><strong>Why:</strong> success after the user’s own action → toast (transient, with Undo/View). Persistent conditions → inline alert where the decision is made.</p>
+    </section>
+
+    <!-- Unsaved changes -->
+    <section class="k-panel" aria-labelledby="s-unsaved">
+      <div class="k-panel__header"><h2 class="k-panel__title" id="s-unsaved">Unsaved changes</h2></div>
+      <div class="k-panel__body">
+        <div class="k-form-grid">
+          <div class="k-field"><label class="k-label" for="u-terms">Payment terms</label><select class="k-select" id="u-terms"><option>Net 30</option><option selected>Net 45</option></select></div>
+          <div class="k-field"><label class="k-label" for="u-limit">Credit limit</label><div class="k-input-group"><span class="k-input-group__addon">₹</span><input class="k-input k-input--num" id="u-limit" value="30,00,000"></div></div>
+        </div>
+      </div>
+      <div class="k-form-footer" style="position:static;border-radius:0 0 var(--radius-md) var(--radius-md)">
+        <span class="k-form-footer__state is-dirty"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-edit"/></svg>2 unsaved changes</span>
+        <button class="k-btn" data-open-dialog="leave-dialog">Leave page</button><button class="k-btn k-btn--primary">Save</button>
+      </div>
+      <p class="state-note"><strong>Why:</strong> the footer always shows save state. Leaving with changes asks once; drafts of long forms are also kept locally for 24 h.</p>
+    </section>
+  </div>
+
+  <!-- Full-page state example -->
+  <section class="k-panel" aria-labelledby="s-404">
+    <div class="k-panel__header"><h2 class="k-panel__title" id="s-404">Record not found <small>deep link to a deleted or merged record</small></h2></div>
+    <div class="k-empty">
+      <span class="k-empty__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-file"/></svg></span>
+      <h3 class="k-empty__title">CUST-00381 was merged into CUST-00034</h3>
+      <p class="k-empty__text">Anjali Nair merged “Vardhan Steel (Old)” into Vardhan Steel Traders on 02 Sep 2026. All orders and invoices moved with it.</p>
+      <div class="k-empty__actions"><a class="k-btn k-btn--primary" href="account.html">Open Vardhan Steel Traders</a><a class="k-btn k-btn--subtle" href="customers.html">Back to Accounts</a></div>
+    </div>
+  </section>
+</div>
+</main>
+</div>
+
+<dialog class="k-modal k-modal--sm" id="leave-dialog" aria-labelledby="lv-t">
+  <div class="k-modal__header"><h2 class="k-modal__title" id="lv-t">Leave without saving?</h2></div>
+  <div class="k-modal__body"><p>Your changes to payment terms and credit limit will be lost.</p></div>
+  <div class="k-modal__footer"><button class="k-btn" data-close-dialog autofocus>Stay on page</button><button class="k-btn k-btn--danger" data-close-dialog>Leave without saving</button></div>
+</dialog>
+
+<!-- Session expired: page stays visible, input is preserved; re-auth in place -->
+<div class="k-session-lock" id="session-lock" hidden>
+  <div class="k-modal k-modal--static k-modal--sm" role="alertdialog" aria-modal="true" aria-labelledby="ss-t" aria-describedby="ss-d">
+    <div class="k-modal__header"><span class="k-modal__icon"><svg class="k-icon k-icon--lg" aria-hidden="true"><use href="#i-lock"/></svg></span><h2 class="k-modal__title" id="ss-t">Your session has expired</h2></div>
+    <div class="k-modal__body" id="ss-d">
+      <p>For security you were signed out after 30 minutes of inactivity. Sign in again to continue — <strong>your unsaved changes on this page are kept.</strong></p>
+      <div class="k-field"><label class="k-label" for="ss-user">Signed in as</label><input class="k-input" id="ss-user" value="priya.deshmukh@sahyadri.in" readonly></div>
+      <div class="k-field"><label class="k-label" for="ss-pass">Password</label><input class="k-input" id="ss-pass" type="password" autocomplete="current-password"></div>
+    </div>
+    <div class="k-modal__footer"><button class="k-btn k-btn--subtle" id="ss-other">Use a different account</button><button class="k-btn k-btn--primary" id="ss-signin">Sign in</button></div>
+  </div>
+</div>
+
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("k-ready", () => {
+  const $ = (s) => document.querySelector(s);
+  let off = false;
+  $("#toggle-offline").addEventListener("click", (e) => {
+    off = !off; K.setOffline(off);
+    e.currentTarget.querySelector("span").textContent = off ? "Go back online" : "Simulate offline";
+  });
+  const lock = $("#session-lock");
+  let lastFocus;
+  $("#show-session").addEventListener("click", () => {
+    lastFocus = document.activeElement;
+    lock.hidden = false;
+    document.querySelector(".k-app").inert = true;
+    $("#ss-pass").focus();
+  });
+  const unlock = () => { lock.hidden = true; document.querySelector(".k-app").inert = false; lastFocus && lastFocus.focus(); K.toast({ text: "Signed in. You’re back where you left off." }); };
+  $("#ss-signin").addEventListener("click", unlock);
+  $("#ss-other").addEventListener("click", unlock);
+  $("#req-access").addEventListener("click", (e) => { e.currentTarget.disabled = true; e.currentTarget.textContent = "Request sent"; K.toast({ text: "Access request sent to Kavita Iyer." }); });
+  $("#retry").addEventListener("click", (e) => { const b = e.currentTarget; b.classList.add("is-loading"); setTimeout(() => { b.classList.remove("is-loading"); K.toast({ text: "Still unavailable. We’ll retry automatically every 30 s.", tone: "error" }); }, 1200); });
+});
+</script>
+</body>
+</html>

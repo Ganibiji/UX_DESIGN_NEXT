@@ -1,0 +1,436 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>New account · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="crm.accounts">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page">
+
+  <div class="k-page-header" style="max-width:var(--form-max-width);width:100%;margin:0 auto">
+    <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="dashboard.html">Home</a></li><li><a href="customers.html">Accounts</a></li><li><span aria-current="page" data-mode-crumb>New account</span></li></ol></nav>
+    <div class="k-page-header__row">
+      <div class="k-page-header__titles">
+        <h1 class="k-page-header__title" data-mode-title>New account</h1>
+        <p class="k-page-header__desc" data-mode-desc>Fields marked <span class="k-label__req" aria-hidden="true">*</span> are required to save. You can add contacts and documents after the account is created.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-form-layout">
+    <!-- Section index with error counts: long forms need a map -->
+    <nav class="k-form-layout__index" aria-label="Form sections">
+      <ol>
+        <li><a href="#sec-info" aria-current="true">Account information <span class="k-badge k-badge--attention" data-err-count="sec-info" hidden></span></a></li>
+        <li><a href="#sec-contact">Contact <span class="k-badge k-badge--attention" data-err-count="sec-contact" hidden></span></a></li>
+        <li><a href="#sec-address">Addresses <span class="k-badge k-badge--attention" data-err-count="sec-address" hidden></span></a></li>
+        <li><a href="#sec-credit">Credit &amp; terms <span class="k-badge k-badge--attention" data-err-count="sec-credit" hidden></span></a></li>
+        <li><a href="#sec-tax">Tax &amp; compliance <span class="k-badge k-badge--attention" data-err-count="sec-tax" hidden></span></a></li>
+      </ol>
+    </nav>
+
+    <form class="k-form" id="account-form" novalidate aria-labelledby="form-title">
+      <h2 class="k-sr-only" id="form-title">Account details</h2>
+
+      <!-- Error summary appears after a failed save, links to each field -->
+      <div class="k-error-summary" id="error-summary" hidden tabindex="-1">
+        <div class="k-alert" data-tone="error" role="alert">
+          <svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>
+          <div class="k-alert__body">
+            <div class="k-alert__title" id="error-summary-title">Fix 0 fields to save this account</div>
+            <ul class="k-alert__list" id="error-summary-list"></ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 1 · Account information -->
+      <section class="k-form-section" id="sec-info" aria-labelledby="sec-info-t">
+        <header class="k-form-section__head"><h3 class="k-form-section__title" id="sec-info-t">Account information</h3></header>
+        <div class="k-form-grid k-form-grid--3">
+          <div class="k-field">
+            <label class="k-label" for="f-code">Account code</label>
+            <input class="k-input" id="f-code" readonly value="Generated on save" aria-describedby="f-code-h">
+            <span class="k-field__help" id="f-code-h">Next number: CUST-00715</span>
+          </div>
+          <div class="k-field k-span-2">
+            <label class="k-label" for="f-name">Account name <span class="k-label__req" aria-hidden="true">*</span></label>
+            <input class="k-input" id="f-name" name="name" required aria-required="true" autocomplete="organization" placeholder="Registered business name, as on GST certificate" aria-describedby="f-name-m">
+            <span class="k-field__message k-field__message--error" id="f-name-m" hidden></span>
+          </div>
+          <div class="k-span-full" id="dup-warning" hidden>
+            <div class="k-alert" data-tone="warning">
+              <svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg>
+              <div class="k-alert__body">
+                <div class="k-alert__title">This may be a duplicate</div>
+                <div class="k-alert__text"><a href="account.html">Trident Packaging Industries</a> (CUST-00129, Vadodara) already exists with a similar name. Check before creating a new account — duplicates split order and payment history.</div>
+              </div>
+              <button type="button" class="k-btn k-btn--subtle k-btn--sm k-alert__close" data-dismiss-dup>Not a duplicate</button>
+            </div>
+          </div>
+
+          <fieldset class="k-choice-group">
+            <legend class="k-label">Account type <span class="k-label__req" aria-hidden="true">*</span></legend>
+            <div class="k-choice-group k-choice-group--row">
+              <label class="k-radio"><input type="radio" name="type" value="company" checked><span>Company</span></label>
+              <label class="k-radio"><input type="radio" name="type" value="individual"><span>Individual</span></label>
+            </div>
+          </fieldset>
+          <div class="k-field" data-when-type="company">
+            <label class="k-label" for="f-entity">Legal entity</label>
+            <select class="k-select" id="f-entity"><option>Private limited</option><option>Public limited</option><option>LLP</option><option>Partnership</option><option>Proprietorship</option><option>Government / PSU</option></select>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-industry">Industry <span class="k-label__req" aria-hidden="true">*</span></label>
+            <select class="k-select" id="f-industry" name="industry" required aria-required="true" aria-describedby="f-industry-m"><option value="">Select industry</option><option>Automotive</option><option>Construction</option><option>Electronics manufacturing</option><option>Food processing</option><option>Healthcare</option><option>IT services</option><option>Logistics</option><option>Packaging</option><option>Pharmaceuticals</option><option>Textiles</option></select>
+            <span class="k-field__message k-field__message--error" id="f-industry-m" hidden></span>
+          </div>
+
+          <div class="k-field k-combobox">
+            <label class="k-label" for="f-parent" id="f-parent-l">Parent account <span class="k-label__optional">optional</span></label>
+            <div class="k-input-group">
+              <span class="k-input-group__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+              <input class="k-input" id="f-parent" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="f-parent-list" autocomplete="off" placeholder="Search accounts">
+            </div>
+            <ul class="k-listbox" id="f-parent-list" role="listbox" aria-labelledby="f-parent-l" hidden></ul>
+            <span class="k-field__help">For branches or subsidiaries. Credit can be pooled at parent level.</span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-currency">Currency <span class="k-label__req" aria-hidden="true">*</span></label>
+            <select class="k-select" id="f-currency"><option selected>INR — Indian rupee</option><option>USD — US dollar</option><option>EUR — Euro</option><option>AED — UAE dirham</option></select>
+            <span class="k-field__help">Default from company settings</span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-tier">Account tier</label>
+            <select class="k-select" id="f-tier"><option>C — Standard</option><option>B — Growth</option><option>A — Key account</option></select>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2 · Contact -->
+      <section class="k-form-section" id="sec-contact" aria-labelledby="sec-contact-t">
+        <header class="k-form-section__head"><h3 class="k-form-section__title" id="sec-contact-t">Contact</h3><p class="k-form-section__desc">Used on quotations, invoices and payment reminders.</p></header>
+        <div class="k-form-grid k-form-grid--3">
+          <div class="k-field">
+            <label class="k-label" for="f-email">Accounts email <span class="k-label__req" aria-hidden="true">*</span></label>
+            <input class="k-input" id="f-email" type="email" name="email" required aria-required="true" autocomplete="email" placeholder="accounts@company.in" aria-describedby="f-email-m">
+            <span class="k-field__message k-field__message--error" id="f-email-m" hidden></span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-phone">Phone <span class="k-label__req" aria-hidden="true">*</span></label>
+            <div class="k-input-group"><span class="k-input-group__addon">+91</span><input class="k-input" id="f-phone" type="tel" name="phone" required aria-required="true" inputmode="tel" placeholder="98220 12345" aria-describedby="f-phone-m"></div>
+            <span class="k-field__message k-field__message--error" id="f-phone-m" hidden></span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-web">Website</label>
+            <div class="k-input-group"><span class="k-input-group__addon">https://</span><input class="k-input" id="f-web" placeholder="www.company.in"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3 · Addresses -->
+      <section class="k-form-section" id="sec-address" aria-labelledby="sec-address-t">
+        <header class="k-form-section__head"><h3 class="k-form-section__title" id="sec-address-t">Addresses</h3></header>
+        <div class="k-form-grid k-form-grid--3">
+          <h4 class="k-form-subhead">Billing address</h4>
+          <div class="k-field k-span-2">
+            <label class="k-label" for="f-b1">Address line 1 <span class="k-label__req" aria-hidden="true">*</span></label>
+            <input class="k-input" id="f-b1" name="b1" required aria-required="true" autocomplete="address-line1" placeholder="Building, street" aria-describedby="f-b1-m">
+            <span class="k-field__message k-field__message--error" id="f-b1-m" hidden></span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-b2">Address line 2</label>
+            <input class="k-input" id="f-b2" autocomplete="address-line2" placeholder="Area, landmark">
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-pin">PIN code <span class="k-label__req" aria-hidden="true">*</span></label>
+            <input class="k-input k-w-sm" id="f-pin" name="pin" required aria-required="true" inputmode="numeric" maxlength="6" autocomplete="postal-code" aria-describedby="f-pin-h f-pin-m">
+            <span class="k-field__help" id="f-pin-h">City and state fill in automatically</span>
+            <span class="k-field__message k-field__message--error" id="f-pin-m" hidden></span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-city">City</label>
+            <input class="k-input" id="f-city" autocomplete="address-level2">
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-state">State</label>
+            <select class="k-select" id="f-state" autocomplete="address-level1"><option value="">Select state</option><option>Goa</option><option>Gujarat</option><option>Karnataka</option><option>Maharashtra</option><option>Tamil Nadu</option></select>
+          </div>
+
+          <h4 class="k-form-subhead">Shipping address</h4>
+          <div class="k-span-full">
+            <label class="k-check"><input type="checkbox" id="f-same" checked><span>Same as billing address</span></label>
+          </div>
+          <div class="k-span-full k-conditional" id="shipping-fields" hidden>
+            <div class="k-form-grid k-form-grid--3">
+              <div class="k-field k-span-2"><label class="k-label" for="f-s1">Address line 1</label><input class="k-input" id="f-s1" placeholder="Warehouse / site address"></div>
+              <div class="k-field"><label class="k-label" for="f-s-pin">PIN code</label><input class="k-input k-w-sm" id="f-s-pin" inputmode="numeric" maxlength="6"></div>
+              <div class="k-field"><label class="k-label" for="f-s-city">City</label><input class="k-input" id="f-s-city"></div>
+              <div class="k-field"><label class="k-label" for="f-s-contact">Receiving contact</label><input class="k-input" id="f-s-contact" placeholder="Name, phone"></div>
+              <div class="k-field"><label class="k-label" for="f-s-hours">Receiving hours</label><input class="k-input" id="f-s-hours" placeholder="Mon–Sat, 09:30–17:30"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4 · Credit & terms -->
+      <section class="k-form-section" id="sec-credit" aria-labelledby="sec-credit-t">
+        <header class="k-form-section__head"><h3 class="k-form-section__title" id="sec-credit-t">Credit &amp; terms</h3><p class="k-form-section__desc">Finance reviews limits above ₹25,00,000.</p></header>
+        <div class="k-form-grid k-form-grid--3">
+          <div class="k-field">
+            <label class="k-label" for="f-credit">Credit limit</label>
+            <div class="k-input-group"><span class="k-input-group__addon">₹</span><input class="k-input k-input--num" id="f-credit" inputmode="numeric" placeholder="0" aria-describedby="f-credit-m"></div>
+            <span class="k-field__help" id="f-credit-m">Leave blank for cash / advance-only customers</span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-terms">Payment terms</label>
+            <select class="k-select" id="f-terms"><option>Advance</option><option>Net 15</option><option selected>Net 30</option><option>Net 45</option><option>Net 60</option></select>
+            <span class="k-field__help">Net 30 is used for 82% of accounts</span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-owner">Sales owner</label>
+            <select class="k-select" id="f-owner"><option selected>Priya Deshmukh (you)</option><option>Anjali Nair</option><option>Rohit Kulkarni</option><option>Imran Shaikh</option></select>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-pricelist">Price list</label>
+            <select class="k-select" id="f-pricelist"><option>Standard — FY 2026-27</option><option>Distributor — West</option><option>Key account</option></select>
+          </div>
+          <div class="k-field k-span-2" style="align-self:end">
+            <label class="k-check"><input type="checkbox" id="f-hold"><span>Place on credit hold<span class="k-check__desc">New orders will need Finance release before dispatch.</span></span></label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5 · Tax -->
+      <section class="k-form-section" id="sec-tax" aria-labelledby="sec-tax-t">
+        <header class="k-form-section__head"><h3 class="k-form-section__title" id="sec-tax-t">Tax &amp; compliance</h3></header>
+        <div class="k-form-grid k-form-grid--3">
+          <div class="k-field" data-when-type="company">
+            <label class="k-label" for="f-gstin">GSTIN <span class="k-label__req" aria-hidden="true">*</span></label>
+            <input class="k-input k-id" id="f-gstin" name="gstin" maxlength="15" required aria-required="true" placeholder="27AABCA1234F1Z5" style="text-transform:uppercase" aria-describedby="f-gstin-h f-gstin-m">
+            <span class="k-field__help" id="f-gstin-h">15 characters. PAN and place of supply are taken from it.</span>
+            <span class="k-field__message" id="f-gstin-m" hidden></span>
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-pan">PAN</label>
+            <input class="k-input k-id" id="f-pan" readonly placeholder="Derived from GSTIN">
+          </div>
+          <div class="k-field">
+            <label class="k-label" for="f-pos">Place of supply</label>
+            <input class="k-input" id="f-pos" readonly placeholder="Derived from GSTIN">
+          </div>
+          <div class="k-field k-span-full">
+            <label class="k-label" for="f-notes">Internal notes <span class="k-label__hint" id="f-notes-c">0 / 500</span></label>
+            <textarea class="k-textarea" id="f-notes" maxlength="500" placeholder="Not shown to the customer. E.g. ‘Deliveries only via north gate; call security 30 min before.’"></textarea>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sticky footer: save state + actions -->
+      <div class="k-form-footer">
+        <span class="k-form-footer__state" id="save-state" aria-live="polite">No changes yet</span>
+        <button type="button" class="k-btn" id="btn-cancel">Cancel</button>
+        <button type="button" class="k-btn k-form-footer__secondary" id="btn-save-new">Save &amp; new</button>
+        <button type="submit" class="k-btn k-btn--primary" id="btn-save" data-shortcut="mod+s"><span>Save account</span><span class="k-btn__kbd u-hide-md" aria-hidden="true">Ctrl S</span></button>
+      </div>
+    </form>
+  </div>
+</div>
+</main>
+</div>
+
+<dialog class="k-modal k-modal--sm" id="discard-dialog" aria-labelledby="discard-title">
+  <div class="k-modal__header">
+    <h2 class="k-modal__title" id="discard-title">Discard unsaved changes?</h2>
+  </div>
+  <div class="k-modal__body"><p>You’ve entered details for this account that haven’t been saved. If you leave now they will be lost.</p></div>
+  <div class="k-modal__footer">
+    <button class="k-btn" data-close-dialog="keep" autofocus>Keep editing</button>
+    <button class="k-btn k-btn--danger" data-close-dialog="discard">Discard changes</button>
+  </div>
+</dialog>
+
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("k-ready", () => {
+  const $ = (s) => document.querySelector(s);
+  const form = $("#account-form");
+  const state = $("#save-state");
+  const isEdit = new URLSearchParams(location.search).get("mode") === "edit";
+  let dirty = false;
+
+  // ---- Edit mode: same form, prefilled, with audit context -------------------
+  if (isEdit) {
+    document.title = "Edit ABC Technologies Pvt Ltd · Kestrel";
+    $("[data-mode-title]").textContent = "Edit ABC Technologies Pvt Ltd";
+    $("[data-mode-crumb]").textContent = "ABC Technologies Pvt Ltd";
+    $("[data-mode-desc]").innerHTML = 'Last changed 14 Oct 2026, 16:42 by Priya Deshmukh · <a href="account.html">View history</a>';
+    const set = (id, v) => ($(id).value = v);
+    set("#f-code", "CUST-00142"); set("#f-name", "ABC Technologies Pvt Ltd"); set("#f-industry", "Electronics manufacturing");
+    set("#f-email", "accounts@abctech.in"); set("#f-phone", "20 6712 4400"); set("#f-web", "www.abctech.in");
+    set("#f-b1", "4th Floor, Panchshil Tech Park, Yerwada"); set("#f-pin", "411006"); set("#f-city", "Pune"); set("#f-state", "Maharashtra");
+    set("#f-credit", "25,00,000"); set("#f-gstin", "27AABCA1234F1Z5"); set("#f-pan", "AABCA1234F"); set("#f-pos", "27 — Maharashtra");
+    $("#f-code-h").textContent = "Codes can’t be changed once used on documents";
+    $("#btn-save span").textContent = "Save changes";
+    $("#btn-save-new").hidden = true;
+    state.textContent = "All changes saved";
+  }
+
+  // ---- Dirty tracking + leave protection ------------------------------------------
+  form.addEventListener("input", () => {
+    if (!dirty) { dirty = true; state.textContent = "Unsaved changes"; state.className = "k-form-footer__state is-dirty"; }
+  });
+  window.addEventListener("beforeunload", (e) => { if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+  const discard = $("#discard-dialog");
+  $("#btn-cancel").addEventListener("click", () => { if (dirty) discard.showModal(); else location.href = "customers.html"; });
+  discard.addEventListener("close", () => { if (discard.returnValue === "discard") { dirty = false; location.href = "customers.html"; } });
+
+  // ---- Conditional fields ----------------------------------------------------------
+  form.querySelectorAll('input[name="type"]').forEach((r) => r.addEventListener("change", () => {
+    const company = form.type.value === "company";
+    document.querySelectorAll("[data-when-type=company]").forEach((el) => (el.hidden = !company));
+    $("#f-gstin").required = company;
+  }));
+  $("#f-same").addEventListener("change", (e) => ($("#shipping-fields").hidden = e.target.checked));
+
+  // ---- Smart defaults: PIN -> city/state, GSTIN -> PAN/place of supply ---------------
+  const PINS = { "411006": ["Pune", "Maharashtra"], "400001": ["Mumbai", "Maharashtra"], "390007": ["Vadodara", "Gujarat"], "403001": ["Panaji", "Goa"] };
+  $("#f-pin").addEventListener("input", (e) => {
+    const p = PINS[e.target.value];
+    if (p) { $("#f-city").value = p[0]; $("#f-state").value = p[1]; }
+  });
+  const STATES = { "27": "Maharashtra", "24": "Gujarat", "30": "Goa", "29": "Karnataka", "33": "Tamil Nadu" };
+  const GST_RE = /^\d{2}[A-Z]{5}\d{4}[A-Z][1-9A-Z]Z[0-9A-Z]$/;
+  $("#f-gstin").addEventListener("input", (e) => {
+    const v = e.target.value.toUpperCase();
+    const m = $("#f-gstin-m");
+    if (v.length === 15 && GST_RE.test(v)) {
+      $("#f-pan").value = v.slice(2, 12);
+      $("#f-pos").value = `${v.slice(0, 2)} — ${STATES[v.slice(0, 2)] || "Unknown state"}`;
+      e.target.setAttribute("aria-invalid", "false"); e.target.classList.add("is-valid");
+      m.hidden = false; m.className = "k-field__message k-field__message--success";
+      m.innerHTML = '<svg class="k-icon" aria-hidden="true"><use href="#i-check-circle"/></svg>Format valid · registered in ' + (STATES[v.slice(0, 2)] || "unknown state");
+    } else {
+      e.target.classList.remove("is-valid");
+      $("#f-pan").value = ""; $("#f-pos").value = "";
+      if (m.classList.contains("k-field__message--success")) m.hidden = true;
+    }
+  });
+
+  // ---- Credit limit: format as Indian grouping, flag approval threshold ---------------
+  $("#f-credit").addEventListener("blur", (e) => {
+    const n = Number(e.target.value.replace(/[^\d]/g, ""));
+    const m = $("#f-credit-m");
+    if (!e.target.value) { m.className = "k-field__help"; m.textContent = "Leave blank for cash / advance-only customers"; return; }
+    e.target.value = n.toLocaleString("en-IN");
+    if (n > 2500000) {
+      m.className = "k-field__message k-field__message--warning";
+      m.innerHTML = '<svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg>Above ₹25,00,000 — the account is saved now, the limit applies after Finance approves.';
+    } else { m.className = "k-field__help"; m.textContent = "Within your approval limit"; }
+  });
+
+  // ---- Notes counter --------------------------------------------------------------------
+  $("#f-notes").addEventListener("input", (e) => ($("#f-notes-c").textContent = `${e.target.value.length} / 500`));
+
+  // ---- Duplicate hint ---------------------------------------------------------------------
+  $("#f-name").addEventListener("blur", (e) => {
+    $("#dup-warning").hidden = !/trident/i.test(e.target.value) || $("#dup-warning").dataset.dismissed;
+  });
+  document.querySelector("[data-dismiss-dup]").addEventListener("click", () => { $("#dup-warning").hidden = true; $("#dup-warning").dataset.dismissed = "1"; });
+
+  // ---- Parent account autocomplete (ARIA combobox) -----------------------------------------
+  const PARENTS = [["Lumina Healthcare Systems", "CUST-00059 · Mumbai"], ["Pinnacle Infra Projects", "CUST-00245 · Thane"], ["Bluecrest Pharma Ltd", "CUST-00087 · Ahmedabad"], ["Kaveri Agro Foods", "CUST-00276 · Kolhapur"], ["Trident Packaging Industries", "CUST-00129 · Vadodara"]];
+  const pin = $("#f-parent"), plist = $("#f-parent-list");
+  let active = -1;
+  const renderParents = () => {
+    const q = pin.value.trim().toLowerCase();
+    const hits = PARENTS.filter(([n]) => n.toLowerCase().includes(q));
+    active = hits.length ? 0 : -1;
+    plist.innerHTML = q.length < 2 ? '<li class="k-listbox__empty">Type at least 2 characters</li>' :
+      hits.length ? hits.map(([n, m], i) => `<li class="k-option ${i === 0 ? "is-active" : ""}" role="option" id="po-${i}" aria-selected="false" data-v="${n}"><span class="k-option__main">${n.replace(new RegExp(q, "i"), (x) => `<mark>${x}</mark>`)}</span><span class="k-option__meta">${m}</span></li>`).join("")
+        : `<li class="k-listbox__empty">No account named “${pin.value}”. Parent accounts must exist first.</li>`;
+    plist.hidden = false; pin.setAttribute("aria-expanded", "true");
+    pin.setAttribute("aria-activedescendant", active >= 0 ? "po-0" : "");
+  };
+  const choose = (li) => { pin.value = li.dataset.v; plist.hidden = true; pin.setAttribute("aria-expanded", "false"); };
+  pin.addEventListener("input", renderParents);
+  pin.addEventListener("keydown", (e) => {
+    const opts = [...plist.querySelectorAll(".k-option")];
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault(); if (!opts.length) return;
+      active = (active + (e.key === "ArrowDown" ? 1 : -1) + opts.length) % opts.length;
+      opts.forEach((o, i) => o.classList.toggle("is-active", i === active));
+      pin.setAttribute("aria-activedescendant", opts[active].id);
+    } else if (e.key === "Enter" && opts[active] && !plist.hidden) { e.preventDefault(); choose(opts[active]); }
+    else if (e.key === "Escape") { plist.hidden = true; pin.setAttribute("aria-expanded", "false"); }
+  });
+  plist.addEventListener("mousedown", (e) => { const li = e.target.closest(".k-option"); if (li) { e.preventDefault(); choose(li); } });
+  pin.addEventListener("blur", () => setTimeout(() => { plist.hidden = true; pin.setAttribute("aria-expanded", "false"); }, 100));
+
+  // ---- Validation: on blur for touched fields, all on submit ---------------------------------
+  const RULES = {
+    "f-name": (v) => !v ? "Enter the account name" : v.length < 3 ? "Account name must be at least 3 characters" : "",
+    "f-industry": (v) => !v ? "Select an industry — it drives pricing and reports" : "",
+    "f-email": (v) => !v ? "Enter an email for invoices" : !/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(v) ? "Enter an email like accounts@company.in" : "",
+    "f-phone": (v) => !v ? "Enter a phone number" : v.replace(/\D/g, "").length < 10 ? "Phone number needs 10 digits" : "",
+    "f-b1": (v) => !v ? "Enter the billing address" : "",
+    "f-pin": (v) => !v ? "Enter the PIN code" : !/^\d{6}$/.test(v) ? "PIN code is 6 digits" : "",
+    "f-gstin": (v, el) => el.closest("[hidden]") ? "" : !v ? "Enter the GSTIN, or choose Individual if the customer isn’t registered" : !GST_RE.test(v.toUpperCase()) ? "GSTIN format looks wrong — check characters 3–12 match the PAN" : "",
+  };
+  const check = (id) => {
+    const el = document.getElementById(id);
+    const msg = RULES[id](el.value.trim(), el);
+    const m = document.getElementById(id + "-m");
+    el.setAttribute("aria-invalid", msg ? "true" : "false");
+    if (msg) { m.hidden = false; m.className = "k-field__message k-field__message--error"; m.innerHTML = `<svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>${msg}`; }
+    else if (m.classList.contains("k-field__message--error")) m.hidden = true;
+    return msg;
+  };
+  Object.keys(RULES).forEach((id) => document.getElementById(id).addEventListener("blur", (e) => { if (e.target.value || e.target.getAttribute("aria-invalid") === "true") check(id); }));
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const errors = Object.keys(RULES).map((id) => [id, check(id)]).filter(([, m]) => m);
+    const summary = $("#error-summary");
+    document.querySelectorAll("[data-err-count]").forEach((b) => (b.hidden = true));
+    if (errors.length) {
+      $("#error-summary-title").textContent = `Fix ${errors.length} field${errors.length > 1 ? "s" : ""} to save this account`;
+      $("#error-summary-list").innerHTML = errors.map(([id, m]) => `<li><a href="#${id}">${m}</a></li>`).join("");
+      const per = {};
+      errors.forEach(([id]) => { const s = document.getElementById(id).closest("section").id; per[s] = (per[s] || 0) + 1; });
+      Object.entries(per).forEach(([s, n]) => { const b = document.querySelector(`[data-err-count="${s}"]`); b.hidden = false; b.textContent = n; });
+      summary.hidden = false; summary.focus();
+      return;
+    }
+    summary.hidden = true;
+    const btn = $("#btn-save");
+    btn.classList.add("is-loading"); btn.setAttribute("aria-busy", "true");
+    setTimeout(() => {
+      btn.classList.remove("is-loading"); btn.removeAttribute("aria-busy");
+      dirty = false;
+      state.className = "k-form-footer__state is-saved"; state.textContent = "Saved just now";
+      K.toast({ text: isEdit ? "Changes saved." : 'Account <strong>CUST-00715</strong> created.', action: isEdit ? null : "Open account", onAction: () => (location.href = "account.html") });
+    }, 900);
+  });
+  document.querySelectorAll("#error-summary-list").forEach((ul) => ul.addEventListener("click", (e) => {
+    const a = e.target.closest("a"); if (!a) return; e.preventDefault(); document.querySelector(a.getAttribute("href")).focus();
+  }));
+
+  // ---- Section index follows scroll ------------------------------------------------------------
+  const links = [...document.querySelectorAll(".k-form-layout__index a")];
+  const io = new IntersectionObserver((entries) => entries.forEach((en) => {
+    if (en.isIntersecting) links.forEach((l) => l.setAttribute("aria-current", String(l.getAttribute("href") === "#" + en.target.id)));
+  }), { root: document.querySelector(".k-main"), rootMargin: "0px 0px -70% 0px" });
+  document.querySelectorAll(".k-form-section").forEach((s) => io.observe(s));
+});
+</script>
+</body>
+</html>

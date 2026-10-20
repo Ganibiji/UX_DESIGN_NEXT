@@ -1,0 +1,189 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Form layout
+//  · Sections, not cards. A section = heading + optional one-line purpose +
+//    a 2/3-column grid. Sections are separated by a rule and whitespace.
+//  · Field width follows expected content: codes are narrow, names wide.
+//  · Footer is sticky with the save state and the actions.
+//  · Long forms get a section index ("On this page") with error counts.
+// ---------------------------------------------------------------------------
+.k-form-layout {
+  display: grid;
+  grid-template-columns: 200px minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+  width: 100%;
+  max-width: var(--form-max-width);
+  margin: 0 auto;
+
+  &__index {
+    position: sticky;
+    top: var(--space-4);
+
+    ol { @include reset-list; }
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 5px 10px;
+      border-left: 2px solid var(--color-border);
+      color: var(--color-text-secondary);
+      font-size: var(--font-size-sm);
+
+      &:hover { color: var(--color-text-primary); border-left-color: var(--color-border-strong); text-decoration: none; }
+      &[aria-current="true"] { color: var(--color-text-primary); border-left-color: var(--color-primary); font-weight: var(--font-weight-semibold); }
+    }
+
+    .k-badge { margin-left: auto; }
+  }
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr);
+
+    &__index { display: none; }
+  }
+}
+
+.k-form {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  min-width: 0;
+}
+
+.k-form-section {
+  padding: var(--section-gap) var(--section-gap) calc(var(--section-gap) + 4px);
+  scroll-margin-top: var(--space-4);
+
+  + .k-form-section { border-top: 1px solid var(--color-border); }
+
+  &__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  &__title {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &__desc {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  &__aside { margin-left: auto; }
+
+  @include down(sm) {
+    padding: var(--space-4) var(--space-3);
+  }
+}
+
+.k-form-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--form-cols, 2), minmax(0, 1fr));
+  gap: var(--form-row-gap) var(--form-col-gap);
+
+  &--3 { --form-cols: 3; }
+  &--4 { --form-cols: 4; }
+  &--1 { --form-cols: 1; max-width: 560px; }
+
+  > .k-span-2 { grid-column: span 2; }
+  > .k-span-3 { grid-column: span 3; }
+  > .k-span-full { grid-column: 1 / -1; }
+
+  // Subheading inside a grid (e.g. Billing / Shipping)
+  > .k-form-subhead {
+    grid-column: 1 / -1;
+    margin-top: var(--space-1);
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--color-border-subtle);
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text-secondary);
+  }
+
+  @include down(lg) {
+    &--3, &--4 { --form-cols: 2; }
+    > .k-span-3 { grid-column: 1 / -1; }
+  }
+
+  @include down(sm) {
+    --form-cols: 1 !important;
+    > .k-span-2, > .k-span-3 { grid-column: 1 / -1; }
+  }
+}
+
+// Field-width helpers — width communicates expected input length
+.k-w-xs { max-width: 96px; }
+.k-w-sm { max-width: 160px; }
+.k-w-md { max-width: 260px; }
+
+// Error summary at top of form after a failed submit
+.k-error-summary {
+  margin: var(--space-4) var(--section-gap) 0;
+}
+
+// Sticky footer with save state
+.k-form-footer {
+  position: sticky;
+  bottom: 0;
+  z-index: var(--z-sticky);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px var(--section-gap);
+  border-top: 1px solid var(--color-border);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: var(--color-bg-surface);
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.04);
+
+  &__state {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-right: auto;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+
+    &.is-dirty { color: var(--color-warning-text); font-weight: var(--font-weight-medium); }
+    &.is-saved { color: var(--color-success-text); }
+  }
+
+  @include down(sm) {
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+
+    .k-btn { flex: 1; }
+    .k-form-footer__state { display: none; }
+    .k-form-footer__secondary { display: none; }
+  }
+}
+
+// Repeating rows (address lines, contacts, line items in quick forms)
+.k-repeater {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  &__row {
+    display: grid;
+    grid-template-columns: var(--repeater-cols, 1fr 1fr 1fr 32px);
+    gap: var(--space-2);
+    align-items: end;
+    padding: var(--space-2) var(--space-3);
+
+    + .k-repeater__row { border-top: 1px solid var(--color-border-subtle); }
+  }
+
+  &__add { padding: var(--space-2) var(--space-3); border-top: 1px solid var(--color-border-subtle); }
+}
+
+// "Same as billing address" style toggle that hides a block
+.k-conditional {
+  padding: var(--space-3);
+  border-left: 2px solid var(--color-primary-border);
+  background: var(--color-bg-surface-alt);
+}

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stock · Inventory · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="inventory.stock">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page k-page--fill">
+
+  <div class="k-page-header">
+    <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="dashboard.html">Home</a></li><li><a href="#">Inventory</a></li><li><span aria-current="page">Stock</span></li></ol></nav>
+    <div class="k-page-header__row">
+      <div class="k-page-header__titles">
+        <h1 class="k-page-header__title">Stock on hand</h1>
+        <p class="k-page-header__desc">Quantities update as receipts, deliveries and transfers are posted. Valuation: moving average.</p>
+      </div>
+      <div class="k-page-header__actions">
+        <button class="k-btn" data-open-dialog="adjust-drawer"><svg class="k-icon" aria-hidden="true"><use href="#i-sliders"/></svg><span>Adjust stock</span></button>
+        <a class="k-btn k-btn--primary" href="#"><svg class="k-icon" aria-hidden="true"><use href="#i-transfer"/></svg><span>New transfer</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Inventory flow with today's open work at each stage -->
+  <ol class="k-flow k-flow--compact" aria-label="Inventory flow, today">
+    <li class="k-flow__step is-done"><span class="k-flow__name">Purchase</span><span class="k-flow__doc">6 POs due this week</span></li>
+    <li class="k-flow__step is-current"><span class="k-flow__name">Receipt</span><span class="k-flow__doc"><a href="#">3 awaiting put-away</a></span></li>
+    <li class="k-flow__step"><span class="k-flow__name">Warehouse</span><span class="k-flow__doc">4 locations · 1,912 bins</span></li>
+    <li class="k-flow__step"><span class="k-flow__name">Stock</span><span class="k-flow__doc"><a href="#">17 below reorder point</a></span></li>
+    <li class="k-flow__step"><span class="k-flow__name">Transfer</span><span class="k-flow__doc">2 in transit</span></li>
+    <li class="k-flow__step"><span class="k-flow__name">Adjustment</span><span class="k-flow__doc"><a href="#">1 awaiting approval</a></span></li>
+  </ol>
+
+  <div class="k-master-detail">
+    <!-- Master: location tree -->
+    <div class="k-master-detail__master">
+      <div class="k-grid__toolbar" style="min-height:44px">
+        <div class="k-search" style="width:100%"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg><input class="k-input k-input--sm" type="search" placeholder="Find location or bin" aria-label="Find location"></div>
+      </div>
+      <div style="overflow:auto;padding:6px">
+        <ul class="k-tree" role="tree" aria-label="Warehouses and locations" id="loc-tree">
+          <li role="treeitem" aria-expanded="true" aria-selected="false" aria-level="1">
+            <button class="k-tree__row" tabindex="-1" style="--level:0"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><svg class="k-icon" aria-hidden="true"><use href="#i-warehouse"/></svg><span class="k-tree__label">All warehouses</span><span class="k-tree__meta">₹4.82 Cr</span></button>
+            <ul role="group">
+              <li role="treeitem" aria-expanded="true" aria-selected="true" aria-level="2">
+                <button class="k-tree__row" tabindex="0" style="--level:1"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><span class="k-tree__label">Pune Main · PNQ-01</span><span class="k-tree__meta">₹2.91 Cr</span></button>
+                <ul role="group">
+                  <li role="treeitem" aria-selected="false" aria-level="3"><button class="k-tree__row" tabindex="-1" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">Zone A · Fast movers</span><span class="k-tree__meta">412 bins</span></button></li>
+                  <li role="treeitem" aria-selected="false" aria-level="3"><button class="k-tree__row" tabindex="-1" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">Zone B · Bulk &amp; cable</span><span class="k-tree__meta">208 bins</span></button></li>
+                  <li role="treeitem" aria-selected="false" aria-level="3"><button class="k-tree__row" tabindex="-1" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">Receiving dock</span><span class="k-tree__meta">3 pending</span></button></li>
+                  <li role="treeitem" aria-selected="false" aria-level="3"><button class="k-tree__row" tabindex="-1" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">Quarantine</span><span class="k-tree__meta">11 items</span></button></li>
+                </ul>
+              </li>
+              <li role="treeitem" aria-expanded="false" aria-selected="false" aria-level="2">
+                <button class="k-tree__row" tabindex="-1" style="--level:1"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><span class="k-tree__label">Chakan · CKN-02</span><span class="k-tree__meta">₹1.12 Cr</span></button>
+                <ul role="group"><li role="treeitem" aria-selected="false" aria-level="3"><button class="k-tree__row" tabindex="-1" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">Main store</span></button></li></ul>
+              </li>
+              <li role="treeitem" aria-expanded="false" aria-selected="false" aria-level="2">
+                <button class="k-tree__row" tabindex="-1" style="--level:1"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><span class="k-tree__label">Chennai Plant · MAA-01</span><span class="k-tree__meta">₹0.71 Cr</span></button>
+                <ul role="group"><li role="treeitem" aria-selected="false" aria-level="3"><button class="k-tree__row" tabindex="-1" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">Production store</span></button></li></ul>
+              </li>
+              <li role="treeitem" aria-selected="false" aria-level="2"><button class="k-tree__row" tabindex="-1" style="--level:1"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">In transit</span><span class="k-tree__meta">2 transfers</span></button></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Detail: stock at selected location -->
+    <div class="k-master-detail__detail">
+      <section class="k-grid k-grid--flush k-grid--fill" id="stock-grid" data-grid aria-label="Stock at Pune Main" style="border-top:0">
+        <div class="k-grid__toolbar" data-toolbar>
+          <h2 class="k-text-subsection" id="loc-title">Pune Main · PNQ-01</h2>
+          <span class="u-sm u-muted">1,204 SKUs · ₹2.91 Cr</span>
+          <span class="k-grid__spacer"></span>
+          <div class="k-quickfilters" role="group" aria-label="Stock filter">
+            <button aria-pressed="true">All</button>
+            <button aria-pressed="false">Below reorder <span>17</span></button>
+            <button aria-pressed="false">Reserved <span>86</span></button>
+            <button aria-pressed="false">No movement 180 d <span>42</span></button>
+          </div>
+        </div>
+        <div class="k-grid__bulkbar" data-bulkbar hidden>
+          <span class="k-grid__selection" data-selection-count>0 selected</span>
+          <button class="k-btn k-btn--sm">Transfer</button><button class="k-btn k-btn--sm" data-open-dialog="adjust-drawer">Adjust</button><button class="k-btn k-btn--sm">Print labels</button><button class="k-btn k-btn--sm">Create purchase request</button>
+          <span class="k-grid__spacer"></span><button class="k-btn k-btn--subtle k-btn--sm" data-clear-selection>Clear</button>
+        </div>
+        <div class="k-grid__scroll" tabindex="0" role="region" aria-label="Stock table">
+          <table class="k-table">
+            <colgroup><col style="width:40px"><col style="width:110px"><col style="width:250px"><col style="width:110px"><col style="width:96px"><col style="width:96px"><col style="width:96px"><col style="width:96px"><col style="width:120px"><col style="width:130px"><col style="width:150px"></colgroup>
+            <thead><tr>
+              <th class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" data-select-all aria-label="Select all"></label></th>
+              <th scope="col"><button class="k-th"><span>SKU</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+              <th scope="col" aria-sort="none"><button class="k-th"><span>Product</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+              <th scope="col">Bin</th>
+              <th scope="col" class="is-num"><button class="k-th"><span>On hand</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+              <th scope="col" class="is-num">Reserved</th>
+              <th scope="col" class="is-num"><button class="k-th"><span>Available</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+              <th scope="col" class="is-num">Reorder pt.</th>
+              <th scope="col" class="is-num">Incoming</th>
+              <th scope="col" class="is-num"><button class="k-th"><span>Value</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+              <th scope="col">Status</th>
+            </tr></thead>
+            <tbody id="stock-body"></tbody>
+            <tfoot><tr><td></td><td colspan="8">12 of 1,204 SKUs shown</td><td class="is-num">₹26,45,640</td><td></td></tr></tfoot>
+          </table>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+</main>
+</div>
+
+<!-- Stock adjustment: quick form in a drawer, list stays in context -->
+<dialog class="k-drawer" id="adjust-drawer" aria-labelledby="adj-t">
+  <form method="dialog" style="display:contents" id="adj-form">
+    <div class="k-drawer__header"><h2 class="k-drawer__title" id="adj-t">Adjust stock</h2><button class="k-btn k-btn--subtle k-btn--icon k-btn--sm" value="cancel" formnovalidate aria-label="Close"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="k-drawer__body">
+      <div class="k-form-grid k-form-grid--1" style="max-width:none">
+        <div class="k-field"><label class="k-label" for="adj-sku">Product <span class="k-label__req" aria-hidden="true">*</span></label><select class="k-select" id="adj-sku"><option>CBL-4C25 · Shielded motor cable 4C × 2.5 sq mm</option><option>HB-M10-50 · Hex bolt M10 × 50 zinc</option><option>SM-2200 · Industrial servo motor 2.2 kW</option></select></div>
+        <div class="k-form-grid">
+          <div class="k-field"><label class="k-label" for="adj-loc">Location</label><input class="k-input" id="adj-loc" value="PNQ-01 · B-14-03" readonly></div>
+          <div class="k-field"><label class="k-label">System quantity</label><div class="k-value u-num">180 m</div></div>
+        </div>
+        <div class="k-form-grid">
+          <div class="k-field"><label class="k-label" for="adj-count">Counted quantity <span class="k-label__req" aria-hidden="true">*</span></label><div class="k-input-group"><input class="k-input k-input--num" id="adj-count" inputmode="decimal" value="172" aria-describedby="adj-diff"><span class="k-input-group__addon">m</span></div></div>
+          <div class="k-field"><label class="k-label">Difference</label><div class="k-value u-num k-text-error" id="adj-diff">−8 m · −₹2,120</div></div>
+        </div>
+        <div class="k-field"><label class="k-label" for="adj-reason">Reason code <span class="k-label__req" aria-hidden="true">*</span></label><select class="k-select" id="adj-reason"><option>CC — Cycle count variance</option><option>DM — Damaged in storage</option><option>SC — Scrap / cut-off waste</option><option>FD — Found during audit</option></select></div>
+        <div class="k-field"><label class="k-label" for="adj-note">Note</label><textarea class="k-textarea" id="adj-note" style="min-height:60px" placeholder="E.g. reel end cut-offs not booked during DL-7781 picking"></textarea></div>
+        <div class="k-alert" data-tone="info"><svg class="k-icon" aria-hidden="true"><use href="#i-info"/></svg><div class="k-alert__body"><div class="k-alert__text">Adjustments above ₹10,000 need the warehouse manager’s approval. This one posts immediately.</div></div></div>
+      </div>
+    </div>
+    <div class="k-drawer__footer"><button class="k-btn" value="cancel" formnovalidate>Cancel</button><button class="k-btn k-btn--primary" value="post">Post adjustment</button></div>
+  </form>
+</dialog>
+
+<script src="assets/icons.js"></script>
+<script>
+const STOCK = [
+  ["ACC-MB04", "Mounting bracket & accessories kit", "A-02-11", 35, 4, 20, 0, 6500, "ok"],
+  ["CBL-4C25", "Shielded motor cable 4C × 2.5 sq mm", "B-14-03", 180, 180, 400, 500, 265, "short", "m"],
+  ["CBL-ETH-C6", "Industrial Ethernet cable Cat6, PUR", "B-14-05", 1240, 0, 600, 0, 98, "ok", "m"],
+  ["ENC-1024", "Incremental encoder 1024 ppr", "A-07-02", 6, 2, 10, 20, 7400, "low"],
+  ["HB-M10-50", "Hex bolt M10 × 50 zinc plated", "A-21-08", 4820, 400, 2000, 0, 6, "ok"],
+  ["HMI-07", "HMI touch panel 7\", IP65 front", "A-05-01", 11, 2, 6, 0, 31500, "ok"],
+  ["PLC-2416", "PLC controller, 24 DI / 16 DO", "A-05-04", 16, 2, 8, 0, 54000, "ok"],
+  ["RLY-24DC", "Interface relay 24 V DC, 1 CO", "A-12-06", 140, 0, 300, 0, 310, "low"],
+  ["SD-2200", "Servo drive 2.2 kW, EtherCAT", "A-04-02", 9, 0, 6, 0, 38400, "ok"],
+  ["SM-2200", "Industrial servo motor 2.2 kW, 3000 rpm", "A-04-01", 7, 0, 6, 8, 62500, "ok"],
+  ["SMPS-24-10", "Power supply 24 V DC, 10 A DIN", "A-09-03", 0, 0, 15, 30, 4650, "out"],
+  ["VFD-7K5", "Variable frequency drive 7.5 kW", "A-03-06", 3, 1, 4, 0, 46200, "aging"],
+];
+const ST = { ok: ["success", "In stock"], low: ["warning", "Below reorder"], short: ["danger", "Short for orders"], out: ["danger", "Out of stock"], aging: ["neutral", "No movement 212 d"] };
+const inr = (n) => "₹" + n.toLocaleString("en-IN");
+document.getElementById("stock-body").innerHTML = STOCK.map(([sku, name, bin, oh, res, rop, inc, cost, st, uom = ""]) => {
+  const avail = oh - res, [tone, label] = ST[st];
+  return `<tr class="${st === "out" || st === "short" ? "is-attention" : ""}">
+    <td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" data-select-row aria-label="Select ${sku}"></label></td>
+    <td class="is-id"><a href="#">${sku}</a></td><td title="${name}">${name}</td><td class="is-id">${bin}</td>
+    <td class="is-num" data-value="${oh}">${oh.toLocaleString("en-IN")}${uom ? ` <span class="u-muted">${uom}</span>` : ""}</td>
+    <td class="is-num ${res ? "" : "u-muted"}">${res.toLocaleString("en-IN")}</td>
+    <td class="is-num ${avail <= 0 ? "is-negative" : ""}" data-value="${avail}">${avail.toLocaleString("en-IN")}</td>
+    <td class="is-num is-editable is-secondary" data-edit="number" data-label="Reorder point, ${sku}" data-value="${rop}">${rop.toLocaleString("en-IN")}</td>
+    <td class="is-num ${inc ? "" : "u-muted"}">${inc ? inc.toLocaleString("en-IN") : "—"}</td>
+    <td class="is-num" data-value="${oh * cost}">${inr(oh * cost)}</td>
+    <td><span class="k-status" data-tone="${tone}">${label}</span></td></tr>`;
+}).join("");
+</script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("k-ready", () => {
+  // Tree: roving tabindex + arrow keys (WAI-ARIA tree pattern)
+  const tree = document.getElementById("loc-tree");
+  const rows = () => [...tree.querySelectorAll(".k-tree__row")].filter((r) => !r.closest('[aria-expanded="false"] > ul'));
+  const select = (row) => {
+    tree.querySelectorAll('[role="treeitem"]').forEach((li) => li.setAttribute("aria-selected", "false"));
+    tree.querySelectorAll(".k-tree__row").forEach((r) => (r.tabIndex = -1));
+    row.parentElement.setAttribute("aria-selected", "true"); row.tabIndex = 0; row.focus();
+    document.getElementById("loc-title").textContent = row.querySelector(".k-tree__label").textContent;
+  };
+  tree.addEventListener("click", (e) => {
+    const row = e.target.closest(".k-tree__row"); if (!row) return;
+    const li = row.parentElement;
+    if (e.target.closest(".k-tree__toggle") && li.hasAttribute("aria-expanded")) li.setAttribute("aria-expanded", String(li.getAttribute("aria-expanded") !== "true"));
+    else select(row);
+  });
+  tree.addEventListener("keydown", (e) => {
+    const row = e.target.closest(".k-tree__row"); if (!row) return;
+    const list = rows(), i = list.indexOf(row), li = row.parentElement;
+    if (e.key === "ArrowDown" && list[i + 1]) { e.preventDefault(); select(list[i + 1]); }
+    if (e.key === "ArrowUp" && list[i - 1]) { e.preventDefault(); select(list[i - 1]); }
+    if (e.key === "ArrowRight" && li.getAttribute("aria-expanded") === "false") { e.preventDefault(); li.setAttribute("aria-expanded", "true"); }
+    if (e.key === "ArrowLeft" && li.getAttribute("aria-expanded") === "true") { e.preventDefault(); li.setAttribute("aria-expanded", "false"); }
+  });
+  document.querySelectorAll(".k-quickfilters button").forEach((b) => b.addEventListener("click", () => b.parentElement.querySelectorAll("button").forEach((x) => x.setAttribute("aria-pressed", String(x === b)))));
+  document.getElementById("adjust-drawer").addEventListener("close", (e) => { if (e.target.returnValue === "post") K.toast({ text: "Adjustment <strong>ADJ-26-0918</strong> posted · −8 m CBL-4C25", action: "View" }); });
+  document.getElementById("adj-count").addEventListener("input", (e) => {
+    const d = (Number(e.target.value) || 0) - 180, el = document.getElementById("adj-diff");
+    el.textContent = `${d > 0 ? "+" : d < 0 ? "−" : ""}${Math.abs(d)} m · ${d < 0 ? "−" : ""}₹${Math.abs(d * 265).toLocaleString("en-IN")}`;
+    el.className = "k-value u-num " + (d < 0 ? "k-text-error" : d > 0 ? "k-text-success" : "");
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,243 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Status
+// Default form is quiet: a shaped marker + text, no fill. Shape repeats the
+// meaning of colour so status never depends on colour alone (WCAG 1.4.1):
+//   neutral  ○ ring        Draft, Archived, New
+//   info     ● dot         Submitted, Assigned, Confirmed
+//   progress ◐ half        Under Review, Processing, In Transit
+//   warning  ▲ triangle    Pending, Overdue soon, On Hold
+//   success  ● dot         Approved, Completed, Paid, Won
+//   danger   ◆ diamond     Rejected, Overdue, Lost, Failed
+//   muted    – dash        Cancelled, Disqualified
+// .k-status--strong adds a tinted fill; reserve it for record headers.
+// ---------------------------------------------------------------------------
+.k-status {
+  --status-color: var(--color-neutral);
+  --status-text: var(--color-text-primary);
+  --status-bg: var(--color-neutral-subtle);
+  --status-border: var(--color-neutral-border);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--status-text);
+  font-size: inherit;
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+
+  &::before {
+    content: "";
+    flex: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-color);
+  }
+
+  &[data-tone="neutral"]::before {
+    background: transparent;
+    box-shadow: inset 0 0 0 1.5px var(--status-color);
+  }
+
+  &[data-tone="info"] {
+    --status-color: var(--color-info);
+    --status-bg: var(--color-info-subtle);
+    --status-border: var(--color-info-border);
+  }
+
+  &[data-tone="progress"] {
+    --status-color: var(--color-primary);
+    --status-bg: var(--color-primary-subtle);
+    --status-border: var(--color-primary-border);
+
+    &::before {
+      background: linear-gradient(90deg, var(--status-color) 50%, transparent 50%);
+      box-shadow: inset 0 0 0 1.5px var(--status-color);
+    }
+  }
+
+  &[data-tone="warning"] {
+    --status-color: var(--color-warning);
+    --status-bg: var(--color-warning-subtle);
+    --status-border: var(--color-warning-border);
+
+    &::before {
+      border-radius: 0;
+      width: 9px;
+      clip-path: polygon(50% 0, 100% 100%, 0 100%);
+    }
+  }
+
+  &[data-tone="success"] {
+    --status-color: var(--color-success);
+    --status-bg: var(--color-success-subtle);
+    --status-border: var(--color-success-border);
+  }
+
+  &[data-tone="danger"] {
+    --status-color: var(--color-error);
+    --status-bg: var(--color-error-subtle);
+    --status-border: var(--color-error-border);
+
+    &::before {
+      border-radius: 1px;
+      width: 7px;
+      height: 7px;
+      transform: rotate(45deg);
+    }
+  }
+
+  &[data-tone="muted"] {
+    --status-text: var(--color-text-muted);
+
+    &::before {
+      height: 2px;
+      border-radius: 1px;
+    }
+  }
+
+  &--strong {
+    padding: 2px 8px 2px 7px;
+    border: 1px solid var(--status-border);
+    border-radius: var(--radius-xs);
+    background: var(--status-bg);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 18px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Badge — counts and short metadata. Not for status.
+// ---------------------------------------------------------------------------
+.k-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 18px;
+  padding: 0 6px;
+  border-radius: var(--radius-xs);
+  background: var(--color-neutral-subtle);
+  color: var(--color-neutral-text);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  white-space: nowrap;
+  @include numeric;
+
+  &--primary {
+    background: var(--color-primary-subtle);
+    color: var(--color-primary-text);
+  }
+
+  // Used sparingly: actionable counts (approvals waiting on *you*)
+  &--attention {
+    background: var(--color-error);
+    color: #fff;
+  }
+
+  &--outline {
+    background: transparent;
+    border: 1px solid var(--color-border-strong);
+    color: var(--color-text-secondary);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Tag — applied filters, record labels. Removable variant has its own button.
+// ---------------------------------------------------------------------------
+.k-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 260px;
+  height: 24px;
+  padding: 0 4px 0 8px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+
+  &:not(:has(.k-tag__remove)) { padding-right: 8px; }
+
+  &__key {
+    color: var(--color-text-muted);
+  }
+
+  &__value {
+    @include truncate;
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__remove {
+    @include reset-button;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: var(--radius-xs);
+    color: var(--color-text-muted);
+
+    &:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
+    &:focus-visible { @include focus-ring(0); }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Avatar — initials on a muted tint, never a saturated rainbow
+// ---------------------------------------------------------------------------
+.k-avatar {
+  --avatar-size: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  border-radius: 50%;
+  background: var(--color-avatar-1-bg);
+  color: var(--color-avatar-1-fg);
+  font-size: calc(var(--avatar-size) * 0.42);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  overflow: hidden;
+  user-select: none;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+
+  &[data-tint="2"] { background: var(--color-avatar-2-bg); color: var(--color-avatar-2-fg); }
+  &[data-tint="3"] { background: var(--color-avatar-3-bg); color: var(--color-avatar-3-fg); }
+  &[data-tint="4"] { background: var(--color-avatar-4-bg); color: var(--color-avatar-4-fg); }
+
+  &--xs { --avatar-size: 18px; }
+  &--sm { --avatar-size: 20px; }
+  &--md { --avatar-size: 32px; }
+  &--lg { --avatar-size: 40px; }
+
+  // Organisations/accounts are square — people are round
+  &--org { border-radius: var(--radius-sm); }
+}
+
+.k-avatar-stack {
+  display: inline-flex;
+
+  > .k-avatar {
+    box-shadow: 0 0 0 2px var(--color-bg-surface);
+    + .k-avatar { margin-left: -6px; }
+  }
+}
+
+// Person reference: avatar + name, used in table cells and metadata
+.k-person {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1-5);
+  min-width: 0;
+
+  &__name { @include truncate; }
+}

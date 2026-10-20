@@ -1,0 +1,394 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Workflow (document flow) — where a record sits in a cross-document process:
+// Purchase Request → Approval → PO → Goods Receipt → Supplier Invoice → Payment
+// Each node can link to the actual document. Not a wizard.
+// ---------------------------------------------------------------------------
+.k-flow {
+  @include reset-list;
+  display: flex;
+  align-items: stretch;
+  overflow-x: auto;
+  font-size: var(--font-size-sm);
+
+  &__step {
+    position: relative;
+    flex: 1 1 auto;
+    min-width: 128px;
+    padding: 8px 12px 8px 22px;
+    border: 1px solid var(--color-border);
+    border-right: 0;
+    background: var(--color-bg-surface);
+    color: var(--color-text-muted);
+
+    &:first-child { padding-left: 12px; border-radius: var(--radius-md) 0 0 var(--radius-md); }
+    &:last-child { border-right: 1px solid var(--color-border); border-radius: 0 var(--radius-md) var(--radius-md) 0; }
+
+    // Chevron separator
+    &:not(:last-child)::after,
+    &:not(:last-child)::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -8px;
+      z-index: 1;
+      width: 14px;
+      height: 14px;
+      border-top: 1px solid var(--color-border);
+      border-right: 1px solid var(--color-border);
+      background: inherit;
+      transform: translateY(-50%) rotate(45deg);
+    }
+
+    &:not(:last-child)::before { display: none; }
+
+    &.is-done {
+      background: var(--color-bg-surface);
+      color: var(--color-text-secondary);
+
+      .k-flow__name::before {
+        content: "";
+        display: inline-block;
+        width: 10px;
+        height: 6px;
+        margin: 0 6px 3px 0;
+        border-left: 1.8px solid var(--color-success);
+        border-bottom: 1.8px solid var(--color-success);
+        transform: rotate(-45deg);
+      }
+    }
+
+    &.is-current {
+      background: var(--color-primary-subtle);
+      color: var(--color-primary-text);
+      border-color: var(--color-primary-border);
+
+      + .k-flow__step { border-left-color: var(--color-primary-border); }
+      &::after { border-color: var(--color-primary-border); }
+
+      .k-flow__name { font-weight: var(--font-weight-semibold); }
+    }
+
+    &.is-blocked {
+      background: var(--color-error-subtle);
+      color: var(--color-error-text);
+    }
+  }
+
+  // Labels wrap rather than truncate: the document reference is the point
+  &__name {
+    display: block;
+    color: inherit;
+    font-weight: var(--font-weight-medium);
+    line-height: var(--line-height-snug);
+  }
+
+  &__doc {
+    display: block;
+    margin-top: 1px;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+    line-height: var(--line-height-snug);
+
+    a { color: var(--color-text-link); font-weight: var(--font-weight-regular); }
+  }
+
+  // Compact variant for record headers
+  &--compact .k-flow__step { min-width: 132px; padding-top: 5px; padding-bottom: 5px; }
+}
+
+// ---------------------------------------------------------------------------
+// Approval chain — who must approve, in which order, and what they decided.
+// ---------------------------------------------------------------------------
+.k-approval {
+  @include reset-list;
+  display: flex;
+  flex-direction: column;
+
+  &__step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 28px 1fr auto;
+    gap: var(--space-3);
+    align-items: start;
+    padding: 10px 0;
+
+    + .k-approval__step { border-top: 1px dashed var(--color-border); }
+  }
+
+  &__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 50%;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-semibold);
+
+    &[data-state="approved"] { border-color: var(--color-success); background: var(--color-success-subtle); color: var(--color-success); }
+    &[data-state="rejected"] { border-color: var(--color-error); background: var(--color-error-subtle); color: var(--color-error); }
+    &[data-state="current"] { border: 2px solid var(--color-primary); color: var(--color-primary-text); }
+    &[data-state="skipped"] { border-style: dashed; }
+  }
+
+  &__who { min-width: 0; }
+  &__name { font-weight: var(--font-weight-semibold); }
+  &__role { color: var(--color-text-muted); font-size: var(--font-size-sm); }
+
+  &__rule {
+    margin-top: 2px;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  &__comment {
+    margin-top: 6px;
+    padding: 6px 10px;
+    border-left: 2px solid var(--color-border-strong);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+  }
+
+  &__when {
+    text-align: right;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+  }
+}
+
+// Approval decision bar — sticky at the top of a record awaiting *my* decision
+.k-decision {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: 10px var(--space-4);
+  border: 1px solid var(--color-primary-border);
+  border-radius: var(--radius-md);
+  background: var(--color-primary-subtle);
+
+  &__text {
+    flex: 1;
+    min-width: 240px;
+    color: var(--color-text-primary);
+
+    strong { font-weight: var(--font-weight-semibold); }
+    small { display: block; color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+  }
+
+  &__actions { display: flex; gap: var(--space-2); }
+}
+
+// ---------------------------------------------------------------------------
+// Activity composer + feed (log a call, email, note, task)
+// ---------------------------------------------------------------------------
+.k-activity {
+  &__composer {
+    border: 1px solid var(--color-border-input);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-surface);
+
+    &:focus-within {
+      border-color: var(--color-focus-ring);
+      box-shadow: 0 0 0 1px var(--color-focus-ring);
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 56px;
+      padding: 8px 10px;
+      border: 0;
+      background: transparent;
+      resize: vertical;
+      font-size: var(--font-size-md);
+
+      &:focus { outline: none; }
+    }
+  }
+
+  &__composer-bar {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 4px 6px 4px 4px;
+    border-top: 1px solid var(--color-border-subtle);
+  }
+
+  &__type {
+    display: inline-flex;
+    gap: 2px;
+  }
+}
+
+// Task/follow-up row with due date emphasis
+.k-due {
+  font-size: var(--font-size-sm);
+  white-space: nowrap;
+  @include numeric;
+
+  &--overdue { color: var(--color-error-text); font-weight: var(--font-weight-semibold); }
+  &--today { color: var(--color-warning-text); font-weight: var(--font-weight-semibold); }
+}
+
+// ---------------------------------------------------------------------------
+// Audit log — field-level change history. Old values struck, new values plain.
+// ---------------------------------------------------------------------------
+.k-audit {
+  width: 100%;
+  font-size: var(--font-size-sm);
+
+  th, td {
+    padding: 7px var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-semibold);
+    background: var(--color-bg-surface-alt);
+    border-bottom-color: var(--color-border);
+  }
+
+  &__field { color: var(--color-text-secondary); white-space: nowrap; }
+
+  &__old {
+    color: var(--color-text-muted);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-border-strong);
+  }
+
+  &__arrow { color: var(--color-text-muted); padding: 0 4px; }
+
+  &__new { color: var(--color-text-primary); font-weight: var(--font-weight-medium); }
+
+  &__source {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-xs);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Kanban — only for stage-based work where people move items (pipeline,
+// service tickets). Columns show count + total value so the board is also a
+// report.
+// ---------------------------------------------------------------------------
+.k-board {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(248px, 1fr);
+  gap: var(--space-2);
+  min-height: 0;
+  overflow-x: auto;
+  padding-bottom: var(--space-2);
+
+  &__col {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-bg-sunken);
+
+    &.is-drop-target { box-shadow: inset 0 0 0 2px var(--color-primary); }
+
+    // Closed stages are narrower and muted — they're outcomes, not work
+    &--closed { background: transparent; border: 1px dashed var(--color-border-strong); }
+  }
+
+  &__head {
+    padding: 8px 10px 6px;
+    border-bottom: 2px solid var(--stage-color, var(--color-border-strong));
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+  }
+
+  &__count {
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+    @include numeric;
+  }
+
+  &__sum {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    @include numeric;
+
+    span { color: var(--color-text-muted); }
+  }
+
+  &__list {
+    @include reset-list;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px;
+    overflow-y: auto;
+  }
+
+  &__more {
+    padding: 6px 10px 8px;
+    font-size: var(--font-size-sm);
+  }
+}
+
+.k-kcard {
+  display: block;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface);
+  box-shadow: var(--shadow-xs);
+  cursor: grab;
+
+  &:hover { border-color: var(--color-border-strong); }
+  &:focus-visible { @include focus-ring(1px); }
+  &.is-dragging { opacity: 0.6; cursor: grabbing; box-shadow: var(--shadow-md); }
+
+  &__title {
+    display: block;
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    @include line-clamp(2);
+  }
+
+  &__account {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    @include truncate;
+    display: block;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: 6px;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+  }
+
+  &__value {
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-semibold);
+    @include numeric;
+  }
+
+  &__end { margin-left: auto; display: inline-flex; align-items: center; gap: var(--space-2); }
+
+  // Stale deal: no activity for > 14 days
+  &.is-stale { border-left: 2px solid var(--color-warning); }
+}

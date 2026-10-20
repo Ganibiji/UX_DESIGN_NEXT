@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+<style>
+  /* Documentation-only layout. Not part of the design system. */
+  .ds { display: grid; grid-template-columns: 196px minmax(0, 1fr); gap: var(--space-8); max-width: 1320px; margin: 0 auto; padding: var(--space-6) var(--page-pad-x) var(--space-16); }
+  .ds-toc { position: sticky; top: var(--space-6); align-self: start; font-size: var(--font-size-sm); }
+  .ds-toc ol { list-style: none; margin: 0; padding: 0; }
+  .ds-toc a { display: block; padding: 4px 10px; border-left: 2px solid var(--color-border); color: var(--color-text-secondary); }
+  .ds-toc a:hover { color: var(--color-text-primary); text-decoration: none; border-left-color: var(--color-border-strong); }
+  .ds-toc .k-text-label { display: block; margin: 14px 0 4px 12px; }
+  .ds section.ds-sec { padding-bottom: var(--space-10); scroll-margin-top: var(--space-4); }
+  .ds section.ds-sec + section.ds-sec { padding-top: var(--space-8); border-top: 1px solid var(--color-border); }
+  .ds h2.ds-h { font-size: var(--font-size-xl); font-weight: 600; margin-bottom: 4px; }
+  .ds h3.ds-h3 { font-size: var(--font-size-md); font-weight: 600; margin: var(--space-6) 0 var(--space-2); }
+  .ds .ds-lead { color: var(--color-text-secondary); max-width: 760px; margin-bottom: var(--space-4); }
+  .ds-principles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); }
+  .ds-principles > div { padding: var(--space-4); }
+  .ds-principles > div + div { border-left: 1px solid var(--color-border-subtle); }
+  .ds-principles b { display: block; margin-bottom: 4px; }
+  .ds-principles p { color: var(--color-text-secondary); font-size: var(--font-size-sm); }
+  .ds-swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(178px, 1fr)); gap: var(--space-2); }
+  .ds-sw { display: flex; gap: var(--space-2); align-items: center; padding: 6px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-bg-surface); font-size: var(--font-size-xs); min-width: 0; }
+  .ds-sw i { flex: none; width: 32px; height: 32px; border-radius: var(--radius-xs); box-shadow: inset 0 0 0 1px rgba(127,127,127,.25); }
+  .ds-sw code { display: block; color: var(--color-text-primary); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ds-sw span { color: var(--color-text-muted); font-family: var(--font-family-mono); }
+  .ds-specimen { width: 100%; background: var(--color-bg-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); }
+  .ds-specimen td, .ds-specimen th { padding: 10px var(--space-4); border-bottom: 1px solid var(--color-border-subtle); text-align: left; vertical-align: middle; }
+  .ds-specimen th { font-size: var(--font-size-sm); color: var(--color-text-muted); font-weight: 600; background: var(--color-bg-surface-alt); }
+  .ds-specimen tr:last-child td { border-bottom: 0; }
+  .ds-specimen code { color: var(--color-text-secondary); font-size: 11px; }
+  .ds-matrix { overflow-x: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); }
+  .ds-matrix table { width: 100%; min-width: 860px; }
+  .ds-matrix th, .ds-matrix td { padding: 12px; border-bottom: 1px solid var(--color-border-subtle); text-align: left; vertical-align: middle; font-size: var(--font-size-sm); }
+  .ds-matrix thead th { color: var(--color-text-muted); font-weight: 600; background: var(--color-bg-surface-alt); white-space: nowrap; }
+  .ds-matrix tbody th { color: var(--color-text-secondary); font-weight: 600; white-space: nowrap; width: 110px; }
+  .ds-matrix tr:last-child > * { border-bottom: 0; }
+  .ds-demo { padding: var(--space-4); border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-surface); }
+  .ds-row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .ds-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+  .ds-cols-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-4); }
+  .ds-themes { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--color-border); border-radius: var(--radius-md); overflow: hidden; }
+  .ds-themes > div { padding: var(--space-4); background: var(--color-bg-page); color: var(--color-text-primary); }
+  .ds-rule { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-3); }
+  .ds-do, .ds-dont { padding: 10px 12px; border-radius: var(--radius-sm); font-size: var(--font-size-sm); border-top: 3px solid; background: var(--color-bg-surface); border-left: 1px solid var(--color-border); border-right: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); }
+  .ds-do { border-top-color: var(--color-success); } .ds-dont { border-top-color: var(--color-error); }
+  .ds-do b { color: var(--color-success-text); } .ds-dont b { color: var(--color-error-text); }
+  .ds-space { display: flex; align-items: flex-end; gap: var(--space-4); flex-wrap: wrap; }
+  .ds-space div { text-align: center; font-size: 11px; color: var(--color-text-muted); }
+  .ds-space i { display: block; background: var(--color-primary-subtle-hover); border: 1px solid var(--color-primary-border); margin: 0 auto 4px; }
+  .ds pre { margin: 0; padding: var(--space-4); overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-bg-sunken); font-family: var(--font-family-mono); font-size: 12px; line-height: 1.55; color: var(--color-text-primary); }
+  @media (max-width: 1199px) { .ds { grid-template-columns: 1fr; } .ds-toc { display: none; } .ds-principles { grid-template-columns: 1fr 1fr; } .ds-principles > div:nth-child(3) { border-left: 0; } .ds-principles > div:nth-child(n+3) { border-top: 1px solid var(--color-border-subtle); } }
+  @media (max-width: 899px) { .ds-cols, .ds-cols-3, .ds-themes, .ds-rule { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="ds">
+<main class="k-main" id="main" tabindex="-1">
+<div class="ds">
+  <nav class="ds-toc" aria-label="On this page">
+    <ol>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#screens">Screens</a></li>
+      <li><span class="k-text-label">Foundations</span></li>
+      <li><a href="#color">Colour</a></li>
+      <li><a href="#themes">Light &amp; dark</a></li>
+      <li><a href="#type">Typography</a></li>
+      <li><a href="#space">Spacing &amp; shape</a></li>
+      <li><a href="#density">Density</a></li>
+      <li><span class="k-text-label">Components</span></li>
+      <li><a href="#buttons">Actions</a></li>
+      <li><a href="#inputs">Inputs</a></li>
+      <li><a href="#choice">Choice controls</a></li>
+      <li><a href="#pickers">Pickers &amp; upload</a></li>
+      <li><a href="#nav">Navigation</a></li>
+      <li><a href="#status">Status</a></li>
+      <li><a href="#feedback">Feedback</a></li>
+      <li><a href="#overlays">Overlays</a></li>
+      <li><a href="#data">Data display</a></li>
+      <li><a href="#business">Business</a></li>
+      <li><span class="k-text-label">Guidance</span></li>
+      <li><a href="#responsive">Responsive</a></li>
+      <li><a href="#a11y">Accessibility</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+    </ol>
+  </nav>
+
+  <div>
+    <!-- ================================================================ -->
+    <section class="ds-sec" id="principles">
+      <div class="k-text-label">Kestrel Design System · v1.0 · for Kestrel Business Suite (ERP + CRM)</div>
+      <h1 class="k-text-page-title u-mt-2">Built for people who use it eight hours a day</h1>
+      <p class="ds-lead u-mt-2">Kestrel serves accountants, sales managers, buyers and warehouse operators. Every decision is judged by one question: does this help someone finish real work faster and with fewer mistakes? Visual polish follows from that — never the other way round.</p>
+      <div class="ds-principles">
+        <div><b>1 · State before style</b><p>Users must always know what a record is, what state it’s in, and what happens next. Status, document flow and save state are always visible.</p></div>
+        <div><b>2 · Density with hierarchy</b><p>Show a lot, but rank it. Tables and forms are compact; type weight, alignment and whitespace — not boxes — create order.</p></div>
+        <div><b>3 · Calm by default</b><p>Neutral surfaces, one brand blue, colour only for meaning. If everything is highlighted, nothing is.</p></div>
+        <div><b>4 · Recoverable</b><p>Undo instead of “Are you sure?”. Confirm only what can’t be reversed, and say exactly what will happen.</p></div>
+      </div>
+      <h3 class="ds-h3">Questions every screen answers</h3>
+      <div class="ds-cols">
+        <table class="ds-specimen"><tbody>
+          <tr><td><b>What is the user trying to do?</b></td><td class="u-secondary">Primary action is singular and visible without scrolling.</td></tr>
+          <tr><td><b>What matters most here?</b></td><td class="u-secondary">Key facts strip on records; KPIs before charts on dashboards.</td></tr>
+          <tr><td><b>How often is it used?</b></td><td class="u-secondary">Daily screens get shortcuts, saved views and compact density.</td></tr>
+          <tr><td><b>Beginner or power user?</b></td><td class="u-secondary">Labels always visible; shortcuts are additive, never required.</td></tr>
+        </tbody></table>
+        <table class="ds-specimen"><tbody>
+          <tr><td><b>What if something goes wrong?</b></td><td class="u-secondary">Every state is designed: empty, error, partial, offline, no access.</td></tr>
+          <tr><td><b>Can it be done quickly?</b></td><td class="u-secondary">Inline edit, bulk actions, smart defaults, remembered filters.</td></tr>
+          <tr><td><b>Is the record’s state clear?</b></td><td class="u-secondary">Status + document flow + approval chain + audit history.</td></tr>
+          <tr><td><b>What happens next?</b></td><td class="u-secondary">Decision bars and “next step” menus name the next action.</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <section class="ds-sec" id="screens">
+      <h2 class="ds-h">Reference screens</h2>
+      <p class="ds-lead">Working prototypes built only from the system. Change theme and density from the profile menu (top right) — every screen follows.</p>
+      <table class="ds-specimen">
+        <thead><tr><th>Screen</th><th>Pattern</th><th>Who uses it, and what it demonstrates</th></tr></thead>
+        <tbody>
+          <tr><td><a href="dashboard.html">Sales dashboard</a></td><td>Dashboard</td><td class="u-secondary">Sales manager. KPI → trend → operational → detail hierarchy; one filter row; chart with tooltip and table view.</td></tr>
+          <tr><td><a href="customers.html">Accounts</a></td><td>CRUD list</td><td class="u-secondary">Sales &amp; finance. Saved views, filters as tags, sort/multi-sort, resize, reorder, column visibility, inline edit, bulk bar, archive with undo, no-results state.</td></tr>
+          <tr><td><a href="customer-new.html">New account</a> · <a href="customer-new.html?mode=edit">Edit</a></td><td>Create / edit form</td><td class="u-secondary">Sections not cards, 3-column grid, required/optional, conditional fields, auto-derived values, validation + error summary, duplicate hint, sticky save state, discard guard.</td></tr>
+          <tr><td><a href="account.html">ABC Technologies</a></td><td>Detail (CRM 360)</td><td class="u-secondary">Account overview, contacts, opportunities, orders, invoices, activities, documents, notes, timeline.</td></tr>
+          <tr><td><a href="sales-order.html">SO-10234</a></td><td>Detail + approval</td><td class="u-secondary">Record header, key facts, document flow, approval decision, line items with expandable rows, tax summary, timeline, field-level audit history, typed-confirmation cancel.</td></tr>
+          <tr><td><a href="pipeline.html">Opportunities</a></td><td>Kanban</td><td class="u-secondary">Stage work: drag or Alt+Arrow to move, totals per stage, stale deals, mandatory loss reason, undo.</td></tr>
+          <tr><td><a href="purchase-request.html">PR-2026-0418</a></td><td>Approval workflow</td><td class="u-secondary">Approver. Procure-to-pay flow, rule-based approval chain, budget check, approve with undo, reject / request changes.</td></tr>
+          <tr><td><a href="stock.html">Stock on hand</a></td><td>Master–detail</td><td class="u-secondary">Inventory operator. Location tree (keyboard), stock grid with availability logic, inventory flow, adjustment drawer.</td></tr>
+          <tr><td><a href="states.html">UX states</a></td><td>States</td><td class="u-secondary">Loading, empty, no results, no permission, error, partial data, offline, success, warning, unsaved, session expired, merged record.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ================================================================ -->
+    <section class="ds-sec" id="color">
+      <h2 class="ds-h">Colour</h2>
+      <p class="ds-lead">Every colour is a semantic token. Components never reference raw hex values. Values below are read live from the current theme.</p>
+      <h3 class="ds-h3">Surfaces &amp; text</h3>
+      <div class="ds-swatches" data-swatches="bg-page bg-surface bg-surface-alt bg-sunken bg-elevated bg-selected text-primary text-secondary text-muted text-disabled text-link border-subtle border border-strong border-input focus-ring"></div>
+      <h3 class="ds-h3">Brand &amp; semantic</h3>
+      <div class="ds-swatches" data-swatches="primary primary-hover primary-active primary-subtle primary-text success success-subtle success-text warning warning-subtle warning-text error error-subtle error-text info info-subtle info-text"></div>
+      <h3 class="ds-h3">Shell &amp; charts</h3>
+      <div class="ds-swatches" data-swatches="shell-bg shell-hover shell-text nav-active-bg nav-indicator chart-primary chart-primary-muted chart-compare chart-grid"></div>
+      <h3 class="ds-h3">Rules</h3>
+      <div class="ds-rule">
+        <div class="ds-do"><b>Do</b> — use colour only when it carries meaning: status, validation, the one primary action, the current location. Pair it with a shape, icon or text.</div>
+        <div class="ds-dont"><b>Don’t</b> — colour-code modules, rows or categories for decoration; use status colours for chart series; put coloured text on coloured fills without the “-text” token.</div>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="themes">
+      <h2 class="ds-h">Light &amp; dark</h2>
+      <p class="ds-lead">Dark is designed, not inverted: surfaces lighten as they rise, shadows give way to hairline borders, text is off-white, and status hues step down in saturation. Both panes below are live components scoped with <code>data-theme</code>.</p>
+      <div class="ds-themes">
+        <div data-theme="light" id="theme-demo-light"></div>
+        <div data-theme="dark" id="theme-demo-dark"></div>
+      </div>
+      <table class="ds-specimen u-mt-4">
+        <thead><tr><th>Decision</th><th>Light</th><th>Dark</th></tr></thead>
+        <tbody>
+          <tr><td>Page vs surface</td><td class="u-secondary">Soft gray page (#F4F5F7), white surfaces</td><td class="u-secondary">Near-black page (#121519), surface one step lighter (#171B21)</td></tr>
+          <tr><td>Elevation</td><td class="u-secondary">Borders + very light shadow</td><td class="u-secondary">Lighter surface (#232932) + border; shadows nearly invisible</td></tr>
+          <tr><td>Primary button</td><td class="u-secondary">#1F5EAD, white text 6.8:1</td><td class="u-secondary">#3572C4, white text 4.9:1 (lighter blue would fail contrast)</td></tr>
+          <tr><td>Text</td><td class="u-secondary">#1B2027 on white, 16:1</td><td class="u-secondary">#E3E7EC, not pure white — less halation on long reads</td></tr>
+          <tr><td>Status</td><td class="u-secondary">Saturated 600–700 steps</td><td class="u-secondary">Desaturated 300–400 steps; tinted fills are deep, not pastel</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="ds-sec" id="type">
+      <h2 class="ds-h">Typography</h2>
+      <p class="ds-lead">Public Sans for UI — neutral, highly legible at 12–13px, open numerals. JetBrains Mono only for identifiers (SO-10234, GSTIN, SKU) where 0/O and 1/l must not be confused. All figures in tables use tabular numbers.</p>
+      <table class="ds-specimen">
+        <thead><tr><th style="width:190px">Token</th><th style="width:110px">Size / weight</th><th>Example · use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--font-size-3xl</code></td><td>28 / 600</td><td><span class="k-kpi__value">₹6.84 <small>Cr</small></span> <span class="u-muted u-sm">KPI figures only</span></td></tr>
+          <tr><td><code>--font-size-2xl</code></td><td>22 / 600</td><td><span class="k-text-page-title">Sales orders</span> <span class="u-muted u-sm">page &amp; record titles</span></td></tr>
+          <tr><td><code>--font-size-xl</code></td><td>18 / 600</td><td><span class="k-text-title">Cancel SO-10234?</span> <span class="u-muted u-sm">dialog titles</span></td></tr>
+          <tr><td><code>--font-size-lg</code></td><td>15 / 600</td><td><span class="k-text-section">Billing address</span> <span class="u-muted u-sm">form sections, drawers</span></td></tr>
+          <tr><td><code>--font-size-md</code></td><td>13 / 400</td><td>Default body, controls and table cells. Payment terms change to Net 45.</td></tr>
+          <tr><td><code>--font-size-sm</code></td><td>12 / 400</td><td class="k-text-small">Helper text, metadata, badges, compact tables</td></tr>
+          <tr><td><code>--font-size-xs</code></td><td>11 / 600</td><td><span class="k-text-label">Section label</span> <span class="u-muted u-sm">overlines, never body text</span></td></tr>
+          <tr><td><code>--font-family-mono</code></td><td>12 / 400</td><td><span class="k-id">SO-10234 · 27AABCA1234F1Z5 · CBL-4C25</span></td></tr>
+        </tbody>
+      </table>
+      <h3 class="ds-h3">Number &amp; date formats</h3>
+      <div class="ds-cols">
+        <table class="ds-specimen"><tbody>
+          <tr><td>Currency in tables</td><td class="u-num u-text-right">₹8,45,000</td></tr>
+          <tr><td>Currency in documents</td><td class="u-num u-text-right">₹8,45,000.00</td></tr>
+          <tr><td>Compact (dashboards)</td><td class="u-num u-text-right">₹96.4 L · ₹4.50 Cr</td></tr>
+          <tr><td>Negative</td><td class="u-num u-text-right k-text-error">−₹2,120</td></tr>
+        </tbody></table>
+        <table class="ds-specimen"><tbody>
+          <tr><td>Date (everywhere)</td><td>12 Oct 2026</td></tr>
+          <tr><td>Date + time</td><td>20 Oct 2026, 10:12</td></tr>
+          <tr><td>Relative (feeds &lt; 7 days)</td><td>Today 10:12 · Yesterday</td></tr>
+          <tr><td>Why DD MMM YYYY</td><td class="u-secondary">Unambiguous across IN/US/EU users</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="space">
+      <h2 class="ds-h">Spacing &amp; shape</h2>
+      <p class="ds-lead">A 4px grid with deliberately few steps. Radii stay small (2–6px): large radii read as consumer UI and waste corner space in dense layouts.</p>
+      <div class="ds-demo">
+        <div class="ds-space">
+          <div><i style="width:4px;height:4px"></i>1 · 4</div><div><i style="width:8px;height:8px"></i>2 · 8</div><div><i style="width:12px;height:12px"></i>3 · 12</div><div><i style="width:16px;height:16px"></i>4 · 16</div><div><i style="width:20px;height:20px"></i>5 · 20</div><div><i style="width:24px;height:24px"></i>6 · 24</div><div><i style="width:32px;height:32px"></i>8 · 32</div><div><i style="width:40px;height:40px"></i>10 · 40</div><div><i style="width:48px;height:48px"></i>12 · 48</div>
+        </div>
+      </div>
+      <div class="ds-cols u-mt-4">
+        <table class="ds-specimen"><thead><tr><th>Radius</th><th>Value</th><th>Use</th></tr></thead><tbody>
+          <tr><td><code>--radius-xs</code></td><td>2px</td><td class="u-secondary">Badges, checkboxes, status fills</td></tr>
+          <tr><td><code>--radius-sm</code></td><td>3px</td><td class="u-secondary">Buttons, inputs, tags</td></tr>
+          <tr><td><code>--radius-md</code></td><td>4px</td><td class="u-secondary">Panels, grids, menus</td></tr>
+          <tr><td><code>--radius-lg</code></td><td>6px</td><td class="u-secondary">Dialogs</td></tr>
+        </tbody></table>
+        <table class="ds-specimen"><thead><tr><th>Elevation</th><th>Use</th></tr></thead><tbody>
+          <tr><td><code>--shadow-xs</code></td><td class="u-secondary">Kanban cards (draggable affordance)</td></tr>
+          <tr><td><code>--shadow-sm</code></td><td class="u-secondary">Rarely; static floating examples</td></tr>
+          <tr><td><code>--shadow-md</code></td><td class="u-secondary">Menus, popovers, date pickers</td></tr>
+          <tr><td><code>--shadow-lg</code></td><td class="u-secondary">Dialogs, drawers, toasts</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="density">
+      <h2 class="ds-h">Density</h2>
+      <p class="ds-lead">Three modes change geometry only — never colour, never body text below 12px. <b>Comfortable</b> is the default; <b>Compact</b> is offered to power users in finance and inventory; <b>Spacious</b> helps occasional and touch users. Touch devices never drop below 36px targets.</p>
+      <div class="ds-cols-3">
+        <div data-density="compact"><div class="k-text-label u-mb-2">Compact · 28px rows</div><div class="k-grid" id="dens-c"></div></div>
+        <div data-density="comfortable"><div class="k-text-label u-mb-2">Comfortable · 36px rows (default)</div><div class="k-grid" id="dens-m"></div></div>
+        <div data-density="spacious"><div class="k-text-label u-mb-2">Spacious · 44px rows</div><div class="k-grid" id="dens-s"></div></div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <section class="ds-sec" id="buttons">
+      <h2 class="ds-h">Actions</h2>
+      <p class="ds-lead">One primary button per region. Secondary for everything else; subtle for toolbars and rows; danger only for irreversible operations. Labels are verbs that name the result (“Approve revision”, not “OK”).</p>
+      <div class="ds-matrix"><table>
+        <thead><tr><th></th><th>Default</th><th>Hover</th><th>Focus</th><th>Active</th><th>Selected</th><th>Disabled</th><th>Loading</th></tr></thead>
+        <tbody id="btn-matrix"></tbody>
+      </table></div>
+      <h3 class="ds-h3">Split button, group, icon buttons, dropdown</h3>
+      <div class="ds-demo ds-row">
+        <div class="k-split"><button class="k-btn k-btn--primary">Save</button><div class="k-dropdown"><button class="k-btn k-btn--primary" aria-label="More save options" aria-haspopup="menu" aria-expanded="false" aria-controls="ds-split" data-menu><svg class="k-icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+          <div class="k-menu" id="ds-split" role="menu" hidden><button class="k-menu__item" role="menuitem">Save &amp; new<span class="k-menu__shortcut">Ctrl Shift S</span></button><button class="k-menu__item" role="menuitem">Save as draft</button><button class="k-menu__item" role="menuitem">Save &amp; submit for approval</button></div></div></div>
+        <div class="k-btn-group" role="group" aria-label="View"><button class="k-btn" aria-pressed="true"><svg class="k-icon" aria-hidden="true"><use href="#i-list"/></svg>List</button><button class="k-btn" aria-pressed="false"><svg class="k-icon" aria-hidden="true"><use href="#i-board"/></svg>Board</button></div>
+        <button class="k-btn k-btn--icon" aria-label="Print" data-tip="Print"><svg class="k-icon" aria-hidden="true"><use href="#i-printer"/></svg></button>
+        <button class="k-btn k-btn--subtle k-btn--icon" aria-label="Export" data-tip="Export"><svg class="k-icon" aria-hidden="true"><use href="#i-download"/></svg></button>
+        <button class="k-btn k-btn--danger-outline">Cancel order</button>
+        <button class="k-btn k-btn--link">View history</button>
+        <button class="k-btn">Filters <span class="k-btn__count">3</span></button>
+        <button class="k-btn k-btn--sm">Small</button>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="inputs">
+      <h2 class="ds-h">Inputs</h2>
+      <p class="ds-lead">Labels above fields, always visible. Placeholder shows format, never the label. Errors say how to fix the problem. Read-only values drop the border so they are not mistaken for editable fields.</p>
+      <div class="ds-matrix"><table>
+        <thead><tr><th></th><th>Default</th><th>Hover</th><th>Focus</th><th>Error</th><th>Success</th><th>Read-only</th><th>Disabled</th><th>Loading</th></tr></thead>
+        <tbody>
+          <tr><th>Text input</th>
+            <td><input class="k-input" aria-label="Default" placeholder="Rahul Mehta"></td>
+            <td><input class="k-input" aria-label="Hover" value="Rahul Mehta" style="border-color:var(--color-border-input-hover)"></td>
+            <td><input class="k-input" aria-label="Focus" value="Rahul Meh" style="border-color:var(--color-focus-ring);box-shadow:0 0 0 1px var(--color-focus-ring)"></td>
+            <td><input class="k-input" aria-label="Error" value="rahul@abc" aria-invalid="true"></td>
+            <td><input class="k-input is-valid" aria-label="Success" value="27AABCA1234F1Z5"></td>
+            <td><input class="k-input" aria-label="Read-only" value="CUST-00142" readonly></td>
+            <td><input class="k-input" aria-label="Disabled" value="INR" disabled></td>
+            <td><div class="k-input-group is-loading"><input class="k-input" aria-label="Loading" value="411006" aria-busy="true"></div></td></tr>
+          <tr><th>Select</th>
+            <td><select class="k-select" aria-label="Default"><option>Net 30</option></select></td>
+            <td><select class="k-select" aria-label="Hover" style="border-color:var(--color-border-input-hover)"><option>Net 30</option></select></td>
+            <td><select class="k-select" aria-label="Focus" style="border-color:var(--color-focus-ring);box-shadow:0 0 0 1px var(--color-focus-ring)"><option>Net 30</option></select></td>
+            <td><select class="k-select" aria-label="Error" aria-invalid="true"><option>Select…</option></select></td>
+            <td><select class="k-select is-valid" aria-label="Success"><option>Net 45</option></select></td>
+            <td><input class="k-input" aria-label="Read-only select" value="Net 30" readonly></td>
+            <td><select class="k-select" aria-label="Disabled" disabled><option>Net 30</option></select></td>
+            <td><div class="k-input-group is-loading"><select class="k-select" aria-label="Loading options" disabled><option>Loading…</option></select></div></td></tr>
+        </tbody>
+      </table></div>
+      <h3 class="ds-h3">Field anatomy</h3>
+      <div class="ds-demo">
+        <div class="k-form-grid k-form-grid--3">
+          <div class="k-field"><label class="k-label" for="d-email">Accounts email <span class="k-label__req" aria-hidden="true">*</span></label><input class="k-input" id="d-email" value="accounts@abctech" aria-invalid="true" aria-describedby="d-email-m" aria-required="true"><span class="k-field__message k-field__message--error" id="d-email-m"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg>Enter an email like accounts@company.in</span></div>
+          <div class="k-field"><label class="k-label" for="d-credit">Credit limit <span class="k-label__optional">optional</span></label><div class="k-input-group"><span class="k-input-group__addon">₹</span><input class="k-input k-input--num" id="d-credit" value="30,00,000" aria-describedby="d-credit-m"></div><span class="k-field__message k-field__message--warning" id="d-credit-m"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg>Above ₹25,00,000 — needs Finance approval</span></div>
+          <div class="k-field"><label class="k-label" for="d-code">Account code</label><input class="k-input" id="d-code" readonly value="Generated on save" aria-describedby="d-code-h"><span class="k-field__help" id="d-code-h">Next number: CUST-00715</span></div>
+          <div class="k-field k-span-2"><label class="k-label" for="d-notes">Internal notes <span class="k-label__hint">42 / 500</span></label><textarea class="k-textarea" id="d-notes">Deliveries only via north gate; call security.</textarea></div>
+          <div class="k-field"><label class="k-label" for="d-phone">Phone</label><div class="k-input-group"><span class="k-input-group__addon">+91</span><input class="k-input" id="d-phone" value="98220 11220"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="choice">
+      <h2 class="ds-h">Choice controls</h2>
+      <p class="ds-lead">Checkbox for independent options, radio for one-of-few (≤ 5, otherwise a select), switch only for settings that take effect immediately — never inside a form with a Save button.</p>
+      <div class="ds-matrix"><table>
+        <thead><tr><th></th><th>Unchecked</th><th>Checked</th><th>Indeterminate</th><th>Focus</th><th>Error</th><th>Disabled</th><th>Disabled checked</th></tr></thead>
+        <tbody>
+          <tr><th>Checkbox</th><td><label class="k-check"><input type="checkbox"><span>Credit hold</span></label></td><td><label class="k-check"><input type="checkbox" checked><span>Credit hold</span></label></td><td><label class="k-check"><input type="checkbox" class="js-indet"><span>3 of 8</span></label></td><td><label class="k-check"><input type="checkbox" style="outline:2px solid var(--color-focus-ring);outline-offset:2px"><span>Focused</span></label></td><td><label class="k-check"><input type="checkbox" aria-invalid="true"><span>Accept terms</span></label></td><td><label class="k-check"><input type="checkbox" disabled><span>Locked</span></label></td><td><label class="k-check"><input type="checkbox" disabled checked><span>Locked</span></label></td></tr>
+          <tr><th>Radio</th><td><label class="k-radio"><input type="radio" name="dr1"><span>Individual</span></label></td><td><label class="k-radio"><input type="radio" name="dr2" checked><span>Company</span></label></td><td class="u-muted">n/a</td><td><label class="k-radio"><input type="radio" name="dr3" style="outline:2px solid var(--color-focus-ring);outline-offset:2px"><span>Focused</span></label></td><td><label class="k-radio"><input type="radio" name="dr4" aria-invalid="true"><span>Required</span></label></td><td><label class="k-radio"><input type="radio" disabled><span>Locked</span></label></td><td><label class="k-radio"><input type="radio" disabled checked><span>Locked</span></label></td></tr>
+          <tr><th>Switch</th><td><label class="k-switch"><input type="checkbox" role="switch"><span class="k-switch__state">Off</span></label></td><td><label class="k-switch"><input type="checkbox" role="switch" checked><span class="k-switch__state">On</span></label></td><td class="u-muted">n/a</td><td><label class="k-switch"><input type="checkbox" role="switch" style="outline:2px solid var(--color-focus-ring);outline-offset:2px"><span class="k-switch__state">Off</span></label></td><td class="u-muted">n/a</td><td><label class="k-switch"><input type="checkbox" role="switch" disabled><span class="k-switch__state">Off</span></label></td><td><label class="k-switch"><input type="checkbox" role="switch" disabled checked><span class="k-switch__state">On</span></label></td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section class="ds-sec" id="pickers">
+      <h2 class="ds-h">Pickers, autocomplete &amp; upload</h2>
+      <p class="ds-lead">Typing is always allowed — pickers assist, they don’t gate. Autocomplete highlights the match and shows a disambiguating detail (code, city).</p>
+      <div class="ds-cols">
+        <div>
+          <div class="k-text-label u-mb-2">Autocomplete (open)</div>
+          <div class="k-field k-combobox" style="max-width:360px">
+            <label class="k-label" for="d-ac">Customer</label>
+            <div class="k-input-group"><span class="k-input-group__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg></span><input class="k-input" id="d-ac" value="pack" role="combobox" aria-expanded="true" aria-controls="d-ac-l" style="border-color:var(--color-focus-ring);box-shadow:0 0 0 1px var(--color-focus-ring)"></div>
+            <ul class="k-listbox k-listbox--static" id="d-ac-l" role="listbox" style="position:static;margin-top:4px;max-width:none">
+              <li class="k-option is-active" role="option" aria-selected="false"><span class="k-option__main">Indus Valley <mark>Pack</mark>aging</span><span class="k-option__meta">CUST-00198 · Vapi</span></li>
+              <li class="k-option" role="option" aria-selected="true"><span class="k-option__main">Trident <mark>Pack</mark>aging Industries</span><span class="k-option__meta">CUST-00129 · Vadodara</span></li>
+              <li class="k-listbox__footer">2 of 2 matches · <a href="#">Create “pack…” as new account</a></li>
+            </ul>
+          </div>
+          <div class="k-text-label u-mt-4 u-mb-2">Time picker</div>
+          <div class="u-flex u-gap-3 u-items-start">
+            <div class="k-field" style="width:120px"><label class="k-label" for="d-time">Start</label><div class="k-input-group"><input class="k-input" id="d-time" value="10:30"><span class="k-input-group__icon k-input-group__icon--end"><svg class="k-icon" aria-hidden="true"><use href="#i-clock"/></svg></span></div></div>
+            <ul class="k-timelist" role="listbox" aria-label="Start time" style="margin-top:22px;max-height:150px"><li><button role="option" aria-selected="false">10:00</button></li><li><button role="option" aria-selected="false">10:15</button></li><li><button role="option" aria-selected="true">10:30</button></li><li><button role="option" aria-selected="false">10:45</button></li><li><button role="option" aria-selected="false">11:00</button></li></ul>
+          </div>
+        </div>
+        <div>
+          <div class="k-text-label u-mb-2">Date range picker</div>
+          <div class="k-datepicker" role="dialog" aria-label="Choose date range">
+            <ul class="k-datepicker__presets">
+              <li><button aria-pressed="false">Today</button></li><li><button aria-pressed="false">Last 7 days</button></li><li><button aria-pressed="true">This month</button></li><li><button aria-pressed="false">This quarter</button></li><li><button aria-pressed="false">FY 2026-27</button></li><li><button aria-pressed="false">Custom…</button></li>
+            </ul>
+            <div class="k-datepicker__cal">
+              <div class="k-datepicker__head"><button class="k-btn k-btn--subtle k-btn--sm k-btn--icon" aria-label="Previous month"><svg class="k-icon" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><span>October 2026</span><button class="k-btn k-btn--subtle k-btn--sm k-btn--icon" aria-label="Next month"><svg class="k-icon" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></div>
+              <table class="k-datepicker__grid" role="grid" id="cal"></table>
+              <div class="k-datepicker__foot"><span>01 Oct – 20 Oct 2026</span><span class="u-flex u-gap-2"><button class="k-btn k-btn--sm">Cancel</button><button class="k-btn k-btn--primary k-btn--sm">Apply</button></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="k-text-label u-mt-6 u-mb-2">Upload — default, drag-over, progress, error</div>
+      <div class="ds-cols">
+        <div class="k-upload"><label class="k-upload__zone"><svg class="k-icon" aria-hidden="true"><use href="#i-upload"/></svg><span><strong>Choose files</strong> or drag here <span class="k-upload__hint">· PDF, JPG, XLSX · 25 MB</span></span><input type="file" class="k-sr-only"></label>
+          <div class="k-upload__zone is-dragover" aria-hidden="true"><svg class="k-icon" aria-hidden="true"><use href="#i-upload"/></svg><span><strong>Drop to attach</strong> to SO-10234</span></div></div>
+        <ul class="k-upload__list">
+          <li class="k-upload__file"><svg class="k-icon" aria-hidden="true"><use href="#i-file"/></svg><span class="k-upload__name">GRN_PNQ_7781.pdf</span><span class="k-upload__meta">Uploading · 42%</span><button class="k-row-action" aria-label="Cancel upload"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button><div class="k-upload__progress"><span style="width:42%"></span></div></li>
+          <li class="k-upload__file is-error"><svg class="k-icon" aria-hidden="true" style="color:var(--color-error)"><use href="#i-alert-circle"/></svg><span class="k-upload__name">scan_0012.tiff</span><span class="k-upload__meta">TIFF not supported — save as PDF</span><button class="k-row-action" aria-label="Remove"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button></li>
+          <li class="k-upload__file"><svg class="k-icon" aria-hidden="true" style="color:var(--color-success)"><use href="#i-check-circle"/></svg><a class="k-upload__name" href="#">Invoice_INV-26-04412.pdf</a><span class="k-upload__meta">212 KB</span><button class="k-row-action" aria-label="More"><svg class="k-icon" aria-hidden="true"><use href="#i-more"/></svg></button></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="nav">
+      <h2 class="ds-h">Navigation</h2>
+      <p class="ds-lead">Header = where am I (company, environment) and global tools. Sidebar = three levels of weight: work queue with counts, modules (icon + semibold), screens (indented, no icons). Breadcrumbs show location, tabs switch views of one record.</p>
+      <div class="ds-demo u-flex u-col u-gap-4">
+        <nav class="k-breadcrumb" aria-label="Breadcrumb example"><ol><li><a href="#">Home</a></li><li><a href="#">Sales</a></li><li><a href="#">Sales orders</a></li><li><span aria-current="page">SO-10234</span></li></ol></nav>
+        <div class="k-tabs" role="tablist" aria-label="Tabs example"><button class="k-tab" role="tab" aria-selected="true">Overview</button><button class="k-tab" role="tab" aria-selected="false">Items <span class="k-tab__count">7</span></button><button class="k-tab" role="tab" aria-selected="false">Billing <span class="k-tab__error" aria-label="has errors"></span></button><button class="k-tab" role="tab" aria-selected="false" aria-disabled="true">Payments</button><button class="k-tab" role="tab" aria-selected="false">History</button></div>
+        <nav class="k-pagination" aria-label="Pagination example"><span class="k-pagination__range"><strong>26–50</strong> of <strong>1,284</strong></span><label class="k-pagination__size">Rows <select class="k-select k-select--sm"><option>25</option></select></label><span class="k-pagination__pages"><button class="k-pagination__page k-pagination__step" aria-label="Previous"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-left"/></svg></button><button class="k-pagination__page">1</button><button class="k-pagination__page" aria-current="page">2</button><button class="k-pagination__page">3</button><span class="k-pagination__gap">…</span><button class="k-pagination__page">52</button><button class="k-pagination__page k-pagination__step" aria-label="Next"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></button></span></nav>
+        <ol class="k-steps"><li class="is-done">Upload</li><li class="is-done">Map columns</li><li aria-current="step">Review</li><li>Import</li></ol>
+        <div class="u-flex u-gap-4 u-wrap u-items-start">
+          <ul class="k-menu k-menu--static" role="menu" aria-label="Menu example" style="position:static">
+            <li class="k-menu__label" role="presentation">Next steps</li>
+            <li role="none"><button class="k-menu__item" role="menuitem"><svg class="k-icon" aria-hidden="true"><use href="#i-truck"/></svg>Create delivery<span class="k-menu__shortcut">D</span></button></li>
+            <li role="none"><button class="k-menu__item is-active" role="menuitem"><svg class="k-icon" aria-hidden="true"><use href="#i-receipt"/></svg>Create invoice<span class="k-menu__shortcut">I</span></button></li>
+            <li role="none"><button class="k-menu__item" role="menuitem" aria-disabled="true"><svg class="k-icon" aria-hidden="true"><use href="#i-landmark"/></svg>Record payment</button></li>
+            <li class="k-menu__sep" role="separator"></li>
+            <li role="none"><button class="k-menu__item k-menu__item--danger" role="menuitem"><svg class="k-icon" aria-hidden="true"><use href="#i-x-circle"/></svg>Cancel order…</button></li>
+          </ul>
+          <ul class="k-menu k-menu--static" role="menu" aria-label="Column menu example" style="position:static">
+            <li class="k-menu__label" role="presentation">Show columns</li>
+            <li role="none"><button class="k-menu__item" role="menuitemcheckbox" aria-checked="true">Code</button></li>
+            <li role="none"><button class="k-menu__item" role="menuitemcheckbox" aria-checked="true">Industry</button></li>
+            <li role="none"><button class="k-menu__item" role="menuitemcheckbox" aria-checked="false">GSTIN</button></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="status">
+      <h2 class="ds-h">Status vocabulary</h2>
+      <p class="ds-lead">Quiet by default: marker + text, no pill. The marker’s <b>shape</b> repeats the meaning of its colour so status never depends on colour alone. The tinted “strong” form is reserved for record headers.</p>
+      <div class="ds-matrix"><table>
+        <thead><tr><th>Tone</th><th>Marker</th><th>Quiet (tables)</th><th>Strong (headers)</th><th>Document statuses</th></tr></thead>
+        <tbody>
+          <tr><th>neutral</th><td>○ ring</td><td><span class="k-status" data-tone="neutral">Draft</span></td><td><span class="k-status k-status--strong" data-tone="neutral">Draft</span></td><td class="u-secondary">Draft · New · Archived · Prospect</td></tr>
+          <tr><th>info</th><td>● dot</td><td><span class="k-status" data-tone="info">Submitted</span></td><td><span class="k-status k-status--strong" data-tone="info">Confirmed</span></td><td class="u-secondary">Submitted · Assigned · Confirmed · Open · Reserved</td></tr>
+          <tr><th>progress</th><td>◐ half</td><td><span class="k-status" data-tone="progress">Under review</span></td><td><span class="k-status k-status--strong" data-tone="progress">Processing</span></td><td class="u-secondary">Under review · Processing · Partially paid / delivered</td></tr>
+          <tr><th>warning</th><td>▲ triangle</td><td><span class="k-status" data-tone="warning">Pending</span></td><td><span class="k-status k-status--strong" data-tone="warning">Credit hold</span></td><td class="u-secondary">Pending · On hold · Credit hold · Below reorder · Changes requested</td></tr>
+          <tr><th>success</th><td>● dot</td><td><span class="k-status" data-tone="success">Approved</span></td><td><span class="k-status k-status--strong" data-tone="success">Completed</span></td><td class="u-secondary">Approved · Completed · Paid · Delivered · Won · Active</td></tr>
+          <tr><th>danger</th><td>◆ diamond</td><td><span class="k-status" data-tone="danger">Rejected</span></td><td><span class="k-status k-status--strong" data-tone="danger">Overdue</span></td><td class="u-secondary">Rejected · Overdue · Failed · Out of stock · Lost</td></tr>
+          <tr><th>muted</th><td>– dash</td><td><span class="k-status" data-tone="muted">Cancelled</span></td><td><span class="k-status k-status--strong" data-tone="muted">Cancelled</span></td><td class="u-secondary">Cancelled · Disqualified · Void</td></tr>
+        </tbody>
+      </table></div>
+      <h3 class="ds-h3">CRM lifecycles</h3>
+      <table class="ds-specimen">
+        <tbody>
+          <tr><th style="width:120px">Lead</th><td><span class="k-status" data-tone="neutral">New</span> → <span class="k-status" data-tone="info">Assigned</span> → <span class="k-status" data-tone="progress">Contacted</span> → <span class="k-status" data-tone="success">Qualified</span> → <span class="k-status" data-tone="success">Converted</span> · or <span class="k-status" data-tone="muted">Disqualified</span></td></tr>
+          <tr><th>Opportunity</th><td><span class="k-status" data-tone="neutral">Prospecting</span> → <span class="k-status" data-tone="info">Qualification</span> → <span class="k-status" data-tone="info">Proposal</span> → <span class="k-status" data-tone="progress">Negotiation</span> → <span class="k-status" data-tone="success">Won</span> · or <span class="k-status" data-tone="danger">Lost</span> (reason required)</td></tr>
+          <tr><th>Account</th><td><span class="k-status" data-tone="neutral">Prospect</span> → <span class="k-status" data-tone="success">Active</span> ⇄ <span class="k-status" data-tone="warning">Credit hold</span> → <span class="k-status" data-tone="muted">Inactive</span> → <span class="k-status" data-tone="neutral">Archived</span></td></tr>
+        </tbody>
+      </table>
+      <h3 class="ds-h3">Badges, tags, avatars</h3>
+      <div class="ds-demo ds-row">
+        <span class="k-badge">14</span><span class="k-badge k-badge--primary">New</span><span class="k-badge k-badge--attention">4</span><span class="k-badge k-badge--outline">Tier A</span>
+        <span class="k-tag"><span class="k-tag__key">Owner:</span><span class="k-tag__value">Me</span><button class="k-tag__remove" aria-label="Remove filter"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+        <span class="k-tag">Key account</span>
+        <span class="k-avatar" data-tint="1">PD</span><span class="k-avatar" data-tint="2">AN</span><span class="k-avatar" data-tint="3">RK</span><span class="k-avatar" data-tint="4">IS</span><span class="k-avatar k-avatar--md k-avatar--org" data-tint="1">AT</span>
+        <span class="k-avatar-stack"><span class="k-avatar" data-tint="1">PD</span><span class="k-avatar" data-tint="2">AN</span><span class="k-avatar" data-tint="3">+3</span></span>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="feedback">
+      <h2 class="ds-h">Feedback</h2>
+      <p class="ds-lead"><b>Toast</b> confirms the user’s own action and offers Undo (6s, paused on hover/focus). <b>Alert</b> sits where the decision is made. <b>Banner</b> is for app-wide conditions. <b>Skeleton</b> appears only after 300ms.</p>
+      <div class="ds-cols">
+        <div class="u-flex u-col u-gap-3">
+          <div class="k-alert" data-tone="info"><svg class="k-icon" aria-hidden="true"><use href="#i-info"/></svg><div class="k-alert__body"><div class="k-alert__title">Prices updated on 01 Oct</div><div class="k-alert__text">Quotations created before that date keep their prices for 30 days.</div></div></div>
+          <div class="k-alert" data-tone="success"><svg class="k-icon" aria-hidden="true"><use href="#i-check-circle"/></svg><div class="k-alert__body"><div class="k-alert__text">GSTIN verified with the GST portal.</div></div></div>
+          <div class="k-alert" data-tone="warning"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg><div class="k-alert__body"><div class="k-alert__title">120 m short at Pune Main</div><div class="k-alert__text">Chakan has 260 m available.</div><div class="k-alert__actions"><button class="k-btn k-btn--sm">Transfer from Chakan</button></div></div></div>
+          <div class="k-alert" data-tone="error" role="alert"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><div class="k-alert__body"><div class="k-alert__title">Fix 2 fields to save</div><ul class="k-alert__list"><li><a href="#">Enter the PIN code</a></li><li><a href="#">GSTIN format looks wrong</a></li></ul></div></div>
+        </div>
+        <div class="u-flex u-col u-gap-3">
+          <div class="k-banner" data-tone="warning" style="padding:6px 12px;border:1px solid var(--color-warning-border);border-radius:var(--radius-sm)"><svg class="k-icon" aria-hidden="true"><use href="#i-wifi-off"/></svg><span class="k-banner__text"><strong>You’re offline.</strong> Changes are kept on this device.</span></div>
+          <div class="k-banner" data-tone="info" style="padding:6px 12px;border:1px solid var(--color-info-border);border-radius:var(--radius-sm)"><svg class="k-icon" aria-hidden="true"><use href="#i-calendar"/></svg><span class="k-banner__text">Period <strong>Sep 2026</strong> closes Friday 18:00. Post remaining invoices before then.</span></div>
+          <div class="k-toast k-toast--static" data-tone="success" style="min-width:0"><svg class="k-icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span class="k-toast__text">3 accounts archived.</span><button class="k-toast__action">Undo</button><button class="k-toast__close" aria-label="Dismiss"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <div class="k-toast k-toast--static" data-tone="error" style="min-width:0"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-circle"/></svg><span class="k-toast__text">Couldn’t post GRN-7790. Period is closed.</span><button class="k-toast__action">Details</button></div>
+          <div class="ds-demo"><span class="k-skeleton k-skeleton--title"></span><span class="k-skeleton k-skeleton--text u-mt-3" style="width:90%"></span><span class="k-skeleton k-skeleton--text" style="width:70%"></span><span class="k-skeleton k-skeleton--text" style="width:80%"></span></div>
+          <div class="ds-row"><button class="k-btn" id="demo-toast">Show toast with undo</button><span class="k-spinner" role="status" aria-label="Loading"></span><div class="k-progress" style="width:160px" role="progressbar" aria-label="Import progress" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100"><span style="width:64%"></span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="overlays">
+      <h2 class="ds-h">Overlays</h2>
+      <p class="ds-lead"><b>Modal</b> for blocking decisions (native &lt;dialog&gt;: focus trap, Esc, return focus). <b>Drawer</b> for context work without losing the list (filters, quick create). <b>Popover</b> for rich anchored content. <b>Tooltip</b> for short labels only. On phones, menus become <b>bottom sheets</b>.</p>
+      <div class="ds-cols">
+        <div class="k-modal k-modal--static" role="dialog" aria-labelledby="ds-m-t" style="width:auto">
+          <div class="k-modal__header"><span class="k-modal__icon k-modal__icon--danger"><svg class="k-icon k-icon--lg" aria-hidden="true"><use href="#i-alert-circle"/></svg></span><h3 class="k-modal__title" id="ds-m-t">Cancel SO-10234?</h3></div>
+          <div class="k-modal__body"><p>This can’t be undone. One delivery is posted — create a return for those items separately.</p></div>
+          <div class="k-modal__footer"><button class="k-btn">Keep order</button><button class="k-btn k-btn--danger">Cancel order</button></div>
+        </div>
+        <div class="u-flex u-col u-gap-3">
+          <div class="k-popover k-popover--static"><div class="k-popover__title">Credit limit</div>Outstanding ₹8,45,000 of ₹25,00,000. Limits above ₹25 L need Finance approval.<div class="k-popover__footer"><button class="k-btn k-btn--sm">Request increase</button></div></div>
+          <div><span class="k-tooltip k-tooltip--static">Export to Excel <kbd>Ctrl</kbd> <kbd>E</kbd></span></div>
+          <div class="ds-row"><button class="k-btn" data-open-dialog="ds-modal">Open modal</button><button class="k-btn" data-open-dialog="ds-drawer">Open drawer</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="data">
+      <h2 class="ds-h">Data display</h2>
+      <p class="ds-lead">The data grid is the most important component in the product — see it fully working on <a href="customers.html">Accounts</a> and <a href="stock.html">Stock</a>. Panels group page regions; cards are reserved for things users move or pick between.</p>
+      <h3 class="ds-h3">Grid rules</h3>
+      <div class="ds-cols">
+        <table class="ds-specimen"><tbody>
+          <tr><td>Column width</td><td class="u-secondary">From content: code 96px, name 260px, status 140px, money 132px.</td></tr>
+          <tr><td>Alignment</td><td class="u-secondary">Text left · numbers &amp; currency right, tabular · status left.</td></tr>
+          <tr><td>Long text</td><td class="u-secondary">Ellipsis + title; primary column can show a second line.</td></tr>
+          <tr><td>Row actions</td><td class="u-secondary">Always visible (muted) in a sticky last column.</td></tr>
+        </tbody></table>
+        <table class="ds-specimen"><tbody>
+          <tr><td>Sticky</td><td class="u-secondary">Header, selection + primary column, actions column, totals footer.</td></tr>
+          <tr><td>Remembered</td><td class="u-secondary">Column widths, order, visibility, sort, page size, per view.</td></tr>
+          <tr><td>Selection</td><td class="u-secondary">Checkbox, Shift-click range, “select all matching”, bulk bar.</td></tr>
+          <tr><td>Inline edit</td><td class="u-secondary">Double-click / Enter / F2; Enter saves, Esc cancels, toast + Undo.</td></tr>
+        </tbody></table>
+      </div>
+      <h3 class="ds-h3">Row states</h3>
+      <div class="k-grid">
+        <table class="k-table">
+          <colgroup><col style="width:40px"><col style="width:240px"><col style="width:150px"><col style="width:140px"><col></colgroup>
+          <thead><tr><th class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" class="js-indet" aria-label="Select all"></label></th><th aria-sort="ascending"><button class="k-th"><span>Account</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg><span class="k-th__priority">1</span></button></th><th class="is-num" aria-sort="descending"><button class="k-th"><span>Outstanding</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg><span class="k-th__priority">2</span></button></th><th>Status</th><th>State shown</th></tr></thead>
+          <tbody>
+            <tr><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Select"></label></td><td><a href="#">Deccan Auto Components</a></td><td class="is-num">₹0</td><td><span class="k-status" data-tone="success">Active</span></td><td class="u-secondary">Default</td></tr>
+            <tr style="background:var(--color-bg-hover)"><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Select"></label></td><td><a href="#">Indus Valley Packaging</a></td><td class="is-num">₹3,18,900</td><td><span class="k-status" data-tone="success">Active</span></td><td class="u-secondary">Hover</td></tr>
+            <tr class="is-selected"><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" checked aria-label="Select"></label></td><td><a href="#">Kaveri Agro Foods</a></td><td class="is-num">₹14,75,000</td><td><span class="k-status" data-tone="success">Active</span></td><td class="u-secondary">Selected</td></tr>
+            <tr class="is-attention"><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Select"></label></td><td><a href="#">Mahalaxmi Textiles</a></td><td class="is-num is-negative">₹10,46,750</td><td><span class="k-status" data-tone="warning">Credit hold</span></td><td class="u-secondary">Needs attention (left rule + text)</td></tr>
+            <tr><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Select"></label></td><td><a href="#">Rudra Electricals</a></td><td class="is-num is-editing" style="padding:2px"><input class="k-input k-input--sm k-input--num" value="72400" aria-label="Outstanding" style="border-color:var(--color-focus-ring);box-shadow:0 0 0 1px var(--color-focus-ring)"></td><td><span class="k-status" data-tone="success">Active</span></td><td class="u-secondary">Inline editing</td></tr>
+            <tr><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" aria-label="Select"></label></td><td><a href="#">Shree Balaji Polymers</a></td><td class="is-num has-error">₹4,0O,000</td><td><span class="k-status" data-tone="success">Active</span></td><td class="u-secondary">Cell error</td></tr>
+            <tr class="is-muted"><td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" disabled aria-label="Select"></label></td><td>Old Pune Traders</td><td class="is-num">₹0</td><td><span class="k-status" data-tone="muted">Archived</span></td><td class="u-secondary">Muted / read-only</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <h3 class="ds-h3">Tree, list, timeline, KPI</h3>
+      <div class="ds-cols">
+        <div class="ds-demo">
+          <ul class="k-tree" role="tree" aria-label="Chart of accounts">
+            <li role="treeitem" aria-expanded="true" aria-level="1" aria-selected="false"><button class="k-tree__row" style="--level:0"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><span class="k-tree__label">1000 · Assets</span><span class="k-tree__meta">₹18.6 Cr</span></button>
+              <ul role="group">
+                <li role="treeitem" aria-expanded="true" aria-level="2" aria-selected="false"><button class="k-tree__row" style="--level:1"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><span class="k-tree__label">1100 · Current assets</span><span class="k-tree__meta">₹9.2 Cr</span></button>
+                  <ul role="group">
+                    <li role="treeitem" aria-level="3" aria-selected="true"><button class="k-tree__row" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">1130 · Trade receivables</span><span class="k-tree__meta">₹3.4 Cr</span></button></li>
+                    <li role="treeitem" aria-level="3" aria-selected="false"><button class="k-tree__row" style="--level:2"><span class="k-tree__leaf-spacer"></span><span class="k-tree__label">1140 · Inventory</span><span class="k-tree__meta">₹4.8 Cr</span></button></li>
+                  </ul></li>
+                <li role="treeitem" aria-expanded="false" aria-level="2" aria-selected="false"><button class="k-tree__row" style="--level:1"><span class="k-tree__toggle"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></span><span class="k-tree__label">1200 · Fixed assets</span><span class="k-tree__meta">₹9.4 Cr</span></button><ul role="group"></ul></li>
+              </ul></li>
+          </ul>
+          <hr>
+          <ol class="k-timeline">
+            <li class="k-timeline__item"><span class="k-timeline__marker" data-tone="success"><svg class="k-icon" aria-hidden="true"><use href="#i-check"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Priya</strong> approved PR-2026-0418</span><span class="k-timeline__time">10:40</span></div></div></li>
+            <li class="k-timeline__item"><span class="k-timeline__marker"><svg class="k-icon" aria-hidden="true"><use href="#i-message"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Suresh</strong> commented</span><span class="k-timeline__time">10:52</span></div><div class="k-timeline__quote">Sourcing two more quotes for the enclosure.</div></div></li>
+          </ol>
+        </div>
+        <div class="u-flex u-col u-gap-3">
+          <div class="k-kpis" style="--kpi-cols:2">
+            <div class="k-kpi"><span class="k-kpi__label">Receivables overdue</span><span class="k-kpi__value">₹42.7 <small>L</small></span><span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="down-good"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-down"/></svg>₹6.1 L</span> vs last month</span></div>
+            <div class="k-kpi"><span class="k-kpi__label">DSO</span><span class="k-kpi__value">48 <small>days</small></span><span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="up-bad"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-up"/></svg>3 days</span> vs target 45</span></div>
+          </div>
+          <p class="u-sm u-muted">Delta colour follows meaning, not direction: receivables going <i>down</i> is good (green), DSO going <i>up</i> is bad (red). The baseline is always named.</p>
+          <div class="k-panel"><ul class="k-list">
+            <li><a class="k-list__item" href="#"><svg class="k-icon" aria-hidden="true" style="color:var(--color-text-muted)"><use href="#i-receipt"/></svg><span class="k-list__main"><span class="k-list__title">SO-10234 · ABC Technologies</span><span class="k-list__meta">Viewed 10 min ago</span></span><span class="k-list__end">₹8,45,000</span></a></li>
+            <li><a class="k-list__item" href="#"><svg class="k-icon" aria-hidden="true" style="color:var(--color-text-muted)"><use href="#i-building"/></svg><span class="k-list__main"><span class="k-list__title">Vardhan Steel Traders</span><span class="k-list__meta">Viewed yesterday</span></span><span class="k-list__end">Credit hold</span></a></li>
+          </ul></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="business">
+      <h2 class="ds-h">Business components</h2>
+      <p class="ds-lead">Document flow (where a record sits across documents), approval chain (who decides, by which rule), decision bar (what <i>you</i> must do), activity composer, audit log, Kanban card.</p>
+      <div class="k-text-label u-mb-2">Workflow — order to cash</div>
+      <ol class="k-flow">
+        <li class="k-flow__step is-done"><span class="k-flow__name">Lead</span><span class="k-flow__doc">LD-19-0331</span></li>
+        <li class="k-flow__step is-done"><span class="k-flow__name">Opportunity</span><span class="k-flow__doc">OPP-2291 · Won</span></li>
+        <li class="k-flow__step is-done"><span class="k-flow__name">Quotation</span><span class="k-flow__doc">QT-5512 · Accepted</span></li>
+        <li class="k-flow__step is-current"><span class="k-flow__name">Sales order</span><span class="k-flow__doc">SO-10234</span></li>
+        <li class="k-flow__step"><span class="k-flow__name">Delivery</span><span class="k-flow__doc">1 of 2</span></li>
+        <li class="k-flow__step"><span class="k-flow__name">Invoice</span><span class="k-flow__doc">—</span></li>
+        <li class="k-flow__step"><span class="k-flow__name">Payment</span><span class="k-flow__doc">—</span></li>
+      </ol>
+      <div class="k-text-label u-mt-4 u-mb-2">Workflow — blocked step</div>
+      <ol class="k-flow k-flow--compact">
+        <li class="k-flow__step is-done"><span class="k-flow__name">Purchase order</span><span class="k-flow__doc">PO-88412</span></li>
+        <li class="k-flow__step is-done"><span class="k-flow__name">Goods receipt</span><span class="k-flow__doc">GRN-7790</span></li>
+        <li class="k-flow__step is-blocked"><span class="k-flow__name">Supplier invoice</span><span class="k-flow__doc" style="color:inherit">Qty mismatch: 500 vs 480</span></li>
+        <li class="k-flow__step"><span class="k-flow__name">Payment</span><span class="k-flow__doc">On hold</span></li>
+      </ol>
+      <div class="ds-cols u-mt-4">
+        <div class="u-flex u-col u-gap-3">
+          <div class="k-decision"><div class="k-decision__text"><strong>Your approval is needed</strong><small>Payment terms Net 30 → Net 45 · requested by Anjali Nair</small></div><div class="k-decision__actions"><button class="k-btn">Reject</button><button class="k-btn k-btn--primary">Approve</button></div></div>
+          <div class="k-panel"><div class="k-panel__body" style="padding-top:4px;padding-bottom:4px"><ol class="k-approval">
+            <li class="k-approval__step"><span class="k-approval__badge" data-state="approved"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-check"/></svg></span><div class="k-approval__who"><div class="k-approval__name">Rohit Kulkarni</div><div class="k-approval__role">Requester</div></div><div class="k-approval__when">09:52</div></li>
+            <li class="k-approval__step"><span class="k-approval__badge" data-state="current">2</span><div class="k-approval__who"><div class="k-approval__name">Priya Deshmukh</div><div class="k-approval__role">Cost centre owner</div></div><div class="k-approval__when">Waiting</div></li>
+            <li class="k-approval__step"><span class="k-approval__badge" data-state="rejected"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-x"/></svg></span><div class="k-approval__who"><div class="k-approval__name">Example: rejected</div><div class="k-approval__comment">Over budget for Q3 — resubmit in January.</div></div><div class="k-approval__when"></div></li>
+            <li class="k-approval__step"><span class="k-approval__badge" data-state="skipped">–</span><div class="k-approval__who"><div class="k-approval__name u-muted">Finance Controller</div><div class="k-approval__role">Not required below ₹5,00,000</div></div><div class="k-approval__when"></div></li>
+          </ol></div></div>
+        </div>
+        <div class="u-flex u-col u-gap-3">
+          <div class="k-board" style="grid-auto-columns:minmax(0,1fr)">
+            <div class="k-board__col" style="--stage-color:var(--color-primary)"><div class="k-board__head"><div class="k-board__title">Proposal <span class="k-board__count">14</span></div><div class="k-board__sum">₹1.71 Cr <span>· 50%</span></div></div>
+              <ul class="k-board__list">
+                <li class="k-kcard" tabindex="0"><span class="k-kcard__title">Plant 4 automation package</span><span class="k-kcard__account">Pinnacle Infra Projects</span><div class="k-kcard__row"><span class="k-kcard__value">₹62.0 L</span><span>· 15 Nov</span><span class="k-kcard__end"><span class="k-avatar k-avatar--xs" data-tint="3">RK</span></span></div><div class="k-kcard__row">Proposal review 21 Oct</div></li>
+                <li class="k-kcard is-stale" tabindex="0"><span class="k-kcard__title">Packaging line PLC migration</span><span class="k-kcard__account">Trident Packaging</span><div class="k-kcard__row"><span class="k-kcard__value">₹18.8 L</span><span>· 30 Nov</span><span class="k-kcard__end"><span class="k-avatar k-avatar--xs" data-tint="4">IS</span></span></div><div class="k-kcard__row k-text-warning">No activity 19 days</div></li>
+              </ul></div>
+          </div>
+          <table class="k-audit" style="border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-bg-surface)">
+            <thead><tr><th>When</th><th>Who</th><th>Field</th><th>Change</th></tr></thead>
+            <tbody><tr><td>20 Oct, 09:40</td><td>Anjali Nair</td><td class="k-audit__field">Payment terms</td><td><span class="k-audit__old">Net 30</span><span class="k-audit__arrow">→</span><span class="k-audit__new">Net 45</span></td></tr>
+            <tr><td>12 Oct, 17:22</td><td>Priya Deshmukh</td><td class="k-audit__field">Line 7 · Rate</td><td><span class="k-audit__old">₹20,000</span><span class="k-audit__arrow">→</span><span class="k-audit__new">₹18,000</span></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <section class="ds-sec" id="responsive">
+      <h2 class="ds-h">Responsive behaviour</h2>
+      <p class="ds-lead">Desktop is the primary experience. Smaller screens get a different, purpose-built layout — not a shrunken desktop. Resize any reference screen to see it.</p>
+      <table class="ds-specimen">
+        <thead><tr><th>Element</th><th>Desktop ≥ 1200</th><th>Tablet 600–1199</th><th>Phone &lt; 600</th></tr></thead>
+        <tbody>
+          <tr><td>Sidebar</td><td class="u-secondary">Fixed 236px, collapsible to 52px rail</td><td class="u-secondary">Off-canvas drawer from menu button</td><td class="u-secondary">Off-canvas drawer</td></tr>
+          <tr><td>Global search</td><td class="u-secondary">Inline in header, “/” shortcut</td><td class="u-secondary">Inline (≥ 900) or icon</td><td class="u-secondary">Icon → full-width field</td></tr>
+          <tr><td>Record lists</td><td class="u-secondary">Data grid with sticky columns</td><td class="u-secondary">Grid, horizontal scroll, sticky primary column</td><td class="u-secondary">Stacked cards from the same markup (<code>.k-table--stack</code>, data-label)</td></tr>
+          <tr><td>Spreadsheet-like grids</td><td class="u-secondary">Full grid</td><td class="u-secondary">Horizontal scroll</td><td class="u-secondary">Horizontal scroll (ledgers stay tabular)</td></tr>
+          <tr><td>Forms</td><td class="u-secondary">2–3 columns + section index</td><td class="u-secondary">2 columns</td><td class="u-secondary">1 column; sticky full-width save</td></tr>
+          <tr><td>Record actions</td><td class="u-secondary">Header buttons + More menu</td><td class="u-secondary">Header buttons, wrapped</td><td class="u-secondary">Bottom action bar + bottom sheet</td></tr>
+          <tr><td>Filters</td><td class="u-secondary">Toolbar + drawer for advanced</td><td class="u-secondary">Drawer</td><td class="u-secondary">Full-screen drawer</td></tr>
+          <tr><td>Detail side column</td><td class="u-secondary">Right column 300–340px</td><td class="u-secondary">Moves below main content</td><td class="u-secondary">Below main content</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="ds-sec" id="a11y">
+      <h2 class="ds-h">Accessibility (WCAG 2.2 AA)</h2>
+      <div class="ds-cols">
+        <table class="ds-specimen"><tbody>
+          <tr><td><b>Contrast</b></td><td class="u-secondary">Text ≥ 4.5:1 in both themes (muted text 4.8:1 on page). Input borders ≥ 3:1. “-text” semantic tokens are tuned for tinted fills.</td></tr>
+          <tr><td><b>Not colour alone</b></td><td class="u-secondary">Status markers have distinct shapes; row attention adds a rule and text; errors include an icon and message.</td></tr>
+          <tr><td><b>Focus</b></td><td class="u-secondary">One 2px ring everywhere via :focus-visible; inset in clipped areas; never removed. Focus returns to the trigger when overlays close.</td></tr>
+          <tr><td><b>Keyboard</b></td><td class="u-secondary">Menus (arrows, Home/End, Esc), tabs (arrows), tree (arrows), grid (Enter/F2 edit, resize handles), Kanban (Alt+arrows — WCAG 2.5.7 alternative to dragging).</td></tr>
+          <tr><td><b>Target size</b></td><td class="u-secondary">≥ 24px everywhere (2.5.8); touch devices force ≥ 36px even in Compact.</td></tr>
+        </tbody></table>
+        <table class="ds-specimen"><tbody>
+          <tr><td><b>Forms</b></td><td class="u-secondary">Visible labels, aria-required, aria-invalid + aria-describedby to the message, error summary with links, autocomplete tokens.</td></tr>
+          <tr><td><b>Tables</b></td><td class="u-secondary">Real &lt;table&gt; with scope, aria-sort, labelled selection checkboxes, scroll region with a name.</td></tr>
+          <tr><td><b>Dialogs</b></td><td class="u-secondary">Native &lt;dialog&gt; showModal (inert background), labelled title, safe default focus on the non-destructive action.</td></tr>
+          <tr><td><b>Live regions</b></td><td class="u-secondary">Toasts (status), selection count, save state; alerts only for errors that block.</td></tr>
+          <tr><td><b>Motion &amp; modes</b></td><td class="u-secondary">prefers-reduced-motion zeroes durations; forced-colors keeps borders; skip link; lang=en-IN.</td></tr>
+        </tbody></table>
+      </div>
+    </section>
+
+    <section class="ds-sec" id="architecture">
+      <h2 class="ds-h">Architecture</h2>
+      <p class="ds-lead">HTML + SCSS + CSS custom properties, no utility framework. Themes and density are attribute-scoped, so any subtree can switch. The React layer maps 1:1 to these class names.</p>
+      <div class="ds-cols">
+<pre>styles/
+  tokens/        primitives, spacing, type,
+                 shape, motion, z-index,
+                 density, layout, breakpoints
+  themes/        _light, _dark  → [data-theme]
+  abstracts/     mixins (focus, truncate, bp)
+  foundations/   reset, base, type roles, icons
+  components/    button, field, choice, status,
+                 navigation, menu, pickers,
+                 overlay, feedback, table,
+                 data-display, business
+  layouts/       app-shell, header, sidebar, page
+  patterns/      filters, form, dashboard, states
+  utilities/     layout glue only
+  main.scss      → dist/kestrel.css</pre>
+<pre>src/
+  ui/        Button Input Select Modal Drawer
+             Table DataGrid Tabs Badge Form
+             DatePicker  (+ index.ts barrel)
+  layouts/   AppShell Sidebar Header PageLayout
+  patterns/  CrudPage DetailPage MasterDetail
+             Approval Workflow Dashboard
+  features/  crm sales procurement inventory
+             finance hr reports administration
+  app/       demo entry (vite)
+
+&lt;html data-theme="dark" data-density="compact"&gt;</pre>
+      </div>
+    </section>
+  </div>
+</div>
+</main>
+</div>
+
+<dialog class="k-modal" id="ds-modal" aria-labelledby="dsm-t">
+  <div class="k-modal__header"><h2 class="k-modal__title" id="dsm-t">Approve Revision 2?</h2><button class="k-btn k-btn--subtle k-btn--icon k-btn--sm" data-close-dialog aria-label="Close"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <div class="k-modal__body"><p>Payment terms change to Net 45 for this order only.</p><div class="k-field"><label class="k-label" for="dsm-c">Comment</label><textarea class="k-textarea" id="dsm-c"></textarea></div></div>
+  <div class="k-modal__footer"><span class="k-modal__footer-start">Esc to close</span><button class="k-btn" data-close-dialog>Cancel</button><button class="k-btn k-btn--primary" data-close-dialog>Approve</button></div>
+</dialog>
+<dialog class="k-drawer" id="ds-drawer" aria-labelledby="dsd-t">
+  <div class="k-drawer__header"><h2 class="k-drawer__title" id="dsd-t">Quick create · Contact</h2><button class="k-btn k-btn--subtle k-btn--icon k-btn--sm" data-close-dialog aria-label="Close"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+  <div class="k-drawer__body"><div class="k-form-grid"><div class="k-field k-span-2"><label class="k-label" for="dsd-n">Full name <span class="k-label__req" aria-hidden="true">*</span></label><input class="k-input" id="dsd-n"></div><div class="k-field"><label class="k-label" for="dsd-r">Role</label><input class="k-input" id="dsd-r"></div><div class="k-field"><label class="k-label" for="dsd-p">Phone</label><input class="k-input" id="dsd-p"></div><div class="k-field k-span-2"><label class="k-label" for="dsd-a">Account</label><input class="k-input" id="dsd-a" value="ABC Technologies Pvt Ltd" readonly></div></div></div>
+  <div class="k-drawer__footer"><button class="k-btn" data-close-dialog>Cancel</button><button class="k-btn k-btn--primary" data-close-dialog>Save contact</button></div>
+</dialog>
+
+<script src="assets/icons.js"></script>
+<script src="assets/app.js"></script>
+<script>
+document.addEventListener("k-ready", () => {
+  // Live token swatches (values follow the current theme)
+  const paint = () => document.querySelectorAll("[data-swatches]").forEach((box) => {
+    const cs = getComputedStyle(box);
+    box.innerHTML = box.dataset.swatches.split(" ").map((t) => {
+      const v = cs.getPropertyValue("--color-" + t).trim();
+      return `<div class="ds-sw"><i style="background:var(--color-${t})"></i><div style="min-width:0"><code>--color-${t}</code><span>${v}</span></div></div>`;
+    }).join("");
+  });
+  paint();
+  new MutationObserver(paint).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+  // Theme comparison panes
+  const demo = `<div class="k-panel"><div class="k-panel__header"><span class="k-panel__title">SO-10234</span><span class="k-status k-status--strong" data-tone="info">Confirmed</span></div>
+    <div class="k-panel__body u-flex u-col u-gap-3"><div class="k-field"><label class="k-label">Payment terms</label><select class="k-select"><option>Net 45</option></select></div>
+    <div class="k-alert" data-tone="warning"><svg class="k-icon" aria-hidden="true"><use href="#i-alert-triangle"/></svg><div class="k-alert__body"><div class="k-alert__text">Needs Sales Manager approval</div></div></div>
+    <div class="u-flex u-gap-2"><span class="k-status" data-tone="success">Delivered</span><span class="k-status" data-tone="danger">Overdue</span><span class="k-status" data-tone="progress">Processing</span></div>
+    <div class="u-flex u-gap-2"><button class="k-btn">Reject</button><button class="k-btn k-btn--primary">Approve</button></div></div></div>`;
+  document.getElementById("theme-demo-light").innerHTML = '<div class="k-text-label u-mb-2">Light</div>' + demo;
+  document.getElementById("theme-demo-dark").innerHTML = '<div class="k-text-label u-mb-2">Dark</div>' + demo;
+
+  // Density samples
+  const rows = [["SO-10234", "ABC Technologies", "₹8,45,000"], ["SO-10233", "Kaveri Agro Foods", "₹3,12,500"], ["SO-10231", "Lumina Healthcare", "₹12,08,000"]];
+  const t = `<table class="k-table"><colgroup><col style="width:90px"><col><col style="width:100px"></colgroup><thead><tr><th>Order</th><th>Customer</th><th class="is-num">Value</th></tr></thead><tbody>${rows.map((r) => `<tr><td class="is-id">${r[0]}</td><td>${r[1]}</td><td class="is-num">${r[2]}</td></tr>`).join("")}</tbody></table><div style="padding:8px"><button class="k-btn">Button</button> <input class="k-input" style="width:110px" aria-label="Sample input" value="Input"></div>`;
+  ["dens-c", "dens-m", "dens-s"].forEach((id) => (document.getElementById(id).innerHTML = t));
+
+  // Button state matrix (hover/focus/active forced for documentation)
+  const variants = [["Primary", "k-btn--primary", "Approve"], ["Secondary", "", "Print"], ["Subtle", "k-btn--subtle", "Export"], ["Danger", "k-btn--danger", "Delete"], ["Danger outline", "k-btn--danger-outline", "Cancel order"]];
+  const forced = { hover: "background:var(--btn-bg-hover);border-color:var(--btn-border-hover)", focus: "outline:2px solid var(--color-focus-ring);outline-offset:2px", active: "background:var(--btn-bg-active)" };
+  document.getElementById("btn-matrix").innerHTML = variants.map(([n, c, l]) => `<tr><th>${n}</th>
+    <td><button class="k-btn ${c}">${l}</button></td>
+    <td><button class="k-btn ${c}" style="${forced.hover}">${l}</button></td>
+    <td><button class="k-btn ${c}" style="${forced.focus}">${l}</button></td>
+    <td><button class="k-btn ${c}" style="${forced.active}">${l}</button></td>
+    <td>${c === "" || c === "k-btn--subtle" ? `<button class="k-btn ${c}" aria-pressed="true">${l}</button>` : '<span class="u-muted">n/a</span>'}</td>
+    <td><button class="k-btn ${c}" disabled>${l}</button></td>
+    <td><button class="k-btn ${c} is-loading" aria-busy="true"><span>${l}</span></button></td></tr>`).join("");
+
+  document.querySelectorAll(".js-indet").forEach((c) => (c.indeterminate = true));
+
+  // Calendar grid (Oct 2026, range 1–20, today 20)
+  const cal = document.getElementById("cal");
+  let html = "<thead><tr>" + ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"].map((d) => `<th scope="col">${d}</th>`).join("") + "</tr></thead><tbody><tr>";
+  const lead = 3; // 1 Oct 2026 is a Thursday
+  for (let i = 0; i < lead; i++) html += `<td><button class="k-datepicker__day is-outside" tabindex="-1">${28 + i}</button></td>`;
+  for (let d = 1; d <= 31; d++) {
+    const col = (lead + d - 1) % 7;
+    if (col === 0 && d > 1) html += "</tr><tr>";
+    const cls = [d < 20 && d > 1 ? "is-in-range" : "", d === 20 ? "is-today" : "", col >= 5 ? "is-holiday" : "", d === 2 ? "is-holiday" : ""].join(" ");
+    const sel = d === 1 || d === 20;
+    html += `<td><button class="k-datepicker__day ${cls}" ${sel ? 'aria-pressed="true"' : ""} aria-label="${d} October 2026${d === 2 ? ", Gandhi Jayanti holiday" : ""}">${d}</button></td>`;
+  }
+  html += "<td><button class='k-datepicker__day is-outside' tabindex='-1'>1</button></td></tr></tbody>";
+  cal.innerHTML = html;
+
+  document.getElementById("demo-toast").addEventListener("click", () => K.toast({ text: "3 accounts archived.", action: "Undo", onAction: () => K.toast({ text: "Restored 3 accounts.", tone: "neutral", timeout: 2500 }) }));
+});
+</script>
+</body>
+</html>

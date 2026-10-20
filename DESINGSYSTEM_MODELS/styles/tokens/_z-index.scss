@@ -1,0 +1,11 @@
+:root {
+  --z-base: 0;
+  --z-sticky: 10;      // sticky table headers, form footers
+  --z-header: 30;      // app header
+  --z-sidebar: 40;     // off-canvas sidebar on tablet / mobile
+  --z-dropdown: 50;
+  --z-drawer: 60;
+  --z-modal: 70;
+  --z-toast: 80;
+  --z-tooltip: 90;
+}

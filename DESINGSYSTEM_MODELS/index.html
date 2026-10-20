@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en-IN" data-density="comfortable">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel · React demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  // Same as site/assets/boot.js: apply remembered theme/density before first paint.
+  (function () {
+    var r = document.documentElement, p = {};
+    try { p = JSON.parse(localStorage.getItem("kestrel.prefs") || "{}"); } catch (e) {}
+    if (p.theme === "light" || p.theme === "dark") r.setAttribute("data-theme", p.theme);
+    r.setAttribute("data-density", p.density || "comfortable");
+  })();
+</script>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/app/main.tsx"></script>
+</body>
+</html>

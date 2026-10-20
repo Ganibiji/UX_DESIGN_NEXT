@@ -1,0 +1,61 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// App shell
+//   ┌──────────────── header ────────────────┐
+//   │ sidebar │ main (the only scroll region) │
+// Main is the scroll container, so page toolbars, table headers and form
+// footers can stick inside it while header and navigation stay put.
+// ---------------------------------------------------------------------------
+.k-app {
+  display: grid;
+  grid-template-rows: var(--header-height) auto 1fr;
+  grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+  grid-template-areas:
+    "header header"
+    "sidebar banner"
+    "sidebar main";
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+
+  &[data-sidebar="collapsed"] {
+    grid-template-columns: var(--sidebar-width-collapsed) minmax(0, 1fr);
+  }
+
+  > .k-header { grid-area: header; }
+  > .k-sidebar { grid-area: sidebar; }
+  > .k-app__banners { grid-area: banner; }
+  > .k-main { grid-area: main; }
+
+  @include down(lg) {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-areas:
+      "header"
+      "banner"
+      "main";
+  }
+}
+
+.k-main {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  scroll-padding-top: 56px;
+
+  &:focus { outline: none; }
+}
+
+// Scrim behind the off-canvas sidebar on tablet / phone
+.k-app__scrim {
+  position: fixed;
+  inset: var(--header-height) 0 0 0;
+  z-index: calc(var(--z-sidebar) - 1);
+  background: var(--color-bg-overlay);
+  display: none;
+
+  .k-app.is-nav-open & { display: block; }
+
+  @include up(lg) { display: none !important; }
+}

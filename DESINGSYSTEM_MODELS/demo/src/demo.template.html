@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="en-IN" data-theme="light" data-density="comfortable">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kestrel Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  // Light (white) is the default. Dark (black) only when the viewer chose it.
+  (function () {
+    try {
+      var t = localStorage.getItem("kestrel.demo.theme");
+      if (t === "dark") document.documentElement.setAttribute("data-theme", "dark");
+    } catch (e) { /* storage blocked: stay light */ }
+  })();
+</script>
+<style>
+/*__KESTREL_CSS__*/
+</style>
+<style>
+  /* Demo-only tweaks */
+  .demo-view[hidden] { display: none !important; }
+  .demo-theme { display: inline-flex; gap: 2px; padding: 2px; border-radius: var(--radius-sm); background: var(--color-shell-field); }
+  .demo-theme button { appearance: none; border: 0; background: transparent; color: var(--color-shell-text-muted); height: 26px; padding: 0 10px; border-radius: 2px; font: inherit; font-size: var(--font-size-sm); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .demo-theme button:hover { color: #fff; }
+  .demo-theme button[aria-pressed="true"] { background: var(--color-bg-surface); color: var(--color-text-primary); font-weight: 600; }
+  .demo-theme button:focus-visible { outline: 2px solid #9cc2f2; outline-offset: 1px; }
+  .demo-board { grid-template-columns: repeat(4, minmax(220px, 1fr)); grid-auto-flow: initial; }
+  @media (max-width: 599px) { .demo-theme span { display: none; } }
+</style>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+
+<div class="k-app" id="app">
+  <!-- ================= HEADER ================= -->
+  <header class="k-header">
+    <button class="k-header__btn k-header__menu" aria-label="Open navigation" aria-expanded="false" aria-controls="sidebar" data-action="toggle-nav"><svg class="k-icon" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <a class="k-header__brand" href="#dashboard" aria-label="Kestrel Business Suite, home">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect width="24" height="24" rx="4" fill="#3572c4"/><path d="M8 5.5v13M8 12.5 15.5 6M10.8 10.2 16 18.5" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span class="k-header__product">Kestrel</span><span class="k-header__app">Business Suite</span>
+    </a>
+    <span class="k-header__btn k-header__org" style="cursor:default"><span class="k-header__org-name">Sahyadri Industrial Supplies</span><span class="k-header__org-unit">· Pune HQ</span></span>
+    <span class="k-env" title="User acceptance testing environment">UAT</span>
+    <div class="k-header__search" role="search">
+      <svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg>
+      <input type="search" id="global-search" placeholder="Search accounts, orders, invoices…" aria-label="Search everything">
+      <kbd aria-hidden="true">/</kbd>
+    </div>
+    <div class="k-header__actions">
+      <div class="demo-theme" role="group" aria-label="Theme">
+        <button type="button" data-theme-set="light" aria-pressed="true"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-sun"/></svg><span>White</span></button>
+        <button type="button" data-theme-set="dark" aria-pressed="false"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-moon"/></svg><span>Black</span></button>
+      </div>
+      <button class="k-header__btn" aria-label="Notifications, 3 unread" data-action="toast:3 unread notifications"><svg class="k-icon" aria-hidden="true"><use href="#i-bell"/></svg><span class="k-badge k-badge--attention" aria-hidden="true">3</span></button>
+      <span class="k-header__btn k-header__user" style="cursor:default"><span class="k-avatar" data-tint="1">PD</span><span class="k-header__user-name">Priya Deshmukh</span></span>
+    </div>
+  </header>
+
+  <!-- ================= LEFT MENU ================= -->
+  <nav class="k-sidebar" id="sidebar" aria-label="Main navigation">
+    <div class="k-sidebar__scroll">
+      <div class="k-sidebar__section">
+        <ul class="k-nav">
+          <li><a class="k-nav__item" href="#dashboard" data-view="dashboard" title="Dashboard"><svg class="k-icon" aria-hidden="true"><use href="#i-grid"/></svg><span class="k-nav__text">Dashboard</span></a></li>
+          <li><a class="k-nav__item" href="#approvals" data-view="approvals" title="My approvals"><svg class="k-icon" aria-hidden="true"><use href="#i-inbox"/></svg><span class="k-nav__text">My approvals</span><span class="k-badge k-badge--attention" aria-label="2 waiting">2</span></a></li>
+        </ul>
+      </div>
+      <div class="k-sidebar__section">
+        <span class="k-sidebar__label" id="nav-modules">Modules</span>
+        <ul class="k-nav" aria-labelledby="nav-modules">
+          <li>
+            <button class="k-nav__group-btn" aria-expanded="true" data-group="crm" title="CRM"><svg class="k-icon" aria-hidden="true"><use href="#i-users"/></svg><span class="k-nav__text">CRM</span><svg class="k-icon k-icon--sm k-nav__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+            <ul class="k-nav__sub">
+              <li><a class="k-nav__subitem" href="#accounts" data-view="accounts"><span class="k-nav__text">Accounts</span></a></li>
+              <li><a class="k-nav__subitem" href="#pipeline" data-view="pipeline"><span class="k-nav__text">Opportunities</span><span class="k-nav__count">76</span></a></li>
+            </ul>
+          </li>
+          <li>
+            <button class="k-nav__group-btn" aria-expanded="true" data-group="sales" title="Sales"><svg class="k-icon" aria-hidden="true"><use href="#i-receipt"/></svg><span class="k-nav__text">Sales</span><svg class="k-icon k-icon--sm k-nav__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+            <ul class="k-nav__sub">
+              <li><a class="k-nav__subitem" href="#order" data-view="order"><span class="k-nav__text">Sales Orders</span></a></li>
+            </ul>
+          </li>
+          <li>
+            <button class="k-nav__group-btn" aria-expanded="true" data-group="inventory" title="Inventory"><svg class="k-icon" aria-hidden="true"><use href="#i-box"/></svg><span class="k-nav__text">Inventory</span><svg class="k-icon k-icon--sm k-nav__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+            <ul class="k-nav__sub">
+              <li><a class="k-nav__subitem" href="#stock" data-view="stock"><span class="k-nav__text">Stock</span><span class="k-nav__count">17 low</span></a></li>
+            </ul>
+          </li>
+          <li>
+            <button class="k-nav__group-btn" aria-expanded="false" data-group="finance" title="Finance"><svg class="k-icon" aria-hidden="true"><use href="#i-landmark"/></svg><span class="k-nav__text">Finance</span><svg class="k-icon k-icon--sm k-nav__chevron" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+            <ul class="k-nav__sub">
+              <li><a class="k-nav__subitem" href="#settings" data-view="settings"><span class="k-nav__text">Receivables</span></a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="k-sidebar__footer">
+      <ul class="k-nav k-nav--utility">
+        <li><a class="k-nav__item" href="#settings" data-view="settings" title="Display settings"><svg class="k-icon" aria-hidden="true"><use href="#i-sliders"/></svg><span class="k-nav__text">Display settings</span></a></li>
+        <li><button class="k-nav__item k-sidebar__collapse" data-action="collapse" aria-label="Collapse navigation" title="Collapse navigation"><svg class="k-icon" aria-hidden="true"><use href="#i-sidebar"/></svg><span class="k-nav__text">Collapse</span></button></li>
+      </ul>
+    </div>
+  </nav>
+  <div class="k-app__scrim" data-action="toggle-nav"></div>
+  <div class="k-app__banners"></div>
+
+  <!-- ================= MAIN ================= -->
+  <main class="k-main" id="main" tabindex="-1">
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="demo-view" id="view-dashboard" aria-label="Dashboard">
+      <div class="k-page">
+        <div class="k-page-header">
+          <div class="k-page-header__row">
+            <div class="k-page-header__titles">
+              <h1 class="k-page-header__title">Sales — West region</h1>
+              <p class="k-page-header__desc">Q3 · 1 Oct – 31 Dec 2026 · updated 6 min ago</p>
+            </div>
+            <div class="k-page-header__actions">
+              <div class="k-btn-group" role="group" aria-label="Period" data-single>
+                <button class="k-btn k-btn--sm" aria-pressed="false">Month</button>
+                <button class="k-btn k-btn--sm" aria-pressed="true">Quarter</button>
+                <button class="k-btn k-btn--sm" aria-pressed="false">FY 2026-27</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <section class="k-kpis" aria-label="Key figures">
+          <div class="k-kpi"><span class="k-kpi__label">Revenue, quarter to date</span><span class="k-kpi__value">₹96.4 <small>L</small></span><span class="k-kpi__meta">of ₹4.50 Cr target · <span class="k-kpi__delta" data-trend="flat">On pace</span></span><div class="k-kpi__bar"><div class="k-meter"><div class="k-progress" role="progressbar" aria-label="Target attained" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100"><span style="width:21%"></span></div><span>21%</span></div></div></div>
+          <div class="k-kpi"><span class="k-kpi__label">Open pipeline</span><span class="k-kpi__value">₹6.84 <small>Cr</small></span><span class="k-kpi__meta">76 deals · weighted ₹2.63 Cr</span></div>
+          <div class="k-kpi"><span class="k-kpi__label">Won deals</span><span class="k-kpi__value">9 <small>· ₹1.18 Cr</small></span><span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="up-good"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-up"/></svg>+2</span> vs same point in Q2</span></div>
+          <div class="k-kpi"><span class="k-kpi__label">Win rate, last 90 days</span><span class="k-kpi__value">28%</span><span class="k-kpi__meta"><span class="k-kpi__delta" data-trend="down-bad"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-trend-down"/></svg>3 pts</span> vs Q2 (31%)</span></div>
+        </section>
+        <div class="k-dash">
+          <section class="k-panel k-col-8" aria-labelledby="rev-t">
+            <div class="k-panel__header"><h2 class="k-panel__title" id="rev-t">Revenue by month <small>invoiced, excl. GST · ₹ lakh</small></h2></div>
+            <div class="k-panel__body">
+              <div class="k-legend u-mb-3" aria-hidden="true"><span class="k-legend__item"><span class="k-legend__swatch"></span>Invoiced</span><span class="k-legend__item"><span class="k-legend__swatch k-legend__swatch--muted"></span>Month to date</span><span class="k-legend__item"><span class="k-legend__swatch k-legend__swatch--line"></span>Target</span></div>
+              <div class="k-chart" id="rev-chart" role="img" aria-label="Revenue by month April to October 2026, above target in May, August and September."></div>
+            </div>
+          </section>
+          <section class="k-panel k-col-4" aria-labelledby="pipe-t">
+            <div class="k-panel__header"><h2 class="k-panel__title" id="pipe-t">Pipeline by stage <small>₹ Cr</small></h2></div>
+            <div class="k-panel__body">
+              <ul class="k-barlist" aria-label="Open pipeline by stage">
+                <li><span class="k-barlist__label">Prospecting</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:100%"></span><span class="k-barlist__fill" style="width:10%"></span></span><span class="k-barlist__value">1.92<small>31 deals</small></span></li>
+                <li><span class="k-barlist__label">Qualification</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:85%"></span><span class="k-barlist__fill" style="width:21%"></span></span><span class="k-barlist__value">1.64<small>22 deals</small></span></li>
+                <li><span class="k-barlist__label">Proposal</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:89%"></span><span class="k-barlist__fill" style="width:45%"></span></span><span class="k-barlist__value">1.71<small>14 deals</small></span></li>
+                <li><span class="k-barlist__label">Negotiation</span><span class="k-barlist__track"><span class="k-barlist__fill k-barlist__fill--muted" style="width:82%"></span><span class="k-barlist__fill" style="width:61%"></span></span><span class="k-barlist__value">1.57<small>9 deals</small></span></li>
+              </ul>
+              <div class="k-legend u-mt-4"><span class="k-legend__item"><span class="k-legend__swatch"></span>Weighted</span><span class="k-legend__item"><span class="k-legend__swatch k-legend__swatch--muted"></span>Total</span></div>
+            </div>
+          </section>
+          <section class="k-panel k-col-7" aria-labelledby="fu-t">
+            <div class="k-panel__header"><h2 class="k-panel__title" id="fu-t">My follow-ups <small>5 open</small></h2></div>
+            <ul class="k-list">
+              <li class="k-list__item"><span class="k-list__main"><span class="k-list__title">Call Sunil Patil — overdue ₹4,62,300</span><span class="k-list__meta">Ganesh Hardware &amp; Tools · credit hold</span></span><span class="k-due k-due--overdue">2 days overdue</span></li>
+              <li class="k-list__item"><span class="k-list__main"><span class="k-list__title">Send revised quote QT-5590</span><span class="k-list__meta">Kaveri Agro Foods</span></span><span class="k-due k-due--today">Today</span></li>
+              <li class="k-list__item"><span class="k-list__main"><span class="k-list__title"><a href="#order">Approve SO-10234 Revision 2</a></span><span class="k-list__meta">Requested by Anjali Nair</span></span><span class="k-due k-due--today">Today</span></li>
+              <li class="k-list__item"><span class="k-list__main"><span class="k-list__title">Site visit — HVAC scope walk-through</span><span class="k-list__meta">Lumina Healthcare · Mumbai</span></span><span class="k-due">Tomorrow 11:00</span></li>
+            </ul>
+          </section>
+          <section class="k-panel k-col-5" aria-labelledby="act-t">
+            <div class="k-panel__header"><h2 class="k-panel__title" id="act-t">Recent team activity</h2></div>
+            <div class="k-panel__body">
+              <ol class="k-timeline">
+                <li class="k-timeline__item"><span class="k-timeline__marker" data-tone="success"><svg class="k-icon" aria-hidden="true"><use href="#i-check"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Rohit</strong> won Boiler controls AMC · ₹8.4 L</span><span class="k-timeline__time">11:20</span></div></div></li>
+                <li class="k-timeline__item"><span class="k-timeline__marker"><svg class="k-icon" aria-hidden="true"><use href="#i-phone"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Anjali</strong> called Rahul Mehta</span><span class="k-timeline__time">09:15</span></div><div class="k-timeline__body u-sm">ABC Technologies · commissioning on 28 Oct</div></div></li>
+                <li class="k-timeline__item"><span class="k-timeline__marker" data-tone="danger"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></span><div class="k-timeline__content"><div class="k-timeline__head"><span><strong>Imran</strong> lost Cooling tower VFDs · ₹6.2 L</span><span class="k-timeline__time">Yesterday</span></div><div class="k-timeline__body u-sm">Reason: price — competitor 11% lower</div></div></li>
+              </ol>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- ACCOUNTS ---------- -->
+    <section class="demo-view" id="view-accounts" aria-label="Accounts" hidden>
+      <div class="k-page k-page--fill">
+        <div class="k-page-header">
+          <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="#dashboard">Home</a></li><li><span>CRM</span></li><li><span aria-current="page">Accounts</span></li></ol></nav>
+          <div class="k-page-header__row">
+            <div class="k-page-header__titles">
+              <h1 class="k-page-header__title">Accounts</h1>
+              <p class="k-page-header__desc">Customers and prospects you sell to. Credit and tax details are shared with Finance.</p>
+            </div>
+            <div class="k-page-header__actions"><button class="k-btn k-btn--primary" data-action="toast:New account form opens here"><svg class="k-icon" aria-hidden="true"><use href="#i-plus"/></svg><span>New account</span></button></div>
+          </div>
+        </div>
+        <section class="k-grid k-grid--fill" aria-label="Accounts table">
+          <div class="k-grid__toolbar" id="acc-toolbar">
+            <div class="k-search"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg><input class="k-input" type="search" id="acc-search" placeholder="Name, code or city" aria-label="Search accounts"></div>
+            <div class="k-quickfilters" role="group" aria-label="Status filter" data-single>
+              <button aria-pressed="true" data-status="">All <span>12</span></button>
+              <button aria-pressed="false" data-status="Active">Active <span>8</span></button>
+              <button aria-pressed="false" data-status="Credit hold">Credit hold <span>3</span></button>
+            </div>
+            <span class="k-grid__spacer"></span>
+            <button class="k-btn k-btn--subtle k-btn--icon" aria-label="Export" data-tip="Export" data-tip-pos="end" data-action="toast:Exporting 12 accounts to Excel"><svg class="k-icon" aria-hidden="true"><use href="#i-download"/></svg></button>
+          </div>
+          <div class="k-grid__bulkbar" id="acc-bulk" hidden>
+            <span class="k-grid__selection" id="acc-count" aria-live="polite">0 selected</span>
+            <div class="k-grid__divider" aria-hidden="true"></div>
+            <button class="k-btn k-btn--sm" data-action="toast:Owner changed">Change owner</button>
+            <button class="k-btn k-btn--sm k-btn--danger-outline" id="acc-archive">Archive</button>
+            <span class="k-grid__spacer"></span>
+            <button class="k-btn k-btn--subtle k-btn--sm" id="acc-clear">Clear selection</button>
+          </div>
+          <div class="k-grid__scroll" tabindex="0" role="region" aria-label="Accounts, scrollable">
+            <table class="k-table k-table--stack">
+              <colgroup><col style="width:40px"><col style="width:250px"><col style="width:104px"><col style="width:150px"><col style="width:140px"><col style="width:130px"><col style="width:130px"><col style="width:130px"><col style="width:160px"></colgroup>
+              <thead><tr>
+                <th class="k-table__select" scope="col"><label class="k-check k-check--bare"><input type="checkbox" id="acc-all" aria-label="Select all rows"></label></th>
+                <th scope="col" aria-sort="ascending" data-sort="0"><button class="k-th"><span>Account</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+                <th scope="col" aria-sort="none" data-sort="1"><button class="k-th"><span>Code</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+                <th scope="col">Industry</th>
+                <th scope="col">Location</th>
+                <th scope="col">Status</th>
+                <th scope="col" class="is-num" aria-sort="none" data-sort="6" data-num><button class="k-th"><span>Credit limit</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+                <th scope="col" class="is-num" aria-sort="none" data-sort="7" data-num><button class="k-th"><span>Outstanding</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button></th>
+                <th scope="col">Owner</th>
+              </tr></thead>
+              <tbody id="acc-body"></tbody>
+            </table>
+            <div class="k-empty" id="acc-empty" hidden>
+              <span class="k-empty__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+              <h2 class="k-empty__title">No accounts match your search</h2>
+              <p class="k-empty__text">Search looks at name, code and city within the selected status.</p>
+              <div class="k-empty__actions"><button class="k-btn" id="acc-reset">Clear search and filters</button></div>
+            </div>
+          </div>
+          <div class="k-grid__footer"><span class="k-pagination__range u-sm u-secondary" id="acc-range"></span></div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ---------- SALES ORDER ---------- -->
+    <section class="demo-view" id="view-order" aria-label="Sales order" hidden>
+      <div class="k-page k-page--flush">
+        <header class="k-record-header">
+          <div class="k-record-header__inner">
+            <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="#dashboard">Home</a></li><li><span>Sales orders</span></li><li><span aria-current="page">SO-10234</span></li></ol></nav>
+            <div class="k-record-header__row">
+              <div class="k-record-header__identity"><div class="u-min-w-0">
+                <div class="k-record-header__type">Sales order · Revision 2</div>
+                <h1 class="k-record-header__title">SO-10234 <span class="k-status k-status--strong" data-tone="info">Confirmed</span><span class="k-status k-status--strong" data-tone="warning" id="so-pending">Revision pending approval</span></h1>
+                <div class="k-record-header__sub">ABC Technologies Pvt Ltd · Pune · Customer PO <span class="k-id">ABC/PO/2026/0912</span></div>
+              </div></div>
+              <div class="k-record-header__actions">
+                <button class="k-btn" data-action="toast:Edit opens a new revision"><svg class="k-icon" aria-hidden="true"><use href="#i-edit"/></svg><span>Edit</span></button>
+                <button class="k-btn" data-action="toast:Preparing PDF"><svg class="k-icon" aria-hidden="true"><use href="#i-printer"/></svg><span>Print</span></button>
+                <button class="k-btn k-btn--primary" data-approve><svg class="k-icon" aria-hidden="true"><use href="#i-check"/></svg><span>Approve revision</span></button>
+              </div>
+            </div>
+            <dl class="k-facts">
+              <div class="k-facts__hero"><dt>Order value</dt><dd>₹8,45,000</dd></div>
+              <div><dt>Order date</dt><dd>12 Oct 2026</dd></div>
+              <div><dt>Delivery by</dt><dd>24 Oct 2026</dd></div>
+              <div><dt>Payment terms</dt><dd id="so-terms">Net 30 → Net 45 pending</dd></div>
+              <div><dt>Sales owner</dt><dd><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="2">AN</span>Anjali Nair</span></dd></div>
+            </dl>
+            <div class="k-tabs" role="tablist" aria-label="Sales order sections">
+              <button class="k-tab" role="tab" aria-selected="true" aria-controls="so-t1" id="so-tab1">Overview</button>
+              <button class="k-tab" role="tab" aria-selected="false" aria-controls="so-t2" id="so-tab2">History</button>
+            </div>
+          </div>
+        </header>
+        <div class="k-tabpanel" role="tabpanel" id="so-t1" aria-labelledby="so-tab1" tabindex="0">
+          <div class="k-detail-body">
+            <div class="k-detail-body__main">
+              <div class="k-decision" id="so-decision" role="region" aria-label="Approval required">
+                <div class="k-decision__text"><strong>Your approval is needed for Revision 2</strong><small>Payment terms Net 30 → Net 45. Terms beyond Net 30 need Sales Manager approval.</small></div>
+                <div class="k-decision__actions"><button class="k-btn k-btn--danger-outline" data-action="toast:Reject asks for a reason">Reject</button><button class="k-btn k-btn--primary" data-approve>Approve</button></div>
+              </div>
+              <ol class="k-flow k-flow--compact" aria-label="Order to cash">
+                <li class="k-flow__step is-done"><span class="k-flow__name">Quotation</span><span class="k-flow__doc">QT-5512 · Accepted</span></li>
+                <li class="k-flow__step is-current" aria-current="step"><span class="k-flow__name">Sales order</span><span class="k-flow__doc">SO-10234 · Rev 2</span></li>
+                <li class="k-flow__step"><span class="k-flow__name">Delivery</span><span class="k-flow__doc">DL-7781 · 1 of 2</span></li>
+                <li class="k-flow__step"><span class="k-flow__name">Invoice</span><span class="k-flow__doc">Not created</span></li>
+                <li class="k-flow__step"><span class="k-flow__name">Payment</span><span class="k-flow__doc">—</span></li>
+              </ol>
+              <section class="k-panel" aria-labelledby="so-lines">
+                <div class="k-panel__header"><h2 class="k-panel__title" id="so-lines">Order lines <small>5 of 7 shown</small></h2></div>
+                <div class="k-grid__scroll">
+                  <table class="k-table k-table--plain k-table--stack">
+                    <colgroup><col><col style="width:100px"><col style="width:80px"><col style="width:100px"><col style="width:110px"><col style="width:140px"></colgroup>
+                    <thead><tr><th>Item</th><th>SKU</th><th class="is-num">Qty</th><th class="is-num">Rate</th><th class="is-num">Amount</th><th>Delivery</th></tr></thead>
+                    <tbody>
+                      <tr><td class="k-table__primary">Industrial servo motor 2.2 kW</td><td class="is-id" data-label="SKU">SM-2200</td><td class="is-num" data-label="Qty">4</td><td class="is-num" data-label="Rate">₹62,500</td><td class="is-num" data-label="Amount">₹2,50,000</td><td data-label="Delivery"><span class="k-status" data-tone="success">Delivered</span></td></tr>
+                      <tr><td class="k-table__primary">Servo drive 2.2 kW, EtherCAT</td><td class="is-id" data-label="SKU">SD-2200</td><td class="is-num" data-label="Qty">4</td><td class="is-num" data-label="Rate">₹38,400</td><td class="is-num" data-label="Amount">₹1,53,600</td><td data-label="Delivery"><span class="k-status" data-tone="success">Delivered</span></td></tr>
+                      <tr><td class="k-table__primary">PLC controller, 24 DI / 16 DO</td><td class="is-id" data-label="SKU">PLC-2416</td><td class="is-num" data-label="Qty">2</td><td class="is-num" data-label="Rate">₹54,000</td><td class="is-num" data-label="Amount">₹1,08,000</td><td data-label="Delivery"><span class="k-status" data-tone="info">Reserved</span></td></tr>
+                      <tr class="is-attention"><td class="k-table__primary">Shielded motor cable 4C × 2.5 sq mm</td><td class="is-id" data-label="SKU">CBL-4C25</td><td class="is-num" data-label="Qty">300 m</td><td class="is-num" data-label="Rate">₹265</td><td class="is-num" data-label="Amount">₹79,500</td><td data-label="Delivery"><span class="k-status" data-tone="warning">Short 120 m</span></td></tr>
+                      <tr><td class="k-table__primary">On-site commissioning</td><td class="is-id" data-label="SKU">SRV-COM</td><td class="is-num" data-label="Qty">2 days</td><td class="is-num" data-label="Rate">₹18,000</td><td class="is-num" data-label="Amount">₹36,000</td><td data-label="Delivery"><span class="k-status" data-tone="neutral">Scheduled 28 Oct</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="k-panel__footer" style="justify-content:flex-end">
+                  <table class="k-totals" aria-label="Order totals"><tbody>
+                    <tr><th scope="row">Subtotal (7 lines)</th><td>₹7,16,100.00</td></tr>
+                    <tr><th scope="row">CGST 9% + SGST 9%</th><td>₹1,28,898.00</td></tr>
+                    <tr><th scope="row">Round off</th><td>₹2.00</td></tr>
+                    <tr class="k-totals__grand"><th scope="row">Total</th><td>₹8,45,000.00</td></tr>
+                  </tbody></table>
+                </div>
+              </section>
+            </div>
+            <aside class="k-detail-body__side" aria-label="Approval">
+              <section class="k-panel" aria-labelledby="so-appr">
+                <div class="k-panel__header"><h2 class="k-panel__title" id="so-appr">Approval · Revision 2</h2></div>
+                <div class="k-panel__body" style="padding-top:4px;padding-bottom:4px">
+                  <ol class="k-approval">
+                    <li class="k-approval__step"><span class="k-approval__badge" data-state="approved" aria-label="Submitted"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-check"/></svg></span><div class="k-approval__who"><div class="k-approval__name">Anjali Nair</div><div class="k-approval__role">Submitted · Account Executive</div><div class="k-approval__comment">Customer’s FY closes in March; they asked for Net 45 on this order only.</div></div><div class="k-approval__when">Today<br>10:12</div></li>
+                    <li class="k-approval__step"><span class="k-approval__badge" data-state="current" id="so-badge" aria-label="Waiting">1</span><div class="k-approval__who"><div class="k-approval__name">Priya Deshmukh (you)</div><div class="k-approval__role">Sales Manager · West</div><div class="k-approval__rule">Rule: payment terms &gt; Net 30</div></div><div class="k-approval__when" id="so-when">Waiting<br>2 h</div></li>
+                  </ol>
+                </div>
+              </section>
+            </aside>
+          </div>
+        </div>
+        <div class="k-tabpanel" role="tabpanel" id="so-t2" aria-labelledby="so-tab2" tabindex="0" hidden>
+          <div class="k-detail-body k-detail-body--single">
+            <section class="k-panel">
+              <table class="k-audit">
+                <thead><tr><th>When</th><th>Who</th><th>Field</th><th>Change</th></tr></thead>
+                <tbody>
+                  <tr><td>20 Oct 2026, 09:40</td><td>Anjali Nair</td><td class="k-audit__field">Payment terms</td><td><span class="k-audit__old">Net 30</span><span class="k-audit__arrow">→</span><span class="k-audit__new">Net 45</span></td></tr>
+                  <tr><td>16 Oct 2026, 15:20</td><td>System</td><td class="k-audit__field">Delivery status</td><td><span class="k-audit__old">Not delivered</span><span class="k-audit__arrow">→</span><span class="k-audit__new">Partially delivered</span></td></tr>
+                  <tr><td>12 Oct 2026, 17:30</td><td>Priya Deshmukh</td><td class="k-audit__field">Status</td><td><span class="k-audit__old">Draft</span><span class="k-audit__arrow">→</span><span class="k-audit__new">Confirmed</span></td></tr>
+                </tbody>
+              </table>
+            </section>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- PIPELINE ---------- -->
+    <section class="demo-view" id="view-pipeline" aria-label="Opportunities" hidden>
+      <div class="k-page k-page--fill">
+        <div class="k-page-header">
+          <div class="k-page-header__row">
+            <div class="k-page-header__titles"><h1 class="k-page-header__title">Opportunities</h1><p class="k-page-header__desc">76 open · ₹6.84 Cr total · ₹2.63 Cr weighted. Drag a card, or focus it and press Alt + ← / →.</p></div>
+          </div>
+        </div>
+        <div class="k-board demo-board" id="board" aria-label="Pipeline by stage"></div>
+      </div>
+    </section>
+
+    <!-- ---------- STOCK ---------- -->
+    <section class="demo-view" id="view-stock" aria-label="Stock" hidden>
+      <div class="k-page">
+        <div class="k-page-header">
+          <div class="k-page-header__row">
+            <div class="k-page-header__titles"><h1 class="k-page-header__title">Stock on hand</h1><p class="k-page-header__desc">Pune Main Warehouse · PNQ-01 · valuation: moving average</p></div>
+            <div class="k-page-header__actions"><button class="k-btn k-btn--primary" data-action="toast:Transfer form opens in a drawer"><svg class="k-icon" aria-hidden="true"><use href="#i-transfer"/></svg><span>New transfer</span></button></div>
+          </div>
+        </div>
+        <section class="k-grid" aria-label="Stock">
+          <div class="k-grid__scroll">
+            <table class="k-table k-table--stack">
+              <colgroup><col style="width:110px"><col style="width:260px"><col style="width:96px"><col style="width:96px"><col style="width:96px"><col style="width:96px"><col style="width:120px"><col style="width:150px"></colgroup>
+              <thead><tr><th>SKU</th><th>Product</th><th>Bin</th><th class="is-num">On hand</th><th class="is-num">Reserved</th><th class="is-num">Available</th><th class="is-num">Value</th><th>Status</th></tr></thead>
+              <tbody id="stock-body"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- ---------- APPROVALS (empty state) ---------- -->
+    <section class="demo-view" id="view-approvals" aria-label="My approvals" hidden>
+      <div class="k-page">
+        <div class="k-page-header"><div class="k-page-header__row"><div class="k-page-header__titles"><h1 class="k-page-header__title">My approvals</h1><p class="k-page-header__desc">Requests waiting for your decision, oldest first.</p></div></div></div>
+        <section class="k-panel">
+          <ul class="k-list">
+            <li><a class="k-list__item" href="#order"><svg class="k-icon" aria-hidden="true" style="color:var(--color-text-muted)"><use href="#i-receipt"/></svg><span class="k-list__main"><span class="k-list__title">SO-10234 Revision 2 — payment terms Net 45</span><span class="k-list__meta">Anjali Nair · ABC Technologies · waiting 2 h</span></span><span class="k-list__end">₹8,45,000</span></a></li>
+            <li><a class="k-list__item" href="#approvals"><svg class="k-icon" aria-hidden="true" style="color:var(--color-text-muted)"><use href="#i-truck"/></svg><span class="k-list__main"><span class="k-list__title">PR-2026-0418 — Demo &amp; trial kits</span><span class="k-list__meta">Rohit Kulkarni · CC-SW-310 · waiting 3 h</span></span><span class="k-list__end">₹3,86,400</span></a></li>
+          </ul>
+        </section>
+      </div>
+    </section>
+
+    <!-- ---------- SETTINGS ---------- -->
+    <section class="demo-view" id="view-settings" aria-label="Display settings" hidden>
+      <div class="k-page k-page--narrow">
+        <div class="k-page-header"><div class="k-page-header__row"><div class="k-page-header__titles"><h1 class="k-page-header__title">Display settings</h1><p class="k-page-header__desc">Saved on this device. They apply immediately.</p></div></div></div>
+        <section class="k-form">
+          <div class="k-form-section">
+            <div class="k-form-section__head"><h2 class="k-form-section__title">Theme</h2><p class="k-form-section__desc">White is the default.</p></div>
+            <fieldset class="k-choice-group k-choice-group--row"><legend class="k-sr-only">Theme</legend>
+              <label class="k-radio"><input type="radio" name="theme" value="light" checked><span>White</span></label>
+              <label class="k-radio"><input type="radio" name="theme" value="dark"><span>Black</span></label>
+            </fieldset>
+          </div>
+          <div class="k-form-section">
+            <div class="k-form-section__head"><h2 class="k-form-section__title">Density</h2><p class="k-form-section__desc">Compact fits more rows on screen.</p></div>
+            <fieldset class="k-choice-group k-choice-group--row"><legend class="k-sr-only">Density</legend>
+              <label class="k-radio"><input type="radio" name="density" value="compact"><span>Compact</span></label>
+              <label class="k-radio"><input type="radio" name="density" value="comfortable" checked><span>Comfortable</span></label>
+              <label class="k-radio"><input type="radio" name="density" value="spacious"><span>Spacious</span></label>
+            </fieldset>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="k-toast-region" role="status" aria-live="polite"></div>
+
+<script>
+/*__ICONS_JS__*/
+</script>
+<script>
+(function () {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const root = document.documentElement;
+  const app = $("#app");
+  const store = {
+    get(k) { try { return localStorage.getItem("kestrel.demo." + k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem("kestrel.demo." + k, v); } catch (e) { /* ignore */ } },
+  };
+  const inr = (n) => "₹" + n.toLocaleString("en-IN");
+
+  // ---------------- Toast ----------------
+  function toast(text, opts = {}) {
+    const region = $(".k-toast-region");
+    const el = document.createElement("div");
+    el.className = "k-toast";
+    el.dataset.tone = opts.tone || "success";
+    el.innerHTML = `<svg class="k-icon" aria-hidden="true"><use href="#i-${opts.tone === "neutral" ? "info" : "check-circle"}"/></svg><span class="k-toast__text"></span>${opts.action ? `<button class="k-toast__action">${opts.action}</button>` : ""}<button class="k-toast__close" aria-label="Dismiss"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-x"/></svg></button>`;
+    $(".k-toast__text", el).innerHTML = text;
+    region.appendChild(el);
+    let t;
+    const close = () => el.remove();
+    const arm = () => (t = setTimeout(close, opts.timeout || 5000));
+    el.addEventListener("mouseenter", () => clearTimeout(t));
+    el.addEventListener("mouseleave", arm);
+    $(".k-toast__close", el).onclick = close;
+    if (opts.action) $(".k-toast__action", el).onclick = () => { opts.onAction && opts.onAction(); close(); };
+    arm();
+  }
+
+  // ---------------- Theme (white default / black) ----------------
+  function setTheme(theme) {
+    root.setAttribute("data-theme", theme);
+    store.set("theme", theme);
+    $$("[data-theme-set]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.themeSet === theme)));
+    $$('input[name="theme"]').forEach((r) => (r.checked = r.value === theme));
+  }
+  $$("[data-theme-set]").forEach((b) => b.addEventListener("click", () => setTheme(b.dataset.themeSet)));
+  $$('input[name="theme"]').forEach((r) => r.addEventListener("change", () => setTheme(r.value)));
+  setTheme(root.getAttribute("data-theme") === "dark" ? "dark" : "light");
+
+  const density = store.get("density") || "comfortable";
+  root.setAttribute("data-density", density);
+  $$('input[name="density"]').forEach((r) => {
+    r.checked = r.value === density;
+    r.addEventListener("change", () => { root.setAttribute("data-density", r.value); store.set("density", r.value); });
+  });
+
+  // ---------------- Left menu ----------------
+  if (store.get("sidebar") === "collapsed") app.setAttribute("data-sidebar", "collapsed");
+  $$("[data-group]").forEach((btn) => btn.addEventListener("click", () => {
+    if (app.getAttribute("data-sidebar") === "collapsed" && innerWidth >= 1200) {
+      app.removeAttribute("data-sidebar"); store.set("sidebar", "expanded"); btn.setAttribute("aria-expanded", "true"); return;
+    }
+    btn.setAttribute("aria-expanded", String(btn.getAttribute("aria-expanded") !== "true"));
+  }));
+
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-action]");
+    if (!a) return;
+    const [act, arg] = a.dataset.action.split(/:(.*)/s);
+    if (act === "toggle-nav") {
+      const open = !app.classList.contains("is-nav-open");
+      app.classList.toggle("is-nav-open", open);
+      $(".k-header__menu").setAttribute("aria-expanded", String(open));
+    } else if (act === "collapse") {
+      const c = app.getAttribute("data-sidebar") !== "collapsed";
+      if (c) app.setAttribute("data-sidebar", "collapsed"); else app.removeAttribute("data-sidebar");
+      a.setAttribute("aria-label", c ? "Expand navigation" : "Collapse navigation");
+      store.set("sidebar", c ? "collapsed" : "expanded");
+    } else if (act === "toast") toast(arg, { tone: "neutral" });
+  });
+
+  // ---------------- Routing ----------------
+  const VIEWS = ["dashboard", "accounts", "order", "pipeline", "stock", "approvals", "settings"];
+  function route() {
+    const v = VIEWS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "dashboard";
+    VIEWS.forEach((x) => ($("#view-" + x).hidden = x !== v));
+    $$("[data-view]").forEach((l) => {
+      if (l.dataset.view === v) l.setAttribute("aria-current", "page"); else l.removeAttribute("aria-current");
+    });
+    // Mark the module that contains the current page
+    $$("[data-group]").forEach((g) => {
+      const has = !!g.nextElementSibling.querySelector('[aria-current="page"]');
+      g.classList.toggle("has-current", has);
+      if (has) g.setAttribute("aria-expanded", "true");
+    });
+    app.classList.remove("is-nav-open");
+    $("#main").scrollTop = 0;
+    document.title = ($("#view-" + v).getAttribute("aria-label")) + " · Kestrel Demo";
+  }
+  addEventListener("hashchange", route);
+  route();
+
+  // Single-choice button groups
+  $$("[data-single]").forEach((g) => g.addEventListener("click", (e) => {
+    const b = e.target.closest("button"); if (!b) return;
+    $$("button", g).forEach((x) => x.setAttribute("aria-pressed", String(x === b)));
+  }));
+
+  // Shortcuts: "/" search, Esc closes the mobile menu
+  document.addEventListener("keydown", (e) => {
+    const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName);
+    if (e.key === "/" && !typing) { e.preventDefault(); $("#global-search").focus(); }
+    if (e.key === "Escape") app.classList.remove("is-nav-open");
+  });
+
+  // ---------------- Dashboard chart ----------------
+  (function chart() {
+    const data = [["Apr", 118, 140], ["May", 152, 140], ["Jun", 131, 140], ["Jul", 126, 145], ["Aug", 149, 145], ["Sep", 171, 145], ["Oct", 96, 150, true]];
+    const W = 720, H = 220, pl = 36, pr = 12, pt = 12, pb = 26, max = 200;
+    const iw = W - pl - pr, ih = H - pt - pb, band = iw / data.length, bw = band * 0.5;
+    const y = (v) => pt + ih - (v / max) * ih;
+    let s = `<svg viewBox="0 0 ${W} ${H}" aria-hidden="true"><g class="k-chart__grid">`;
+    for (let v = 0; v <= max; v += 50) s += `<line x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}"/><text class="k-chart__tick" x="${pl - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`;
+    s += "</g>";
+    let path = "";
+    data.forEach(([m, v, t, p], i) => {
+      const cx = pl + i * band + band / 2, r = 3;
+      s += `<path class="k-chart__bar ${p ? "is-forecast" : ""}" data-i="${i}" d="M${cx - bw / 2},${y(0)} V${y(v) + r} q0,-${r} ${r},-${r} H${cx + bw / 2 - r} q${r},0 ${r},${r} V${y(0)} Z"/>`;
+      s += `<text class="k-chart__tick" x="${cx}" y="${H - 8}" text-anchor="middle">${m}</text>`;
+      path += `${i ? "L" : "M"}${pl + i * band},${y(t)} L${pl + (i + 1) * band},${y(t)} `;
+    });
+    s += `<path class="k-chart__target" d="${path}"/>`;
+    data.forEach((_, i) => (s += `<rect class="k-chart__hit" data-i="${i}" x="${pl + i * band}" y="${pt}" width="${band}" height="${ih}"/>`));
+    s += `</svg><div class="k-chart__tooltip" hidden></div>`;
+    const el = $("#rev-chart");
+    el.innerHTML = s;
+    const tip = $(".k-chart__tooltip", el);
+    el.addEventListener("pointermove", (e) => {
+      const hit = e.target.closest(".k-chart__hit"); if (!hit) return;
+      const i = +hit.dataset.i, [m, v, t, p] = data[i], sc = el.getBoundingClientRect().width / W;
+      el.classList.add("is-hovering");
+      $$(".k-chart__bar", el).forEach((b) => b.classList.toggle("is-hover", +b.dataset.i === i));
+      tip.hidden = false;
+      tip.style.left = (pl + i * band + band / 2) * sc + "px";
+      tip.style.top = y(Math.max(v, t)) * sc + "px";
+      tip.innerHTML = `<strong>${m} 2026${p ? " · to date" : ""}</strong><dl><dt>Invoiced</dt><dd>₹${v} L</dd><dt>Target</dt><dd>₹${t} L</dd><dt>Attainment</dt><dd>${Math.round((v / t) * 100)}%</dd></dl>`;
+    });
+    el.addEventListener("pointerleave", () => { tip.hidden = true; el.classList.remove("is-hovering"); });
+  })();
+
+  // ---------------- Accounts grid ----------------
+  const ACCOUNTS = [
+    ["ABC Technologies Pvt Ltd", "CUST-00142", "Electronics mfg.", "Pune, MH", "Active", 2500000, 845000, "Priya Deshmukh"],
+    ["Bluecrest Pharma Ltd", "CUST-00087", "Pharmaceuticals", "Ahmedabad, GJ", "Active", 5000000, 1218400, "Priya Deshmukh"],
+    ["Deccan Auto Components", "CUST-00311", "Automotive", "Chakan, MH", "Active", 1500000, 0, "Rohit Kulkarni"],
+    ["Ganesh Hardware & Tools", "CUST-00512", "Distribution", "Nashik, MH", "Credit hold", 400000, 462300, "Priya Deshmukh"],
+    ["Kaveri Agro Foods", "CUST-00276", "Food processing", "Kolhapur, MH", "Active", 3000000, 1475000, "Anjali Nair"],
+    ["Lumina Healthcare Systems", "CUST-00059", "Healthcare", "Mumbai, MH", "Active", 7500000, 2310000, "Priya Deshmukh"],
+    ["Mahalaxmi Textiles", "CUST-00620", "Textiles", "Surat, GJ", "Credit hold", 800000, 1046750, "Imran Shaikh"],
+    ["Northgate Logistics", "CUST-00377", "Logistics", "Bhiwandi, MH", "Active", 1800000, 544200, "Imran Shaikh"],
+    ["Pinnacle Infra Projects", "CUST-00245", "Construction", "Thane, MH", "Active", 6000000, 3890000, "Rohit Kulkarni"],
+    ["Trident Packaging Industries", "CUST-00129", "Packaging", "Vadodara, GJ", "Active", 2200000, 0, "Imran Shaikh"],
+    ["Vardhan Steel Traders", "CUST-00034", "Steel trading", "Mumbai, MH", "Credit hold", 2000000, 2140000, "Priya Deshmukh"],
+    ["Western Ghats Coffee Co.", "CUST-00714", "Beverages", "Pune, MH", "Prospect", 0, 0, "Meghna Sathe"],
+  ];
+  const TONE = { Active: "success", "Credit hold": "warning", Prospect: "neutral" };
+  const initials = (n) => n.split(" ").map((p) => p[0]).slice(0, 2).join("");
+  let rows = ACCOUNTS.slice(), sort = { i: 0, dir: 1 }, statusFilter = "", query = "";
+  const selected = new Set();
+
+  function renderAccounts() {
+    const list = rows
+      .filter((a) => (!statusFilter || a[4] === statusFilter) && (!query || (a[0] + a[1] + a[3]).toLowerCase().includes(query)))
+      .sort((a, b) => (a[sort.i] < b[sort.i] ? -sort.dir : a[sort.i] > b[sort.i] ? sort.dir : 0));
+    $("#acc-body").innerHTML = list.map((a) => {
+      const over = a[5] > 0 && a[6] > a[5];
+      const sel = selected.has(a[1]);
+      return `<tr class="${over ? "is-attention" : ""} ${sel ? "is-selected" : ""}">
+        <td class="k-table__select"><label class="k-check k-check--bare"><input type="checkbox" data-row="${a[1]}" ${sel ? "checked" : ""} aria-label="Select ${a[0]}"></label></td>
+        <td class="k-table__primary"><a href="#order" title="${a[0]}">${a[0]}</a></td>
+        <td class="is-id" data-label="Code">${a[1]}</td>
+        <td class="is-secondary k-mobile-hide" data-label="Industry">${a[2]}</td>
+        <td class="is-secondary" data-label="Location">${a[3]}</td>
+        <td data-label="Status"><span class="k-status" data-tone="${TONE[a[4]]}">${a[4]}</span></td>
+        <td class="is-num" data-label="Credit limit">${a[5] ? inr(a[5]) : '<span class="u-muted">Not set</span>'}</td>
+        <td class="is-num ${over ? "is-negative" : ""}" data-label="Outstanding">${inr(a[6])}${over ? '<span class="k-sr-only"> (over credit limit)</span>' : ""}</td>
+        <td class="k-mobile-hide" data-label="Owner"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="${(a[7].length % 4) + 1}">${initials(a[7])}</span><span class="k-person__name">${a[7]}</span></span></td>
+      </tr>`;
+    }).join("");
+    $("#acc-empty").hidden = list.length > 0;
+    $("#acc-range").innerHTML = `<strong>${list.length}</strong> of <strong>${rows.length}</strong> accounts`;
+    const n = selected.size;
+    $("#acc-bulk").hidden = n === 0;
+    $("#acc-toolbar").hidden = n > 0;
+    $("#acc-count").textContent = `${n} selected`;
+    const all = $("#acc-all");
+    all.checked = n > 0 && n === list.length;
+    all.indeterminate = n > 0 && n < list.length;
+    $$("#view-accounts th[data-sort]").forEach((th) => th.setAttribute("aria-sort", +th.dataset.sort === sort.i ? (sort.dir === 1 ? "ascending" : "descending") : "none"));
+  }
+  $("#acc-body").addEventListener("change", (e) => {
+    const k = e.target.dataset.row; if (!k) return;
+    if (e.target.checked) selected.add(k); else selected.delete(k);
+    renderAccounts();
+  });
+  $("#acc-all").addEventListener("change", (e) => {
+    $$("#acc-body [data-row]").forEach((c) => (e.target.checked ? selected.add(c.dataset.row) : selected.delete(c.dataset.row)));
+    renderAccounts();
+  });
+  $("#acc-clear").addEventListener("click", () => { selected.clear(); renderAccounts(); });
+  $("#acc-archive").addEventListener("click", () => {
+    const removed = rows.filter((a) => selected.has(a[1]));
+    rows = rows.filter((a) => !selected.has(a[1]));
+    selected.clear(); renderAccounts();
+    toast(`${removed.length} account${removed.length > 1 ? "s" : ""} archived.`, { action: "Undo", onAction: () => { rows = rows.concat(removed); renderAccounts(); } });
+  });
+  $$("#view-accounts th[data-sort] .k-th").forEach((b) => b.addEventListener("click", () => {
+    const i = +b.closest("th").dataset.sort;
+    sort = { i, dir: sort.i === i ? -sort.dir : 1 };
+    renderAccounts();
+  }));
+  $("#acc-search").addEventListener("input", (e) => { query = e.target.value.trim().toLowerCase(); renderAccounts(); });
+  $$("#view-accounts [data-status]").forEach((b) => b.addEventListener("click", () => { statusFilter = b.dataset.status; renderAccounts(); }));
+  $("#acc-reset").addEventListener("click", () => {
+    query = ""; statusFilter = ""; $("#acc-search").value = "";
+    $$("#view-accounts [data-status]").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.status === "")));
+    renderAccounts();
+  });
+  renderAccounts();
+
+  // ---------------- Sales order: tabs + approve with undo ----------------
+  const tabs = $$('#view-order [role="tab"]');
+  tabs.forEach((t, i) => {
+    t.tabIndex = i === 0 ? 0 : -1;
+    const select = (tab) => tabs.forEach((x) => {
+      const on = x === tab;
+      x.setAttribute("aria-selected", String(on)); x.tabIndex = on ? 0 : -1;
+      $("#" + x.getAttribute("aria-controls")).hidden = !on;
+    });
+    t.addEventListener("click", () => select(t));
+    t.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      const n = tabs[(i + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length];
+      select(n); n.focus();
+    });
+  });
+  function setApproved(on) {
+    $("#so-decision").hidden = on;
+    $("#so-pending").hidden = on;
+    $$("[data-approve]").forEach((b) => (b.hidden = on && !b.closest(".k-decision")));
+    $("#so-terms").textContent = on ? "Net 45" : "Net 30 → Net 45 pending";
+    const badge = $("#so-badge");
+    badge.dataset.state = on ? "approved" : "current";
+    badge.innerHTML = on ? '<svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-check"/></svg>' : "1";
+    $("#so-when").innerHTML = on ? "Today<br>just now" : "Waiting<br>2 h";
+  }
+  $$("[data-approve]").forEach((b) => b.addEventListener("click", () => {
+    setApproved(true);
+    toast("Revision 2 approved. Anjali Nair has been notified.", { action: "Undo", onAction: () => setApproved(false), timeout: 8000 });
+  }));
+
+  // ---------------- Pipeline board ----------------
+  const STAGES = [
+    ["Prospecting", "10%", "var(--color-border-strong)", [["Dryer line energy audit", "Shree Balaji Polymers", "₹14.5 L", "18 Dec", "MS"], ["Resort BMS upgrade", "Orchid Hotels & Resorts", "₹21.0 L", "15 Jan", "MS"]]],
+    ["Qualification", "25%", "var(--color-info)", [["Line 4 servo upgrade", "ABC Technologies", "₹22.0 L", "12 Dec", "AN"], ["Clean-room HVAC controls", "Zenith Medical Devices", "₹34.0 L", "20 Dec", "PD"]]],
+    ["Proposal", "50%", "var(--color-primary)", [["Plant 4 automation package", "Pinnacle Infra Projects", "₹62.0 L", "15 Nov", "RK"], ["Packaging line PLC migration", "Trident Packaging", "₹18.8 L", "30 Nov", "IS", true]]],
+    ["Negotiation", "75%", "var(--color-primary-active)", [["Cold-chain expansion", "Kaveri Agro Foods", "₹48.5 L", "31 Oct", "AN"], ["Hospital wing HVAC controls", "Lumina Healthcare", "₹36.8 L", "07 Nov", "PD"]]],
+  ];
+  const board = $("#board");
+  board.innerHTML = STAGES.map(([name, prob, color, cards], ci) => `
+    <section class="k-board__col" style="--stage-color:${color}" data-col="${ci}" aria-labelledby="st-${ci}">
+      <header class="k-board__head"><h2 class="k-board__title" id="st-${ci}">${name} <span class="k-board__count">${cards.length}</span></h2><div class="k-board__sum">probability <span>${prob}</span></div></header>
+      <ul class="k-board__list">${cards.map(([t, a, v, d, o, stale]) => `
+        <li class="k-kcard ${stale ? "is-stale" : ""}" draggable="true" tabindex="0" aria-label="${t}, ${a}, ${v}">
+          <span class="k-kcard__title">${t}</span><span class="k-kcard__account">${a}</span>
+          <div class="k-kcard__row"><span class="k-kcard__value">${v}</span><span>· ${d}</span><span class="k-kcard__end"><span class="k-avatar k-avatar--xs" data-tint="${(o.charCodeAt(0) % 4) + 1}">${o}</span></span></div>
+          ${stale ? '<div class="k-kcard__row k-text-warning">No activity 19 days</div>' : ""}
+        </li>`).join("")}</ul>
+    </section>`).join("");
+  const cols = $$(".k-board__col", board);
+  const recount = () => cols.forEach((c) => ($(".k-board__count", c).textContent = $$(".k-kcard", c).length));
+  function move(card, to, from) {
+    if (to === from) return;
+    $(".k-board__list", to).prepend(card); recount(); card.focus();
+    toast(`<strong>${$(".k-kcard__title", card).textContent}</strong> moved to ${STAGES[+to.dataset.col][0]}`, { action: "Undo", onAction: () => { $(".k-board__list", from).prepend(card); recount(); } });
+  }
+  let dragged = null;
+  board.addEventListener("dragstart", (e) => { dragged = e.target.closest(".k-kcard"); dragged && dragged.classList.add("is-dragging"); });
+  board.addEventListener("dragend", () => { dragged && dragged.classList.remove("is-dragging"); cols.forEach((c) => c.classList.remove("is-drop-target")); });
+  cols.forEach((c) => {
+    c.addEventListener("dragover", (e) => { if (dragged) { e.preventDefault(); cols.forEach((x) => x.classList.toggle("is-drop-target", x === c)); } });
+    c.addEventListener("drop", (e) => { e.preventDefault(); if (dragged) move(dragged, c, dragged.closest(".k-board__col")); dragged = null; });
+  });
+  board.addEventListener("keydown", (e) => {
+    const card = e.target.closest(".k-kcard");
+    if (!card || !e.altKey || (e.key !== "ArrowRight" && e.key !== "ArrowLeft")) return;
+    e.preventDefault();
+    const from = card.closest(".k-board__col"), to = cols[cols.indexOf(from) + (e.key === "ArrowRight" ? 1 : -1)];
+    if (to) move(card, to, from);
+  });
+
+  // ---------------- Stock ----------------
+  const STOCK = [
+    ["CBL-4C25", "Shielded motor cable 4C × 2.5 sq mm", "B-14-03", 180, 180, 265, "m"],
+    ["ENC-1024", "Incremental encoder 1024 ppr", "A-07-02", 6, 2, 7400],
+    ["HB-M10-50", "Hex bolt M10 × 50 zinc plated", "A-21-08", 4820, 400, 6],
+    ["HMI-07", "HMI touch panel 7\", IP65 front", "A-05-01", 11, 2, 31500],
+    ["PLC-2416", "PLC controller, 24 DI / 16 DO", "A-05-04", 16, 2, 54000],
+    ["SMPS-24-10", "Power supply 24 V DC, 10 A DIN", "A-09-03", 0, 0, 4650],
+  ];
+  const REORDER = { "CBL-4C25": 400, "ENC-1024": 10, "HB-M10-50": 2000, "HMI-07": 6, "PLC-2416": 8, "SMPS-24-10": 15 };
+  $("#stock-body").innerHTML = STOCK.map(([sku, name, bin, oh, res, cost, uom]) => {
+    const av = oh - res;
+    const [tone, label] = oh === 0 ? ["danger", "Out of stock"] : av <= 0 ? ["danger", "Short for orders"] : oh < REORDER[sku] ? ["warning", "Below reorder"] : ["success", "In stock"];
+    return `<tr class="${tone === "danger" ? "is-attention" : ""}"><td class="is-id k-table__primary">${sku}</td><td data-label="Product">${name}</td><td class="is-id" data-label="Bin">${bin}</td><td class="is-num" data-label="On hand">${oh.toLocaleString("en-IN")}${uom ? ` <span class="u-muted">${uom}</span>` : ""}</td><td class="is-num" data-label="Reserved">${res.toLocaleString("en-IN")}</td><td class="is-num ${av <= 0 ? "is-negative" : ""}" data-label="Available">${av.toLocaleString("en-IN")}</td><td class="is-num" data-label="Value">${inr(oh * cost)}</td><td data-label="Status"><span class="k-status" data-tone="${tone}">${label}</span></td></tr>`;
+  }).join("");
+})();
+</script>
+</body>
+</html>

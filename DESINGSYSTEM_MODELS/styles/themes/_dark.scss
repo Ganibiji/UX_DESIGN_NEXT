@@ -1,0 +1,113 @@
+@use "sass:map";
+@use "../tokens/primitives" as p;
+
+// ---------------------------------------------------------------------------
+// Dark theme
+// Not an inversion. Surfaces get *lighter* as they rise (page -> surface ->
+// elevated) because shadows are nearly invisible on dark backgrounds. Text is
+// off-white to reduce halation; accents are desaturated one step so status
+// colours do not vibrate against charcoal.
+// ---------------------------------------------------------------------------
+@mixin tokens {
+  color-scheme: dark;
+
+  --color-bg-page: #{map.get(p.$gray, 950)};
+  --color-bg-surface: #{map.get(p.$gray, 925)};
+  --color-bg-surface-alt: #1c2128;
+  --color-bg-sunken: #{map.get(p.$gray, 975)};
+  --color-bg-elevated: #{map.get(p.$gray, 850)};
+  --color-bg-hover: rgba(255, 255, 255, 0.05);
+  --color-bg-active: rgba(255, 255, 255, 0.09);
+  --color-bg-selected: #172539;
+  --color-bg-selected-hover: #1b2c44;
+  --color-bg-overlay: rgba(0, 0, 0, 0.6);
+  --color-bg-inverse: #{map.get(p.$gray, 100)};
+
+  --color-text-primary: #e3e7ec;
+  --color-text-secondary: #aeb5c0;
+  --color-text-muted: #8c95a2;
+  --color-text-disabled: #5d6571;
+  --color-text-inverse: #{map.get(p.$gray, 900)};
+  --color-text-link: #7fb0ee;
+  --color-text-link-hover: #a9c9f4;
+  --color-text-on-primary: #ffffff;
+
+  --color-border-subtle: #22272f;
+  --color-border: #2b313a;
+  --color-border-strong: #3d444f;
+  --color-border-input: #4f5764;
+  --color-border-input-hover: #646d7a;
+  --color-focus-ring: #7fb0ee;
+
+  --color-primary: #{map.get(p.$blue, 500)};
+  --color-primary-hover: #4380d0;
+  --color-primary-active: #2c63ad;
+  --color-primary-subtle: #172539;
+  --color-primary-subtle-hover: #1d3150;
+  --color-primary-border: #29446b;
+  --color-primary-text: #8dbaf1;
+
+  --color-success: #{map.get(p.$green, 400)};
+  --color-success-subtle: #14261c;
+  --color-success-border: #234a33;
+  --color-success-text: #7fd0a3;
+
+  --color-warning: #{map.get(p.$amber, 400)};
+  --color-warning-subtle: #2a2112;
+  --color-warning-border: #4d3a17;
+  --color-warning-text: #ecc277;
+
+  --color-error: #{map.get(p.$red, 400)};
+  --color-error-hover: #{map.get(p.$red, 300)};
+  --color-error-subtle: #2e1817;
+  --color-error-border: #5a2a26;
+  --color-error-text: #f4a49c;
+
+  --color-info: #{map.get(p.$cyan, 400)};
+  --color-info-subtle: #112830;
+  --color-info-border: #1d4552;
+  --color-info-text: #86cde2;
+
+  --color-neutral: #8c95a2;
+  --color-neutral-subtle: #232932;
+  --color-neutral-border: #343b45;
+  --color-neutral-text: #c3c9d2;
+
+  --color-shell-bg: #{map.get(p.$ink, dark)};
+  --color-shell-hover: #{map.get(p.$ink, dark-hover)};
+  --color-shell-border: #{map.get(p.$ink, dark-border)};
+  --color-shell-text: #e3e7ec;
+  --color-shell-text-muted: #8c95a2;
+  --color-shell-field: rgba(255, 255, 255, 0.06);
+  --color-shell-field-hover: rgba(255, 255, 255, 0.1);
+
+  --color-nav-bg: #{map.get(p.$gray, 925)};
+  --color-nav-text: #c3c9d2;
+  --color-nav-group: #8c95a2;
+  --color-nav-active-bg: #172539;
+  --color-nav-active-text: #a9c9f4;
+  --color-nav-indicator: #7fb0ee;
+
+  --color-chart-primary: #5b93d9;
+  --color-chart-primary-muted: #29446b;
+  --color-chart-compare: #6c7582;
+  --color-chart-grid: #262c34;
+  --color-chart-axis: #3d444f;
+
+  // Shadows stay for layering, but elevation is mainly expressed by surface
+  // lightness plus a hairline border (set in components).
+  --shadow-xs: none;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 14px 36px rgba(0, 0, 0, 0.55);
+  --shadow-sticky: 0 1px 0 var(--color-border);
+
+  --color-avatar-1-bg: #20324a;
+  --color-avatar-1-fg: #b5cdef;
+  --color-avatar-2-bg: #1f3427;
+  --color-avatar-2-fg: #b4dcc2;
+  --color-avatar-3-bg: #3a2c1e;
+  --color-avatar-3-fg: #e8cba8;
+  --color-avatar-4-bg: #2c2740;
+  --color-avatar-4-fg: #cdc4e6;
+}

@@ -1,0 +1,276 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Field = label + control + helper/error. Labels sit above controls: faster to
+// scan in long forms and survives translation (German labels are ~30% longer).
+// ---------------------------------------------------------------------------
+.k-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+
+  // Horizontal label (used in dense detail panels and filter drawers)
+  &--inline {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+
+    > .k-label { flex: 0 0 132px; margin: 0; }
+  }
+}
+
+.k-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-snug);
+
+  // Asterisk is decorative; required state is conveyed by aria-required.
+  &__req {
+    color: var(--color-error-text);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &__optional {
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+  }
+
+  &__hint {
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-weight: var(--font-weight-regular);
+  }
+}
+
+.k-field__help,
+.k-field__message {
+  display: flex;
+  gap: var(--space-1);
+  align-items: flex-start;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-snug);
+
+  .k-icon { margin-top: 1px; width: 14px; height: 14px; }
+}
+
+.k-field__message--error { color: var(--color-error-text); }
+.k-field__message--success { color: var(--color-success-text); }
+.k-field__message--warning { color: var(--color-warning-text); }
+
+.k-field__counter {
+  margin-left: auto;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+  @include numeric;
+}
+
+// ---------------------------------------------------------------------------
+// Text input, textarea, native select
+// States: default · hover · focus · error ([aria-invalid]) · success (.is-valid)
+//         · read-only (no border, sunken) · disabled · loading (in group)
+// ---------------------------------------------------------------------------
+%k-control {
+  width: 100%;
+  min-width: 0;
+  height: var(--control-height);
+  padding: 0 var(--control-pad-x);
+  border: 1px solid var(--color-border-input);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-snug);
+  transition: border-color var(--duration-fast) var(--ease-standard);
+
+  &::placeholder {
+    color: var(--color-text-muted);
+    opacity: 1;
+  }
+
+  &:hover {
+    border-color: var(--color-border-input-hover);
+  }
+
+  &:focus,
+  &:focus-visible {
+    outline: none;
+    border-color: var(--color-focus-ring);
+    box-shadow: 0 0 0 1px var(--color-focus-ring);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--color-error);
+
+    &:focus { box-shadow: 0 0 0 1px var(--color-error); }
+  }
+
+  &.is-valid {
+    border-color: var(--color-success);
+  }
+
+  &:disabled {
+    background: var(--color-bg-sunken);
+    border-color: var(--color-border);
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  // Read-only values stay selectable/copyable but clearly not editable.
+  &[readonly] {
+    background: var(--color-bg-sunken);
+    border-color: transparent;
+    color: var(--color-text-secondary);
+
+    &:focus { box-shadow: none; border-color: var(--color-border-strong); }
+  }
+}
+
+.k-input {
+  @extend %k-control;
+
+  &--num {
+    text-align: right;
+    @include numeric;
+  }
+
+  &--sm {
+    height: var(--control-height-sm);
+    font-size: var(--font-size-sm);
+    padding: 0 var(--space-2);
+  }
+}
+
+.k-textarea {
+  @extend %k-control;
+  height: auto;
+  min-height: calc(var(--control-height) * 2.5);
+  padding-top: 6px;
+  padding-bottom: 6px;
+  resize: vertical;
+  line-height: var(--line-height-normal);
+}
+
+.k-select {
+  @extend %k-control;
+  appearance: none;
+  padding-right: 28px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23646d7a' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 6.5 8 10l3.5-3.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 7px center;
+  cursor: pointer;
+
+  &--sm {
+    height: var(--control-height-sm);
+    font-size: var(--font-size-sm);
+  }
+}
+
+[data-theme="dark"] .k-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23aeb5c0' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 6.5 8 10l3.5-3.5'/%3E%3C/svg%3E");
+}
+
+// ---------------------------------------------------------------------------
+// Input group — prefix/suffix adornments (currency, units, search icon, spinner)
+// ---------------------------------------------------------------------------
+.k-input-group {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+
+  > .k-input,
+  > .k-select {
+    flex: 1;
+  }
+
+  &__addon {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--space-2);
+    border: 1px solid var(--color-border-input);
+    background: var(--color-bg-surface-alt);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+
+    &:first-child {
+      border-right: 0;
+      border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    }
+
+    &:last-child {
+      border-left: 0;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+  }
+
+  > .k-input-group__addon:first-child + .k-input { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+  > .k-input:has(+ .k-input-group__addon) { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+  // Icon placed inside the field (search, calendar)
+  &__icon {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--space-2);
+    display: flex;
+    align-items: center;
+    color: var(--color-text-muted);
+    pointer-events: none;
+
+    + .k-input { padding-left: 30px; }
+
+    &--end {
+      left: auto;
+      right: var(--space-2);
+    }
+  }
+
+  &__action {
+    position: absolute;
+    top: 50%;
+    right: 3px;
+    transform: translateY(-50%);
+  }
+
+  &.is-loading::after {
+    content: "";
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 12px;
+    height: 12px;
+    margin-top: -6px;
+    border: 1.5px solid var(--color-border-strong);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: k-spin 0.7s linear infinite;
+  }
+}
+
+// Read-only display value inside forms/detail pages (not an input)
+.k-value {
+  min-height: var(--control-height);
+  display: flex;
+  align-items: center;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+
+  &--empty { color: var(--color-text-muted); }
+}
+
+// Auto-generated value marker ("Generated on save")
+.k-autogen {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+}

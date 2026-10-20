@@ -1,0 +1,218 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Date picker — text entry is always allowed (DD MMM YYYY or DD/MM/YYYY);
+// the calendar is an aid, not the only path. Presets cover 80% of report use.
+// ---------------------------------------------------------------------------
+.k-datepicker {
+  @include floating-surface;
+  display: inline-flex;
+  z-index: var(--z-dropdown);
+  font-size: var(--font-size-sm);
+
+  &__presets {
+    @include reset-list;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    width: 140px;
+    padding: 6px;
+    border-right: 1px solid var(--color-border);
+
+    button {
+      @include reset-button;
+      width: 100%;
+      padding: 5px 8px;
+      border-radius: var(--radius-xs);
+      color: var(--color-text-primary);
+
+      &:hover { background: var(--color-bg-hover); }
+      &[aria-pressed="true"] { background: var(--color-bg-selected); color: var(--color-primary-text); font-weight: var(--font-weight-medium); }
+    }
+  }
+
+  &__cal { padding: 10px 12px 12px; }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+  }
+
+  &__grid {
+    border-collapse: separate;
+    border-spacing: 0 2px;
+
+    th {
+      width: 32px;
+      height: 24px;
+      color: var(--color-text-muted);
+      font-size: var(--font-size-xs);
+      font-weight: var(--font-weight-medium);
+    }
+
+    td { padding: 0; text-align: center; }
+  }
+
+  &__day {
+    @include reset-button;
+    width: 32px;
+    height: 28px;
+    border-radius: var(--radius-xs);
+    text-align: center;
+    @include numeric;
+
+    &:hover { background: var(--color-bg-hover); }
+    &:focus-visible { @include focus-ring(0); }
+
+    &.is-outside { color: var(--color-text-disabled); }
+
+    &.is-today {
+      font-weight: var(--font-weight-bold);
+      box-shadow: inset 0 -2px 0 var(--color-primary);
+    }
+
+    &.is-in-range {
+      border-radius: 0;
+      background: var(--color-bg-selected);
+    }
+
+    &[aria-pressed="true"],
+    &.is-selected {
+      background: var(--color-primary);
+      color: var(--color-text-on-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    // Non-working days (weekends/holidays from the company calendar)
+    &.is-holiday { color: var(--color-text-muted); }
+
+    &:disabled { color: var(--color-text-disabled); text-decoration: line-through; cursor: not-allowed; background: none; }
+  }
+
+  &__foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--color-border);
+    color: var(--color-text-muted);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Time picker — typed entry + 15-minute slot list
+// ---------------------------------------------------------------------------
+.k-timelist {
+  @include floating-surface;
+  @include reset-list;
+  width: 120px;
+  max-height: 220px;
+  padding: 4px;
+  overflow-y: auto;
+  font-size: var(--font-size-sm);
+  @include numeric;
+
+  li > button {
+    @include reset-button;
+    width: 100%;
+    padding: 4px 8px;
+    border-radius: var(--radius-xs);
+
+    &:hover { background: var(--color-bg-hover); }
+    &[aria-selected="true"] { background: var(--color-primary); color: #fff; }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Upload — dropzone + file list with per-file progress and errors
+// ---------------------------------------------------------------------------
+.k-upload {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+
+  &__zone {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    border: 1px dashed var(--color-border-input);
+    border-radius: var(--radius-md);
+    background: var(--color-bg-surface-alt);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+
+    > .k-icon { color: var(--color-text-muted); width: 20px; height: 20px; }
+
+    &:hover,
+    &.is-dragover {
+      border-color: var(--color-primary);
+      background: var(--color-primary-subtle);
+    }
+
+    &:focus-within { @include focus-ring(1px); }
+
+    &.is-error { border-color: var(--color-error); background: var(--color-error-subtle); }
+  }
+
+  &__hint { color: var(--color-text-muted); }
+
+  &__list {
+    @include reset-list;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+  }
+
+  &__file {
+    display: grid;
+    grid-template-columns: 20px 1fr auto auto;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 8px var(--space-3);
+    font-size: var(--font-size-sm);
+
+    + .k-upload__file { border-top: 1px solid var(--color-border-subtle); }
+
+    > .k-icon { color: var(--color-text-muted); }
+
+    &.is-error .k-upload__meta { color: var(--color-error-text); }
+  }
+
+  &__name { @include truncate; color: var(--color-text-primary); }
+  &__meta { color: var(--color-text-muted); white-space: nowrap; @include numeric; }
+
+  &__progress {
+    grid-column: 2 / -1;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--color-bg-sunken);
+    overflow: hidden;
+
+    > span { display: block; height: 100%; background: var(--color-primary); }
+  }
+}
+
+// Progress bar (generic)
+.k-progress {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-bg-sunken);
+  overflow: hidden;
+
+  > span {
+    display: block;
+    height: 100%;
+    border-radius: 3px;
+    background: var(--color-primary);
+  }
+
+  &--success > span { background: var(--color-success); }
+  &--warning > span { background: var(--color-warning); }
+  &--danger > span { background: var(--color-error); }
+}

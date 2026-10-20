@@ -1,0 +1,35 @@
+UX DESING IDAES:
+----------------
+GIVE OPTIOSN FOR FORMS - AS COMPACT ,SMALL,MID AND LARGE
+ACCRODIONS
+VERTICAL ACOORDIONS AND HORIZONTAL ACCORDIONS 
+
+HORIZONTAL STEPPER VS VERTICAL STEPPERS 
+
+
+
+notes:
+--------
+add triggers to create by defult for menus (if user required) -
+to reduce the actions 
+
+
+
+https://uicollective.co/tools
+
+
+https://themewagon.com/theme-category/admin-dashboard/
+
+
+
+EDUCATIONFORM
+---------------
+https://dribbble.com/shots/25556604-Online-Educational-Platform
+
+
+REFRENCE WEBSITES
+---------------------
+https://prium.github.io/phoenix/v1.24.0/#!.html
+
+https://onesuite.io/use-cases/creative-agency/
+

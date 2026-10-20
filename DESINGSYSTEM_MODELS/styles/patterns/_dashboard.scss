@@ -1,0 +1,186 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Dashboard — ordered by decision value:
+//   1 · KPIs (is anything wrong?)  2 · Trends (why?)  3 · Operational lists
+//   (what do I do?)  4 · Detail tables (for whoever needs to dig).
+// One filter row controls the whole page; each panel states its period.
+// ---------------------------------------------------------------------------
+.k-dash {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-4);
+
+  > .k-col-12 { grid-column: span 12; }
+  > .k-col-8 { grid-column: span 8; }
+  > .k-col-7 { grid-column: span 7; }
+  > .k-col-6 { grid-column: span 6; }
+  > .k-col-5 { grid-column: span 5; }
+  > .k-col-4 { grid-column: span 4; }
+
+  @include down(lg) {
+    > [class*="k-col-"] { grid-column: span 12; }
+  }
+}
+
+.k-dash-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+
+  &__updated {
+    margin-left: auto;
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Charts (inline SVG). Single-hue magnitude; comparison series in gray.
+// Thin marks, recessive grid, direct labels on the last point only.
+// ---------------------------------------------------------------------------
+.k-chart {
+  position: relative;
+  width: 100%;
+
+  svg { width: 100%; height: auto; overflow: visible; }
+
+  .k-chart__grid line { stroke: var(--color-chart-grid); stroke-width: 1; }
+  .k-chart__axis line { stroke: var(--color-chart-axis); }
+  .k-chart__tick {
+    fill: var(--color-text-muted);
+    font-size: 11px;
+    font-family: var(--font-family-sans);
+    @include numeric;
+  }
+
+  .k-chart__bar {
+    fill: var(--color-chart-primary);
+    transition: opacity var(--duration-fast);
+
+    &.is-forecast { fill: var(--color-chart-primary-muted); }
+  }
+
+  .k-chart__target {
+    stroke: var(--color-chart-compare);
+    stroke-width: 2;
+    stroke-dasharray: 4 3;
+    fill: none;
+  }
+
+  .k-chart__label {
+    fill: var(--color-text-secondary);
+    font-size: 11px;
+    font-weight: var(--font-weight-semibold);
+    @include numeric;
+  }
+
+  .k-chart__hit {
+    fill: transparent;
+    cursor: crosshair;
+  }
+
+  // Dim siblings while one mark is hovered
+  &.is-hovering .k-chart__bar:not(.is-hover) { opacity: 0.45; }
+
+  &__tooltip {
+    position: absolute;
+    z-index: var(--z-tooltip);
+    min-width: 150px;
+    padding: 6px 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-bg-elevated);
+    box-shadow: var(--shadow-md);
+    font-size: var(--font-size-sm);
+    pointer-events: none;
+    transform: translate(-50%, calc(-100% - 8px));
+
+    strong { display: block; margin-bottom: 2px; }
+
+    dl { display: grid; grid-template-columns: auto auto; gap: 1px 12px; }
+    dt { color: var(--color-text-muted); display: flex; align-items: center; gap: 6px; }
+    dd { text-align: right; @include numeric; }
+  }
+}
+
+.k-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1) var(--space-4);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+
+  &__item { display: inline-flex; align-items: center; gap: 6px; }
+
+  &__swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--color-chart-primary);
+
+    &--muted { background: var(--color-chart-primary-muted); }
+    &--line {
+      height: 0;
+      width: 14px;
+      border-radius: 0;
+      background: none;
+      border-top: 2px dashed var(--color-chart-compare);
+    }
+  }
+}
+
+// Horizontal bar list — pipeline by stage, revenue by region. Often clearer
+// than a funnel or donut: labels are readable and values comparable.
+.k-barlist {
+  @include reset-list;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  li {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr) 92px;
+    align-items: center;
+    gap: var(--space-3);
+    font-size: var(--font-size-sm);
+  }
+
+  &__label { color: var(--color-text-secondary); @include truncate; }
+
+  &__track {
+    position: relative;
+    height: 14px;
+    border-radius: 2px;
+    background: var(--color-bg-sunken);
+  }
+
+  &__fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    border-radius: 0 4px 4px 0;
+    background: var(--color-chart-primary);
+  }
+
+  // Weighted portion drawn darker inside the total
+  &__fill--muted { background: var(--color-chart-primary-muted); }
+
+  &__value {
+    text-align: right;
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    @include numeric;
+
+    small { display: block; color: var(--color-text-muted); font-weight: var(--font-weight-regular); }
+  }
+}
+
+// Sparkline inside KPI or table cell
+.k-spark {
+  width: 80px;
+  height: 22px;
+
+  polyline { fill: none; stroke: var(--color-chart-primary); stroke-width: 1.5; }
+  circle { fill: var(--color-chart-primary); }
+}

@@ -1,0 +1,293 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Page — breadcrumb · title + one-line description · actions · content.
+// No hero areas: the first row of real content should be visible within
+// ~120px of the header.
+// ---------------------------------------------------------------------------
+.k-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: var(--content-max-width);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: var(--page-pad-y) var(--page-pad-x) var(--space-8);
+
+  // List pages: header on top, grid fills the rest of the viewport
+  &--fill {
+    height: 100%;
+    min-height: 0;
+    padding-bottom: var(--page-pad-y);
+
+    @include down(sm) { height: auto; }
+  }
+
+  &--narrow { max-width: var(--form-max-width); }
+
+  // Edge-to-edge pages (detail pages with a sticky record header)
+  &--flush {
+    max-width: none;
+    padding: 0;
+    gap: 0;
+  }
+
+  @include down(sm) {
+    --page-pad-x: 12px;
+    gap: var(--space-3);
+  }
+}
+
+.k-page-header {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  &__titles {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-3);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+    letter-spacing: -0.01em;
+  }
+
+  &__desc {
+    margin-top: 2px;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-md);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--space-2);
+    padding-top: 2px;
+  }
+
+  @include down(md) {
+    &__row { flex-direction: column; gap: var(--space-2); }
+    &__actions { justify-content: flex-start; }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Record header — top of every detail page. Sticky so the record's identity,
+// status and actions are visible while scrolling long tabs.
+// ---------------------------------------------------------------------------
+.k-record-header {
+  position: sticky;
+  top: 0;
+  z-index: calc(var(--z-sticky) + 2);
+  padding: var(--page-pad-y) var(--page-pad-x) 0;
+  background: var(--color-bg-surface);
+  border-bottom: 1px solid var(--color-border);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+  }
+
+  &__row {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+
+  &__identity {
+    display: flex;
+    gap: var(--space-3);
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__type {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-1) var(--space-3);
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--line-height-tight);
+  }
+
+  &__sub {
+    margin-top: 2px;
+    color: var(--color-text-secondary);
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .k-tabs {
+    border-bottom: 0;
+    margin: 0 calc(var(--space-3) * -1);
+  }
+
+  @include down(md) {
+    position: static;
+
+    &__row { flex-direction: column; gap: var(--space-2); }
+    &__actions { justify-content: flex-start; }
+  }
+
+  @include down(sm) {
+    &__actions { display: none; } // replaced by .k-actionbar
+  }
+}
+
+// Key facts strip — the 4–6 values people look for first on a record
+.k-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) 0;
+  margin: var(--space-1) 0 var(--space-1);
+
+  > div {
+    min-width: 0;
+    padding: 0 var(--space-5);
+    border-left: 1px solid var(--color-border);
+
+    &:first-child { padding-left: 0; border-left: 0; }
+  }
+
+  dt {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  dd {
+    margin-top: 1px;
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+    @include numeric;
+  }
+
+  .k-facts__hero dd {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @include down(sm) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2) var(--space-3);
+
+    > div { padding: 0; border: 0; }
+  }
+}
+
+// Body of a detail page: main column + optional side column
+.k-detail-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  align-items: start;
+  gap: var(--space-4);
+  max-width: var(--content-max-width);
+  width: 100%;
+  margin: 0 auto;
+  padding: var(--space-4) var(--page-pad-x) var(--space-10);
+
+  &--single { grid-template-columns: minmax(0, 1fr); }
+
+  &__main,
+  &__side {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    min-width: 0;
+  }
+
+  @include down(xl) { grid-template-columns: minmax(0, 1fr) 300px; }
+  @include down(lg) { grid-template-columns: minmax(0, 1fr); }
+  @include down(sm) { padding-bottom: 88px; }
+}
+
+// Master–detail: list on the left, selected record on the right
+.k-master-detail {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 0;
+  min-height: 0;
+  flex: 1;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  overflow: hidden;
+
+  &__master {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    border-right: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+    overflow: auto;
+  }
+
+  @include down(md) {
+    grid-template-columns: 1fr;
+
+    &__master { border-right: 0; border-bottom: 1px solid var(--color-border); max-height: 280px; }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mobile action bar — primary actions move to the thumb zone; the rest go to
+// a bottom sheet via "More".
+// ---------------------------------------------------------------------------
+.k-actionbar {
+  display: none;
+
+  @include down(sm) {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-sticky);
+    display: flex;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3) calc(var(--space-2) + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-surface);
+
+    > .k-btn { flex: 1; height: 40px; }
+    > .k-btn--icon { flex: 0 0 40px; }
+  }
+}

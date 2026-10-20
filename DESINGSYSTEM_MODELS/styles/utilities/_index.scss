@@ -1,0 +1,48 @@
+@use "../abstracts" as *;
+
+// Small, deliberate set of utilities for layout glue. Visual styling belongs
+// in components — if you need more than three of these on one element,
+// it is probably a component.
+
+.u-flex { display: flex; }
+.u-inline-flex { display: inline-flex; }
+.u-grid { display: grid; }
+.u-col { flex-direction: column; }
+.u-wrap { flex-wrap: wrap; }
+.u-items-center { align-items: center; }
+.u-items-start { align-items: flex-start; }
+.u-items-baseline { align-items: baseline; }
+.u-justify-between { justify-content: space-between; }
+.u-justify-end { justify-content: flex-end; }
+.u-flex-1 { flex: 1; min-width: 0; }
+.u-ml-auto { margin-left: auto; }
+
+@each $n, $v in (0: 0, 1: var(--space-1), 2: var(--space-2), 3: var(--space-3), 4: var(--space-4), 5: var(--space-5), 6: var(--space-6), 8: var(--space-8)) {
+  .u-gap-#{$n} { gap: $v; }
+  .u-mt-#{$n} { margin-top: $v; }
+  .u-mb-#{$n} { margin-bottom: $v; }
+  .u-p-#{$n} { padding: $v; }
+}
+
+.u-w-full { width: 100%; }
+.u-min-w-0 { min-width: 0; }
+.u-truncate { @include truncate; }
+.u-nowrap { white-space: nowrap; }
+.u-text-right { text-align: right; }
+.u-text-center { text-align: center; }
+.u-num { @include numeric; }
+.u-strong { font-weight: var(--font-weight-semibold); }
+.u-medium { font-weight: var(--font-weight-medium); }
+.u-sm { font-size: var(--font-size-sm); }
+.u-xs { font-size: var(--font-size-xs); }
+.u-muted { color: var(--color-text-muted); }
+.u-secondary { color: var(--color-text-secondary); }
+
+.u-divider-y > * + * { border-top: 1px solid var(--color-border-subtle); }
+
+// Responsive visibility
+.u-hide-sm { @include down(sm) { display: none !important; } }
+.u-hide-md { @include down(md) { display: none !important; } }
+.u-hide-lg { @include down(lg) { display: none !important; } }
+.u-show-sm { @include up(sm) { display: none !important; } }
+.u-show-md { @include up(md) { display: none !important; } }

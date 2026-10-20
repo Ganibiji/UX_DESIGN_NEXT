@@ -1,0 +1,155 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Dropdown menu (role="menu") and Listbox (role="listbox") share one surface.
+// Menu = commands. Listbox = choosing a value (Select, Autocomplete).
+// ---------------------------------------------------------------------------
+.k-dropdown {
+  position: relative;
+  display: inline-flex;
+}
+
+.k-menu,
+.k-listbox {
+  @include floating-surface;
+  @include reset-list;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: var(--z-dropdown);
+  min-width: 180px;
+  max-width: 340px;
+  max-height: 360px;
+  padding: 4px;
+  overflow-y: auto;
+  font-size: var(--font-size-md);
+
+  &--end { left: auto; right: 0; }
+  &--up { top: auto; bottom: calc(100% + 4px); }
+
+  // Static rendering for documentation pages
+  &--static { position: static; box-shadow: var(--shadow-sm); }
+}
+
+.k-menu__item,
+.k-option {
+  @include reset-button;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 100%;
+  min-height: 30px;
+  padding: 5px var(--space-2);
+  border-radius: var(--radius-xs);
+  color: var(--color-text-primary);
+  line-height: var(--line-height-snug);
+  cursor: pointer;
+
+  > .k-icon { color: var(--color-text-muted); }
+
+  &:hover,
+  &.is-active {
+    background: var(--color-bg-hover);
+    text-decoration: none;
+    color: var(--color-text-primary);
+  }
+
+  &:focus-visible { @include focus-ring-inset; background: var(--color-bg-hover); }
+
+  &[aria-disabled="true"],
+  &:disabled {
+    color: var(--color-text-disabled);
+    cursor: not-allowed;
+    background: none;
+    > .k-icon { color: var(--color-text-disabled); }
+  }
+
+  &--danger {
+    color: var(--color-error-text);
+    > .k-icon { color: var(--color-error-text); }
+    &:hover { background: var(--color-error-subtle); color: var(--color-error-text); }
+  }
+}
+
+.k-menu__shortcut {
+  margin-left: auto;
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-xs);
+}
+
+.k-menu__label {
+  padding: 8px var(--space-2) 4px;
+  @include caps-label;
+}
+
+.k-menu__sep {
+  height: 1px;
+  margin: 4px -4px;
+  background: var(--color-border);
+}
+
+// Checkable menu items (column visibility, view options)
+.k-menu__item[role="menuitemcheckbox"],
+.k-menu__item[role="menuitemradio"] {
+  padding-left: 28px;
+  position: relative;
+
+  &[aria-checked="true"]::before {
+    content: "";
+    position: absolute;
+    left: 9px;
+    top: 50%;
+    width: 10px;
+    height: 6px;
+    margin-top: -5px;
+    border-left: 1.8px solid var(--color-primary);
+    border-bottom: 1.8px solid var(--color-primary);
+    transform: rotate(-45deg);
+  }
+}
+
+.k-option {
+  &[aria-selected="true"] {
+    background: var(--color-bg-selected);
+    font-weight: var(--font-weight-medium);
+  }
+
+  &__main { flex: 1; min-width: 0; @include truncate; }
+
+  &__meta {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    white-space: nowrap;
+  }
+
+  mark {
+    background: none;
+    color: inherit;
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+.k-listbox__empty,
+.k-listbox__footer {
+  padding: 8px var(--space-2);
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}
+
+.k-listbox__footer {
+  margin: 4px -4px -4px;
+  border-top: 1px solid var(--color-border);
+}
+
+// ---------------------------------------------------------------------------
+// Combobox / Autocomplete — input + listbox (ARIA 1.2 combobox pattern)
+// ---------------------------------------------------------------------------
+.k-combobox {
+  position: relative;
+
+  .k-listbox {
+    right: 0;
+    max-width: none;
+  }
+}

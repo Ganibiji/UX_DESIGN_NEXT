@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accounts · Kestrel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/kestrel.css">
+<script src="assets/boot.js"></script>
+</head>
+<body>
+<a class="k-skip-link" href="#main">Skip to content</a>
+<div class="k-app" data-nav="crm.accounts">
+<main class="k-main" id="main" tabindex="-1">
+<div class="k-page k-page--fill">
+
+  <!-- Page header: where am I · what is this · what can I do -->
+  <div class="k-page-header">
+    <nav class="k-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="dashboard.html">Home</a></li><li><a href="#">CRM</a></li><li><span aria-current="page">Accounts</span></li></ol></nav>
+    <div class="k-page-header__row">
+      <div class="k-page-header__titles">
+        <h1 class="k-page-header__title">Accounts</h1>
+        <p class="k-page-header__desc">Customers and prospects you sell to. Credit, tax and billing details are shared with Sales and Finance.</p>
+      </div>
+      <div class="k-page-header__actions">
+        <button class="k-btn u-hide-sm" data-open-dialog="import-dialog"><svg class="k-icon" aria-hidden="true"><use href="#i-upload"/></svg><span>Import</span></button>
+        <div class="k-split">
+          <a class="k-btn k-btn--primary" href="customer-new.html" data-shortcut="alt+n" title="Alt + N"><svg class="k-icon" aria-hidden="true"><use href="#i-plus"/></svg><span>New account</span></a>
+          <div class="k-dropdown">
+            <button class="k-btn k-btn--primary" aria-label="More ways to create" aria-haspopup="menu" aria-expanded="false" aria-controls="m-new" data-menu><svg class="k-icon" aria-hidden="true"><use href="#i-chevron-down"/></svg></button>
+            <div class="k-menu k-menu--end" id="m-new" role="menu" hidden>
+              <a class="k-menu__item" role="menuitem" href="customer-new.html">New account</a>
+              <a class="k-menu__item" role="menuitem" href="#">New account from lead…</a>
+              <a class="k-menu__item" role="menuitem" href="#">Duplicate selected account</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data grid -->
+  <section class="k-grid k-grid--fill" id="accounts-grid" data-grid aria-label="Accounts">
+
+    <div class="k-grid__toolbar" data-toolbar>
+      <div class="k-view-select">
+        <div class="k-dropdown">
+          <button class="k-btn k-btn--subtle" aria-haspopup="menu" aria-expanded="false" aria-controls="m-views" data-menu>
+            <span>My active customers</span><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-down"/></svg>
+          </button>
+          <div class="k-menu" id="m-views" role="menu" aria-label="Saved views" hidden style="min-width:260px">
+            <div class="k-menu__label">My views</div>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="true">My active customers<span class="k-menu__shortcut">Default</span></button>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="false">Credit hold — follow up</button>
+            <div class="k-menu__label">Shared with Sales West</div>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="false">All accounts</button>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="false">Key accounts (Tier A)</button>
+            <button class="k-menu__item" role="menuitemradio" aria-checked="false">No order in 90 days</button>
+            <div class="k-menu__sep" role="separator"></div>
+            <button class="k-menu__item" role="menuitem" data-action="toast:View saved — “My active customers”">Save changes to this view</button>
+            <button class="k-menu__item" role="menuitem">Save as new view…</button>
+            <button class="k-menu__item" role="menuitem">Manage views</button>
+          </div>
+        </div>
+        <span class="k-view-select__modified" title="You changed filters or columns since this view was saved">Modified</span>
+      </div>
+
+      <div class="k-grid__divider u-hide-sm" aria-hidden="true"></div>
+
+      <div class="k-search">
+        <svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg>
+        <input class="k-input" type="search" id="grid-search" placeholder="Name, code, GSTIN or city" aria-label="Search accounts" value="">
+      </div>
+      <button class="k-btn" data-open-dialog="filter-drawer" aria-label="Filters, 3 applied"><svg class="k-icon" aria-hidden="true"><use href="#i-filter"/></svg><span>Filters</span><span class="k-btn__count">3</span></button>
+
+      <span class="k-grid__spacer"></span>
+
+      <div class="k-dropdown u-hide-sm">
+        <button class="k-btn k-btn--subtle" aria-haspopup="menu" aria-expanded="false" aria-controls="m-cols" data-menu><svg class="k-icon" aria-hidden="true"><use href="#i-columns"/></svg><span class="u-hide-md">Columns</span></button>
+        <div class="k-menu k-menu--end" id="m-cols" role="menu" aria-label="Show columns" hidden>
+          <div class="k-menu__label">Show columns</div>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" aria-disabled="true">Account (always shown)</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="code">Code</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="industry">Industry</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="contact">Primary contact</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="location">Location</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="status">Status</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="credit">Credit limit</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="outstanding">Outstanding</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="lastorder">Last order</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="true" data-col-toggle="owner">Owner</button>
+          <button class="k-menu__item" role="menuitemcheckbox" aria-checked="false" data-col-toggle="gstin">GSTIN</button>
+          <div class="k-menu__sep" role="separator"></div>
+          <button class="k-menu__item" role="menuitem">Reset to view default</button>
+        </div>
+      </div>
+      <div class="k-dropdown u-hide-sm">
+        <button class="k-btn k-btn--subtle k-btn--icon" aria-label="Row density" data-tip="Row density" aria-haspopup="menu" aria-expanded="false" aria-controls="m-density" data-menu><svg class="k-icon" aria-hidden="true"><use href="#i-list"/></svg></button>
+        <div class="k-menu k-menu--end" id="m-density" role="menu" aria-label="Row density" hidden>
+          <button class="k-menu__item" role="menuitemradio" aria-checked="false" data-action="density:compact">Compact</button>
+          <button class="k-menu__item" role="menuitemradio" aria-checked="true" data-action="density:comfortable">Comfortable</button>
+          <button class="k-menu__item" role="menuitemradio" aria-checked="false" data-action="density:spacious">Spacious</button>
+        </div>
+      </div>
+      <div class="k-dropdown">
+        <button class="k-btn k-btn--subtle k-btn--icon" aria-label="Export" data-tip="Export" data-tip-pos="end" aria-haspopup="menu" aria-expanded="false" aria-controls="m-export" data-menu><svg class="k-icon" aria-hidden="true"><use href="#i-download"/></svg></button>
+        <div class="k-menu k-menu--end" id="m-export" role="menu" aria-label="Export" hidden style="min-width:240px">
+          <button class="k-menu__item" role="menuitem" data-action="toast:Exporting 1,284 accounts to Excel. We’ll notify you when the file is ready.">Excel (.xlsx) — all 1,284 rows</button>
+          <button class="k-menu__item" role="menuitem" data-action="toast:Exporting 25 rows to CSV">CSV — current page</button>
+          <div class="k-menu__sep" role="separator"></div>
+          <button class="k-menu__item" role="menuitem">Schedule export…</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bulk bar replaces the toolbar while rows are selected -->
+    <div class="k-grid__bulkbar" data-bulkbar hidden>
+      <span class="k-grid__selection" data-selection-count aria-live="polite">0 selected</span>
+      <button class="k-btn k-btn--link k-btn--sm" data-select-matching hidden>Select all 1,284 matching</button>
+      <div class="k-grid__divider" aria-hidden="true"></div>
+      <button class="k-btn k-btn--sm" data-action="toast:Owner changed for selected accounts"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-user"/></svg>Change owner</button>
+      <button class="k-btn k-btn--sm">Change status</button>
+      <button class="k-btn k-btn--sm u-hide-sm">Add to campaign</button>
+      <button class="k-btn k-btn--sm u-hide-sm"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-download"/></svg>Export</button>
+      <button class="k-btn k-btn--sm k-btn--danger-outline" data-open-dialog="archive-dialog">Archive</button>
+      <span class="k-grid__spacer"></span>
+      <button class="k-btn k-btn--subtle k-btn--sm" data-clear-selection>Clear selection</button>
+    </div>
+
+    <!-- Applied filters are always visible -->
+    <div class="k-filterbar" aria-label="Applied filters">
+      <span class="k-filterbar__label">Filtered by</span>
+      <span class="k-tag"><span class="k-tag__key">Owner:</span><span class="k-tag__value">Me</span><button class="k-tag__remove" aria-label="Remove filter Owner: Me"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+      <span class="k-tag"><span class="k-tag__key">Status:</span><span class="k-tag__value">Active, Credit hold</span><button class="k-tag__remove" aria-label="Remove filter Status"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+      <span class="k-tag"><span class="k-tag__key">Region:</span><span class="k-tag__value">West</span><button class="k-tag__remove" aria-label="Remove filter Region: West"><svg class="k-icon k-icon--xs" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+      <button class="k-btn k-btn--link k-btn--sm" style="margin-left:4px">Clear all</button>
+    </div>
+
+    <div class="k-grid__scroll" tabindex="0" role="region" aria-label="Accounts table, scrollable">
+      <table class="k-table k-table--stack" aria-rowcount="1284">
+        <colgroup>
+          <col style="width:40px"><col style="width:260px"><col style="width:96px"><col style="width:150px"><col style="width:170px"><col style="width:140px"><col style="width:120px"><col style="width:132px"><col style="width:132px"><col style="width:112px"><col style="width:150px"><col style="width:150px"><col style="width:48px">
+        </colgroup>
+        <thead>
+          <tr>
+            <th class="k-table__select is-sticky-start" style="left:0" scope="col"><label class="k-check k-check--bare"><input type="checkbox" data-select-all aria-label="Select all rows on this page"></label></th>
+            <th class="is-sticky-start" style="left:40px" scope="col" aria-sort="ascending" data-col="name"><button class="k-th"><span>Account</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" aria-sort="none" data-col="code" draggable="true"><button class="k-th"><span>Code</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" aria-sort="none" data-col="industry" draggable="true"><button class="k-th"><span>Industry</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" data-col="contact" draggable="true">Primary contact<span class="k-table__resizer"></span></th>
+            <th scope="col" aria-sort="none" data-col="location" draggable="true"><button class="k-th"><span>Location</span><span class="k-th__filtered" title="Filtered: West"></span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" aria-sort="none" data-col="status" draggable="true"><button class="k-th"><span>Status</span><span class="k-th__filtered" title="Filtered"></span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" class="is-num" aria-sort="none" data-col="credit" draggable="true"><button class="k-th"><span>Credit limit</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" class="is-num" aria-sort="none" data-col="outstanding" draggable="true"><button class="k-th"><span>Outstanding</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" aria-sort="none" data-col="lastorder" draggable="true"><button class="k-th"><span>Last order</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" aria-sort="none" data-col="owner" draggable="true"><button class="k-th"><span>Owner</span><svg class="k-icon k-icon--xs k-th__sort" aria-hidden="true"><use href="#i-arrow-up"/></svg></button><span class="k-table__resizer"></span></th>
+            <th scope="col" data-col="gstin" draggable="true">GSTIN<span class="k-table__resizer"></span></th>
+            <th class="k-table__actions is-sticky-end" scope="col"><span class="k-sr-only">Actions</span></th>
+          </tr>
+        </thead>
+        <tbody id="accounts-body"></tbody>
+      </table>
+      <div class="k-empty" id="no-results" hidden>
+        <span class="k-empty__icon"><svg class="k-icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+        <h2 class="k-empty__title">No accounts match “<span id="nr-q"></span>”</h2>
+        <p class="k-empty__text">Search looks at name, code, GSTIN and city within your current filters (Owner: Me, Status, Region: West).</p>
+        <div class="k-empty__actions"><button class="k-btn" id="nr-clear">Clear search</button><button class="k-btn k-btn--subtle">Search all accounts instead</button></div>
+      </div>
+    </div>
+
+    <div class="k-grid__footer">
+      <nav class="k-pagination u-w-full" aria-label="Pagination">
+        <span class="k-pagination__range"><strong>1–25</strong> of <strong>1,284</strong> accounts</span>
+        <label class="k-pagination__size">Rows per page
+          <select class="k-select k-select--sm" aria-label="Rows per page"><option>25</option><option>50</option><option>100</option></select>
+        </label>
+        <span class="k-pagination__pages">
+          <button class="k-pagination__page k-pagination__step" disabled aria-label="Previous page"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-left"/></svg></button>
+          <button class="k-pagination__page" aria-current="page">1</button>
+          <button class="k-pagination__page">2</button>
+          <button class="k-pagination__page">3</button>
+          <span class="k-pagination__gap">…</span>
+          <button class="k-pagination__page">52</button>
+          <button class="k-pagination__page k-pagination__step" aria-label="Next page"><svg class="k-icon k-icon--sm" aria-hidden="true"><use href="#i-chevron-right"/></svg></button>
+        </span>
+      </nav>
+    </div>
+  </section>
+</div>
+</main>
+</div>
+
+<!-- Filter drawer (desktop: side panel · mobile: full screen) -->
+<dialog class="k-drawer" id="filter-drawer" aria-labelledby="filter-title">
+  <div class="k-drawer__header">
+    <h2 class="k-drawer__title" id="filter-title">Filters</h2>
+    <button class="k-btn k-btn--subtle k-btn--icon k-btn--sm" data-close-dialog aria-label="Close filters"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="k-drawer__body">
+    <div class="k-filter-group">
+      <div class="k-filter-group__title">Status <button class="k-btn k-btn--link k-btn--sm">Clear</button></div>
+      <fieldset class="k-choice-group"><legend class="k-sr-only">Status</legend>
+        <label class="k-check"><input type="checkbox" checked><span>Active</span></label>
+        <label class="k-check"><input type="checkbox" checked><span>Credit hold</span></label>
+        <label class="k-check"><input type="checkbox"><span>Prospect</span></label>
+        <label class="k-check"><input type="checkbox"><span>Inactive</span></label>
+        <label class="k-check"><input type="checkbox"><span>Archived</span></label>
+      </fieldset>
+    </div>
+    <div class="k-filter-group">
+      <div class="k-filter-group__title">Owner</div>
+      <div class="k-field"><select class="k-select" aria-label="Owner"><option>Me (Priya Deshmukh)</option><option>My team — Sales West</option><option>Anyone</option></select></div>
+    </div>
+    <div class="k-filter-group">
+      <div class="k-filter-group__title">Region &amp; location</div>
+      <div class="k-form-grid">
+        <div class="k-field"><label class="k-label" for="f-region">Region</label><select class="k-select" id="f-region"><option>West</option><option>North</option><option>South</option><option>East</option></select></div>
+        <div class="k-field"><label class="k-label" for="f-state">State</label><select class="k-select" id="f-state"><option>Any</option><option>Maharashtra</option><option>Gujarat</option><option>Goa</option></select></div>
+      </div>
+    </div>
+    <div class="k-filter-group">
+      <div class="k-filter-group__title">Outstanding amount</div>
+      <div class="k-range"><input class="k-input k-input--num" aria-label="Minimum outstanding" placeholder="Min ₹"><span>to</span><input class="k-input k-input--num" aria-label="Maximum outstanding" placeholder="Max ₹"></div>
+    </div>
+    <div class="k-filter-group">
+      <div class="k-filter-group__title">Last order</div>
+      <fieldset class="k-choice-group"><legend class="k-sr-only">Last order</legend>
+        <label class="k-radio"><input type="radio" name="lo" checked><span>Any time</span></label>
+        <label class="k-radio"><input type="radio" name="lo"><span>Within 30 days</span></label>
+        <label class="k-radio"><input type="radio" name="lo"><span>No order in 90 days</span></label>
+        <label class="k-radio"><input type="radio" name="lo"><span>Custom range…</span></label>
+      </fieldset>
+    </div>
+  </div>
+  <div class="k-drawer__footer">
+    <button class="k-btn k-btn--subtle" style="margin-right:auto">Reset</button>
+    <button class="k-btn" data-close-dialog>Cancel</button>
+    <button class="k-btn k-btn--primary" data-close-dialog data-action="toast:Showing 312 accounts">Show 312 results</button>
+  </div>
+</dialog>
+
+<!-- Archive confirmation: destructive, so it asks; it is reversible, so it says so -->
+<dialog class="k-modal k-modal--sm" id="archive-dialog" aria-labelledby="archive-title" aria-describedby="archive-desc">
+  <div class="k-modal__header">
+    <span class="k-modal__icon k-modal__icon--warning"><svg class="k-icon k-icon--lg" aria-hidden="true"><use href="#i-alert-triangle"/></svg></span>
+    <h2 class="k-modal__title" id="archive-title">Archive selected accounts?</h2>
+  </div>
+  <div class="k-modal__body" id="archive-desc">
+    <p>Archived accounts are hidden from lists and can’t receive new quotations or orders. Open invoices and history are kept.</p>
+    <p>You can restore them from <strong>Accounts › Archived</strong> at any time.</p>
+  </div>
+  <div class="k-modal__footer">
+    <button class="k-btn" data-close-dialog>Keep accounts</button>
+    <button class="k-btn k-btn--danger" data-close-dialog id="archive-confirm">Archive accounts</button>
+  </div>
+</dialog>
+
+<!-- Import dialog — shows the steps so users know what follows -->
+<dialog class="k-modal" id="import-dialog" aria-labelledby="import-title">
+  <div class="k-modal__header">
+    <h2 class="k-modal__title" id="import-title">Import accounts</h2>
+    <button class="k-btn k-btn--subtle k-btn--icon k-btn--sm" data-close-dialog aria-label="Close"><svg class="k-icon" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="k-modal__body">
+    <ol class="k-steps"><li aria-current="step">Upload</li><li>Map columns</li><li>Review</li><li>Import</li></ol>
+    <div class="k-upload">
+      <label class="k-upload__zone">
+        <svg class="k-icon" aria-hidden="true"><use href="#i-upload"/></svg>
+        <span><strong>Choose a file</strong> or drag it here<br><span class="k-upload__hint">.xlsx or .csv, up to 10,000 rows · 20 MB</span></span>
+        <input type="file" class="k-sr-only" accept=".xlsx,.csv">
+      </label>
+    </div>
+    <p class="u-sm">Not sure about the format? <a href="#">Download the template</a> — it includes the required columns and an example row.</p>
+  </div>
+  <div class="k-modal__footer">
+    <span class="k-modal__footer-start">Existing accounts are matched by code or GSTIN.</span>
+    <button class="k-btn" data-close-dialog>Cancel</button>
+    <button class="k-btn k-btn--primary" disabled>Next: Map columns</button>
+  </div>
+</dialog>
+
+<script src="assets/icons.js"></script>
+<script>
+// Realistic sample records (fictional companies). In the product this comes from the API.
+const ACCOUNTS = [
+  ["ABC Technologies Pvt Ltd","CUST-00142","Electronics mfg.","Rahul Mehta","Pune, MH","Active","success",2500000,845000,"14 Oct 2026","Priya Deshmukh",1,"27AABCA1234F1Z5"],
+  ["Bluecrest Pharma Ltd","CUST-00087","Pharmaceuticals","Dr. Sneha Iyer","Ahmedabad, GJ","Active","success",5000000,1218400,"09 Oct 2026","Priya Deshmukh",1,"24AACCB5678K1Z2"],
+  ["Deccan Auto Components","CUST-00311","Automotive","Vikram Joshi","Chakan, MH","Active","success",1500000,0,"02 Oct 2026","Priya Deshmukh",1,"27AADCD9012L1Z8"],
+  ["Ganesh Hardware & Tools","CUST-00512","Distribution","Sunil Patil","Nashik, MH","Credit hold","warning",400000,462300,"21 Aug 2026","Priya Deshmukh",1,"27AAFFG3456M1Z1"],
+  ["Indus Valley Packaging","CUST-00198","Packaging","Meera Shah","Vapi, GJ","Active","success",1200000,318900,"11 Oct 2026","Priya Deshmukh",1,"24AAGCI7890N1Z4"],
+  ["Kaveri Agro Foods","CUST-00276","Food processing","Arjun Reddy","Kolhapur, MH","Active","success",3000000,1475000,"16 Oct 2026","Priya Deshmukh",1,"27AAHCK2345P1Z7"],
+  ["Konkan Marine Exports","CUST-00433","Seafood export","Fatima Sayed","Ratnagiri, MH","Active","success",2000000,96500,"28 Sep 2026","Priya Deshmukh",1,"27AAJCK6789Q1Z3"],
+  ["Lumina Healthcare Systems","CUST-00059","Healthcare","Dr. Kavita Rao","Mumbai, MH","Active","success",7500000,2310000,"18 Oct 2026","Priya Deshmukh",1,"27AAKCL0123R1Z6"],
+  ["Mahalaxmi Textiles","CUST-00620","Textiles","Ramesh Agarwal","Surat, GJ","Credit hold","warning",800000,1046750,"30 Jul 2026","Priya Deshmukh",1,"24AALFM4567S1Z9"],
+  ["Northgate Logistics","CUST-00377","Logistics","Karan Malhotra","Bhiwandi, MH","Active","success",1800000,544200,"07 Oct 2026","Priya Deshmukh",1,"27AAMCN8901T1Z2"],
+  ["Orchid Hotels & Resorts","CUST-00701","Hospitality","Neha Kapoor","Panaji, GA","Active","success",1000000,128000,"25 Sep 2026","Priya Deshmukh",1,"30AANCO2345U1Z5"],
+  ["Pinnacle Infra Projects","CUST-00245","Construction","Sameer Kulkarni","Thane, MH","Active","success",6000000,3890000,"15 Oct 2026","Priya Deshmukh",1,"27AAPCP6789V1Z8"],
+  ["Rudra Electricals","CUST-00588","Electrical","Ajay Thakur","Aurangabad, MH","Active","success",600000,72400,"19 Sep 2026","Priya Deshmukh",1,"27AAQFR0123W1Z1"],
+  ["Sai Krupa Engineering","CUST-00466","Fabrication","Mahesh Pawar","Satara, MH","Credit hold","warning",500000,611900,"12 Aug 2026","Priya Deshmukh",1,"27AARFS4567X1Z4"],
+  ["Shree Balaji Polymers","CUST-00350","Plastics","Deepak Jain","Silvassa, DN","Active","success",1400000,402000,"10 Oct 2026","Priya Deshmukh",1,"26AASCS8901Y1Z7"],
+  ["Trident Packaging Industries","CUST-00129","Packaging","Pooja Bhatt","Vadodara, GJ","Active","success",2200000,0,"05 Oct 2026","Priya Deshmukh",1,"24AATCT2345Z1Z0"],
+  ["Vardhan Steel Traders","CUST-00034","Steel trading","Nikhil Vardhan","Mumbai, MH","Credit hold","warning",2000000,2140000,"03 Oct 2026","Priya Deshmukh",1,"27AAVFV6789A1Z3"],
+  ["Western Ghats Coffee Co.","CUST-00714","Beverages","Anita D’Souza","Pune, MH","Prospect","neutral",0,0,"—","Priya Deshmukh",1,"—"],
+  ["Yashoda Cold Storage","CUST-00692","Cold chain","Prakash Gaikwad","Sangli, MH","Active","success",900000,233600,"01 Oct 2026","Priya Deshmukh",1,"27AAYCY0123B1Z6"],
+  ["Zenith Medical Devices","CUST-00163","Medical devices","Rohan Desai","Pune, MH","Active","success",3500000,987500,"17 Oct 2026","Priya Deshmukh",1,"27AAZCZ4567C1Z9"],
+];
+const fmt = (n) => n === 0 ? "₹0" : "₹" + n.toLocaleString("en-IN");
+const initials = (s) => s.replace(/^Dr\.\s*/, "").split(" ").map((p) => p[0]).slice(0, 2).join("");
+const tint = (s) => (s.length % 4) + 1;
+document.getElementById("accounts-body").innerHTML = ACCOUNTS.map((a, i) => {
+  const [name, code, ind, contact, loc, status, tone, credit, out, last, owner, , gst] = a;
+  const over = credit > 0 && out > credit;
+  return `<tr class="${over ? "is-attention" : ""}">
+    <td class="k-table__select is-sticky-start" style="left:0"><label class="k-check k-check--bare"><input type="checkbox" data-select-row aria-label="Select ${name}"></label></td>
+    <td class="k-table__primary is-sticky-start" style="left:40px"><a href="account.html" title="${name}">${name}</a></td>
+    <td class="is-id" data-label="Code">${code}</td>
+    <td class="is-secondary k-mobile-hide" data-label="Industry" title="${ind}">${ind}</td>
+    <td class="k-mobile-hide" data-label="Contact" title="${contact}">${contact}</td>
+    <td class="is-secondary" data-label="Location">${loc}</td>
+    <td data-label="Status" data-value="${status}"><span class="k-status" data-tone="${tone}">${status}</span></td>
+    <td class="is-num is-editable" data-label="Credit limit" data-edit="number" data-value="${credit}">${credit ? fmt(credit) : '<span class="u-muted">Not set</span>'}</td>
+    <td class="is-num ${over ? "is-negative" : ""}" data-label="Outstanding" data-value="${out}">${fmt(out)}${over ? ' <span class="k-sr-only">(over credit limit)</span><svg class="k-icon k-icon--xs" aria-hidden="true" style="display:inline;margin-left:2px"><use href="#i-alert-triangle"/></svg>' : ""}</td>
+    <td class="is-secondary k-mobile-hide" data-label="Last order" data-value="${last === "—" ? "0" : new Date(last).getTime()}">${last}</td>
+    <td class="k-mobile-hide" data-label="Owner" data-value="${owner}"><span class="k-person"><span class="k-avatar k-avatar--xs" data-tint="1">PD</span><span class="k-person__name">${owner}</span></span></td>
+    <td class="is-id k-mobile-hide" data-label="GSTIN">${gst}</td>
+    <td class="k-table__actions is-sticky-end">
+      <div class="k-dropdown">
+        <button class="k-row-action" aria-label="Actions for ${name}" aria-haspopup="menu" aria-expanded="false" aria-controls="ra-${i}" data-menu><svg class="k-icon" aria-hidden="true"><use href="#i-more"/></svg></button>
+        <div class="k-menu k-menu--end" id="ra-${i}" role="menu" hidden>
+          <a class="k-menu__item" role="menuitem" href="account.html">Open</a>
+          <a class="k-menu__item" role="menuitem" href="customer-new.html?mode=edit">Edit</a>
+          <a class="k-menu__item" role="menuitem" href="#">New quotation</a>
+          <a class="k-menu__item" role="menuitem" href="#">Log activity</a>
+          <div class="k-menu__sep" role="separator"></div>
+          <button class="k-menu__item k-menu__item--danger" role="menuitem" data-open-dialog="archive-dialog">Archive</button>
+        </div>
+      </div>
+    </td></tr>`;
+}).join("");
+
+// Archive with Undo: the dialog confirms, the toast lets you recover
+document.addEventListener("k-ready", () => {
+  document.getElementById("archive-confirm").addEventListener("click", () => {
+    const rows = [...document.querySelectorAll("[data-select-row]:checked")].map((c) => c.closest("tr"));
+    const n = rows.length || 1;
+    rows.forEach((r) => (r.hidden = true));
+    K.toast({ text: `${n} account${n > 1 ? "s" : ""} archived.`, action: "Undo", onAction: () => rows.forEach((r) => (r.hidden = false)) });
+  });
+  // Client-side quick search (server-side in product)
+  const search = document.getElementById("grid-search");
+  const run = () => {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    document.querySelectorAll("#accounts-body tr").forEach((tr) => { tr.hidden = q && !tr.textContent.toLowerCase().includes(q); if (!tr.hidden) shown++; });
+    document.getElementById("no-results").hidden = shown > 0;
+    document.getElementById("nr-q").textContent = search.value.trim();
+  };
+  search.addEventListener("input", run);
+  document.getElementById("nr-clear").addEventListener("click", () => { search.value = ""; run(); search.focus(); });
+});
+</script>
+<script src="assets/app.js"></script>
+</body>
+</html>

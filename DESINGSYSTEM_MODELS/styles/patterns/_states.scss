@@ -1,0 +1,114 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// Empty and system states. Each one answers: what happened, why, what now.
+// No large illustrations — a 32px icon, one sentence, one action.
+// ---------------------------------------------------------------------------
+.k-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-10) var(--space-6);
+  text-align: center;
+  color: var(--color-text-secondary);
+
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    margin-bottom: var(--space-1);
+    border-radius: 50%;
+    background: var(--color-bg-sunken);
+    color: var(--color-text-muted);
+
+    .k-icon { width: 20px; height: 20px; }
+
+    &[data-tone="error"] { background: var(--color-error-subtle); color: var(--color-error); }
+    &[data-tone="warning"] { background: var(--color-warning-subtle); color: var(--color-warning-text); }
+    &[data-tone="success"] { background: var(--color-success-subtle); color: var(--color-success); }
+  }
+
+  &__title {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+  }
+
+  &__text {
+    max-width: 440px;
+    font-size: var(--font-size-md);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+  }
+
+  &__meta {
+    margin-top: var(--space-2);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+
+  // Inside a panel or table body — tighter
+  &--compact {
+    padding: var(--space-6) var(--space-4);
+    gap: 6px;
+
+    .k-empty__icon { width: 32px; height: 32px; }
+    .k-empty__title { font-size: var(--font-size-md); }
+    .k-empty__text { font-size: var(--font-size-sm); }
+  }
+
+  // Left-aligned variant for small inline areas
+  &--inline {
+    flex-direction: row;
+    justify-content: flex-start;
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+  }
+}
+
+// Full-page state (no permission, not found, error) inside the shell
+.k-state-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+// Partial data marker in a panel ("2 of 3 sources loaded")
+.k-partial {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-warning-text);
+  font-size: var(--font-size-sm);
+}
+
+// Offline: dims edit affordances and shows queued changes
+.is-offline [data-requires-network] {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+// Session expired overlay keeps the page visible (and unsaved input intact)
+.k-session-lock {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-overlay);
+  backdrop-filter: blur(1px);
+}

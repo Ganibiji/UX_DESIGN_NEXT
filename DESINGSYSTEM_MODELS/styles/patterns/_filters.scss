@@ -1,0 +1,144 @@
+@use "../abstracts" as *;
+
+// ---------------------------------------------------------------------------
+// List toolbar & filtering
+//  · Search is scoped and says what it searches ("Name, code, GSTIN…").
+//  · Applied filters are always visible as removable tags — no hidden state.
+//  · Saved views hold filters + columns + sort; "Modified" marks unsaved edits.
+// ---------------------------------------------------------------------------
+.k-view-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  .k-btn { font-weight: var(--font-weight-semibold); }
+
+  &__modified {
+    color: var(--color-text-muted);
+    font-size: var(--font-size-sm);
+    font-style: italic;
+  }
+}
+
+.k-search {
+  position: relative;
+  width: 280px;
+  max-width: 100%;
+
+  > .k-icon {
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    pointer-events: none;
+  }
+
+  > .k-input { padding-left: 30px; padding-right: 28px; }
+
+  &__clear {
+    position: absolute;
+    right: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  @include down(sm) { width: 100%; flex: 1; }
+}
+
+.k-filterbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 6px var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-bg-surface-alt);
+  font-size: var(--font-size-sm);
+
+  &__label {
+    color: var(--color-text-muted);
+    margin-right: 2px;
+  }
+}
+
+// Quick filter segmented tabs above a grid ("All · My accounts · On credit hold")
+.k-quickfilters {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+
+  button {
+    @include reset-button;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: var(--control-height-sm);
+    padding: 0 10px;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-medium);
+    white-space: nowrap;
+
+    &:hover { background: var(--color-bg-hover); color: var(--color-text-primary); }
+    &:focus-visible { @include focus-ring(0); }
+
+    &[aria-pressed="true"] {
+      background: var(--color-bg-active);
+      color: var(--color-text-primary);
+      font-weight: var(--font-weight-semibold);
+    }
+
+    span { color: var(--color-text-muted); font-weight: var(--font-weight-regular); @include numeric; }
+  }
+}
+
+// Filter drawer content (also used as desktop advanced filter panel)
+.k-filter-group {
+  padding: var(--space-3) 0;
+
+  + .k-filter-group { border-top: 1px solid var(--color-border-subtle); }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-2);
+    font-weight: var(--font-weight-semibold);
+    font-size: var(--font-size-md);
+  }
+}
+
+.k-range {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-muted);
+}
+
+// Toolbar — generic horizontal group of controls
+.k-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+
+  &__spacer { flex: 1; }
+
+  &__sep {
+    width: 1px;
+    height: 20px;
+    background: var(--color-border-strong);
+  }
+
+  // Narrow viewports: secondary controls collapse into the "More" menu
+  @include down(md) {
+    .k-toolbar__secondary { display: none; }
+  }
+}
+
+.k-only-md-down {
+  @include up(md) { display: none !important; }
+}

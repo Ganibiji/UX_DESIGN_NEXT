@@ -2,7 +2,7 @@ IMP:
 ===
 https://dribbble.com/search/microsoft-fluent-ui
 
-
+https://mockflow.com/integrations/
 
 UX DESING IDAES:
 ----------------
@@ -12,7 +12,10 @@ VERTICAL ACOORDIONS AND HORIZONTAL ACCORDIONS
 
 HORIZONTAL STEPPER VS VERTICAL STEPPERS 
 
+guides\ux-design-fluent-admin
 
+guides\ux-design-fluent-reports 
+with multiple reprorts dashboards with beautiful colors  
 
 notes:
 --------

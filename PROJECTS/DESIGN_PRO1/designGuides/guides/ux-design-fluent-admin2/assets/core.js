@@ -100,7 +100,7 @@ function closePop(trigger,focus){
 function closePops(except){
   $$('[aria-expanded="true"][aria-controls]').forEach(t=>{
     if(t===except)return;
-    if(t.matches('.ds-acc__btn,.ds-side__item,[role="treeitem"],.nav__grp-btn,#menu-btn')||t.closest('.ds-cmd'))return;
+    if(t.matches('.ds-acc__btn,.ds-side__item,[role="treeitem"],.nav__grp-btn,#menu-btn,[data-nav-toggle],[data-collapse]')||t.closest('.ds-cmd'))return;
     const pop=popOf(t);if(!pop||pop.classList.contains('ds-pop--static'))return;
     if(except&&pop.contains(except))return;
     closePop(t);

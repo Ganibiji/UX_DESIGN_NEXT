@@ -4,6 +4,7 @@
    --sep, --pri …), so light, dark and high contrast work automatically.
    ===================================================================== */
 *,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-padding-top:72px}
 body.sys-f{margin:0;background:var(--canvas);color:var(--fg);min-height:100vh}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}

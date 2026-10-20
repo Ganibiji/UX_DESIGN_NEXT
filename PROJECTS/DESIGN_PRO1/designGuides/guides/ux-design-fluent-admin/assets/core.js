@@ -289,7 +289,7 @@ document.addEventListener('click',e=>{
   if((el=t.closest('[role="menuitem"]'))&&el.getAttribute('aria-disabled')!=='true'){
     const menu=el.closest('.ds-pop');const label=el.querySelector('.ds-opt__label')?.textContent||el.textContent.trim();
     if(menu&&!menu.classList.contains('ds-pop--static')){if(menu.classList.contains('ds-pop--ctx'))menu.hidden=true;else{const tr=menu._trigger;tr?closePop(tr,true):menu.hidden=true}}
-    toast(k,{title:label,text:el.dataset.msg||'Action ran on DS-142.',v:el.classList.contains('ds-opt--danger')?'warning':'info'});return}
+    toast(k,{title:label,text:el.dataset.msg||'',v:el.classList.contains('ds-opt--danger')?'warning':'info'});return}
   if((el=t.closest('.ds-combo-toggle'))){const inp=el.closest('.ds-control').querySelector('input');if(inp.getAttribute('aria-expanded')==='true')closePop(inp);else{openPop(inp);inp.focus()}return}
   if((el=t.closest('[data-ds="feedback"]'))){el.setAttribute('aria-busy','true');setTimeout(()=>{el.removeAttribute('aria-busy');toast(k,{title:el.dataset.title||'Issue created',text:el.dataset.text||'DS-142 “Migrate billing tables” was added to the backlog.',v:'success',actions:`<button type="button" class="ds-btn ds-btn--link ds-s">View issue</button>`})},900);return}
   if((el=t.closest('[data-ds="toast"]'))){toast(k,{title:el.dataset.title,text:el.dataset.text,v:el.dataset.v||'info',actions:el.dataset.v==='error'?`<button type="button" class="ds-btn ds-btn--link ds-s">Retry</button>`:''});return}

@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Security center · Ledger Admin 2</title>
+<meta name="description" content="Ledger Admin 2: an enterprise admin template on the Fluent-inspired design system.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/components.css">
+<link rel="stylesheet" href="assets/admin.css">
+<link rel="stylesheet" href="assets/admin2.css">
+</head>
+<body class="sys-f" data-k="f">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+<defs>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/></symbol>
+<symbol id="i-chev-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+<symbol id="i-chev-up" viewBox="0 0 24 24"><path d="m6 15 6-6 6 6"/></symbol>
+<symbol id="i-chev-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+<symbol id="i-chev-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+<symbol id="i-updown" viewBox="0 0 24 24"><path d="m8 9 4-4 4 4M8 15l4 4 4-4"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5 9.5 17 19 7"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.4" fill="currentColor" stroke="none"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4"/></symbol>
+<symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h3"/></symbol>
+<symbol id="i-filter" viewBox="0 0 24 24"><path d="M4 5h16l-6 7.5V19l-4 1.5v-8z"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+<symbol id="i-monitor" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></symbol>
+<symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 19c1.2-3.5 3.6-5 6.5-5s5.3 1.5 6.5 5M16 4.5a3.5 3.5 0 0 1 0 7M18 14c1.8.6 3 2.2 3.5 5"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 1 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0"/></symbol>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m4 11 8-7 8 7M6 9.5V20h12V9.5"/></symbol>
+<symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+<symbol id="i-file" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+<symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></symbol>
+<symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v12M7 11l5 5 5-5M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></symbol>
+<symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3.5 2.6 5.3 5.9.9-4.2 4.1 1 5.8L12 16.9l-5.3 2.7 1-5.8-4.2-4.1 5.9-.9z"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5M12 7.6v.4"/></symbol>
+<symbol id="i-warn" viewBox="0 0 24 24"><path d="M12 4 21 20H3zM12 10v4.5M12 17.3v.4"/></symbol>
+<symbol id="i-ok" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.5 2.5L16 9.5"/></symbol>
+<symbol id="i-err" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v5.5M12 16.2v.4"/></symbol>
+<symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.5M4.5 12h.5M4.5 18h.5"/></symbol>
+<symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></symbol>
+<symbol id="i-trend-up" viewBox="0 0 24 24"><path d="m4 16 5-5 4 4 7-7M15 8h5v5"/></symbol>
+<symbol id="i-trend-down" viewBox="0 0 24 24"><path d="m4 8 5 5 4-4 7 7M15 16h5v-5"/></symbol>
+<symbol id="i-bold" viewBox="0 0 24 24"><path d="M7 5h6a3.5 3.5 0 0 1 0 7H7zM7 12h7a3.5 3.5 0 0 1 0 7H7z"/></symbol>
+<symbol id="i-italic" viewBox="0 0 24 24"><path d="M10 5h8M6 19h8M14 5l-4 14"/></symbol>
+<symbol id="i-underline" viewBox="0 0 24 24"><path d="M7 4v7a5 5 0 0 0 10 0V4M5 20h14"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+<symbol id="i-code" viewBox="0 0 24 24"><path d="m8 7-5 5 5 5M16 7l5 5-5 5"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6"/></symbol>
+<symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5zM3 13l9 5 9-5"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3 13h5l1.5 3h5L16 13h5M5.5 5h13L21 13v6H3v-6z"/></symbol>
+<symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 20h16M7 16v-5M12 16V6M17 16v-8"/></symbol>
+<symbol id="i-tag" viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8" r="1.2"/></symbol>
+<symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-2 0-3 2.5-.5 4-.5A3 3 0 0 0 21 12a9 9 0 0 0-9-9z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10.5" cy="7" r="1"/><circle cx="15" cy="7.5" r="1"/></symbol>
+<symbol id="i-type" viewBox="0 0 24 24"><path d="M5 7V4h14v3M12 4v16M9 20h6"/></symbol>
+<symbol id="i-ruler" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="1.5"/><path d="M7 8v3M11 8v4M15 8v3M19 8v2"/></symbol>
+<symbol id="i-shapes" viewBox="0 0 24 24"><circle cx="7.5" cy="7.5" r="4"/><rect x="13" y="13" width="8" height="8" rx="1.5"/><path d="m17 3 4 7h-8z"/></symbol>
+<symbol id="i-elev" viewBox="0 0 24 24"><rect x="3" y="3" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/></symbol>
+<symbol id="i-cursor" viewBox="0 0 24 24"><path d="m5 3 14 7-6 2-2 6z"/></symbol>
+<symbol id="i-form" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></symbol>
+<symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+<symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M9 4v16"/></symbol>
+<symbol id="i-message" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+<symbol id="i-window" viewBox="0 0 24 24"><rect x="7" y="3" width="14" height="12" rx="2"/><path d="M17 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2"/></symbol>
+<symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 9v12"/></symbol>
+<symbol id="i-pen" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol>
+<symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z"/></symbol>
+<symbol id="i-sparkle" viewBox="0 0 24 24"><path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/></symbol>
+<symbol id="i-command" viewBox="0 0 24 24"><path d="M9 6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3z"/></symbol>
+<symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+<symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+<symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></symbol>
+<symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4h11l-2 4 2 4H5"/></symbol>
+<symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4.5 4.5 0 0 1-.5-9A6 6 0 0 1 18 8.5a4.75 4.75 0 0 1-.5 9.5z"/></symbol>
+<symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
+<symbol id="i-branch" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="7" r="2"/><path d="M6 7v10M18 9c0 5-6 4-11 8.5"/></symbol>
+<symbol id="i-columns" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M15 4v16"/></symbol>
+<symbol id="i-rows" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9.5h18M3 14.5h18"/></symbol>
+<symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9zM12 12l8-4.5M12 12v9M12 12 4 7.5"/></symbol>
+<symbol id="i-puzzle" viewBox="0 0 24 24"><path d="M4 8h4a2 2 0 1 1 4 0h4v4a2 2 0 1 1 0 4v4H4v-4a2 2 0 1 0 0-4z"/></symbol>
+<symbol id="i-list-ol" viewBox="0 0 24 24"><path d="M10 6h10M10 12h10M10 18h10M4 5l1.5-1v5M4 14.5a1.5 1.5 0 1 1 2.6 1L4 19h3"/></symbol>
+<symbol id="i-quote" viewBox="0 0 24 24"><path d="M5 18v-5a5 5 0 0 1 5-5M14 18v-5a5 5 0 0 1 5-5"/></symbol>
+<symbol id="i-fx" viewBox="0 0 24 24"><path d="M14 4h-2a3 3 0 0 0-3 3v13M6 10h7M14 12l6 7M20 12l-6 7"/></symbol>
+<symbol id="i-braces" viewBox="0 0 24 24"><path d="M8 4H7a2 2 0 0 0-2 2v4l-2 2 2 2v4a2 2 0 0 0 2 2h1M16 4h1a2 2 0 0 1 2 2v4l2 2-2 2v4a2 2 0 0 1-2 2h-1"/></symbol>
+<symbol id="i-tree" viewBox="0 0 24 24"><rect x="3" y="3" width="6" height="5" rx="1"/><rect x="13" y="10" width="8" height="4" rx="1"/><rect x="13" y="17" width="8" height="4" rx="1"/><path d="M6 8v11h7M6 12h7"/></symbol>
+<symbol id="i-steps" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/><path d="M7 12h3M14 12h3"/></symbol>
+<symbol id="i-dots-h" viewBox="0 0 24 24"><path d="M5 9h14v6H5z"/><path d="M9 9v6M15 9v6"/></symbol>
+</defs>
+</svg>
+<a class="skip" href="#main">Skip to content</a>
+<div class="ad">
+  <header class="ad-head">
+    <button type="button" class="ds-btn ds-ibtn ds-btn--subtle" aria-label="Toggle navigation" title="Toggle navigation" data-nav-toggle aria-expanded="true" aria-controls="ad-nav"><svg class="ds-ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <a class="ad-brand" href="index.html"><span class="ad-brand__mark"><svg class="ds-ic" aria-hidden="true"><use href="#i-layers"/></svg></span>Ledger Admin<small>Enterprise</small></a>
+    <span class="ds-anchor"><button type="button" class="ad-org" data-ds="menu" aria-haspopup="menu" aria-expanded="false" aria-controls="org117" aria-label="Switch organization"><i data-org-mark>LI</i><span data-org-name>Ledger Inc.</span><small data-org-env>Production · EU</small><svg class="ds-ic" aria-hidden="true"><use href="#i-chev-down"/></svg></button><div class="ds-pop" id="org117" role="menu" aria-label="Organizations" hidden><div class="ds-menu__head" role="presentation">Switch organization</div><div class="ds-opt" role="menuitem" tabindex="-1" data-org="0"><span class="ds-opt__main"><span class="ds-opt__label">Ledger Inc.</span><span class="ds-opt__desc">Production · EU</span></span></div><div class="ds-opt" role="menuitem" tabindex="-1" data-org="1"><span class="ds-opt__main"><span class="ds-opt__label">Ledger Labs</span><span class="ds-opt__desc">Sandbox · US</span></span></div><div class="ds-opt" role="menuitem" tabindex="-1" data-org="2"><span class="ds-opt__main"><span class="ds-opt__label">Northwind Retail</span><span class="ds-opt__desc">Production · US</span></span></div><div class="ds-opt" role="menuitem" tabindex="-1" data-org="3"><span class="ds-opt__main"><span class="ds-opt__label">Contoso Freight</span><span class="ds-opt__desc">Staging · EU</span></span></div><div class="ds-menu__sep" role="separator"></div><a class="ds-opt" role="menuitem" tabindex="-1" href="tenants.html" data-msg="Opening tenants" style="text-decoration:none"><svg class="ds-ic" aria-hidden="true"><use href="#i-globe"/></svg><span class="ds-opt__label">Manage tenants</span></a></div></span>
+    <div class="ad-search" role="search"><button type="button" class="ds-btn ad-cmd" data-palette aria-label="Open command palette"><svg class="ds-ic" aria-hidden="true"><use href="#i-search"/></svg><span>Search or run a command</span><kbd>Ctrl K</kbd></button></div>
+    <div class="ad-head__end">
+      <button type="button" class="ds-btn ds-btn--subtle ds-ibtn" data-dens aria-pressed="false" aria-label="Compact mode" title="Compact mode"><svg class="ds-ic" aria-hidden="true"><use href="#i-rows"/></svg></button>
+      <div class="ad-theme" role="group" aria-label="Theme"><button type="button" data-set-theme="light" aria-pressed="true">Light</button><button type="button" data-set-theme="dark" aria-pressed="false">Dark</button><button type="button" data-set-theme="hc" aria-pressed="false" title="High contrast">HC</button></div>
+      <button type="button" class="ds-btn ds-btn--subtle ds-ibtn" data-shortcuts aria-label="Keyboard shortcuts" title="Keyboard shortcuts (?)"><svg class="ds-ic" aria-hidden="true"><use href="#i-command"/></svg></button>
+      <a class="ds-btn ds-btn--subtle ds-ibtn ad-bell" href="notifications.html" aria-label="Notifications, 6 unread"><svg class="ds-ic" aria-hidden="true"><use href="#i-bell"/></svg><span class="ds-badge ds-badge--count ds-badge--alert ds-s">6</span></a>
+      <span class="ds-anchor"><button type="button" class="ds-btn ds-btn--subtle" data-ds="menu" aria-haspopup="menu" aria-expanded="false" aria-controls="acct118" aria-label="Account menu"><span class="ds-av ds-s" data-c="1" role="img" aria-label="Maya Ruiz">MR</span><svg class="ds-ic" aria-hidden="true"><use href="#i-chev-down"/></svg></button><div class="ds-pop ds-pop--right" id="acct118" role="menu" aria-label="Account" hidden><div class="ds-opt" role="menuitem" tabindex="-1"><svg class="ds-ic" aria-hidden="true"><use href="#i-user"/></svg><span class="ds-opt__label">Profile</span></div><div class="ds-opt" role="menuitem" tabindex="-1"><svg class="ds-ic" aria-hidden="true"><use href="#i-sliders"/></svg><span class="ds-opt__label">Organization settings</span></div><div class="ds-opt" role="menuitem" tabindex="-1"><svg class="ds-ic" aria-hidden="true"><use href="#i-command"/></svg><span class="ds-opt__label">Keyboard shortcuts</span><kbd>?</kbd></div><div class="ds-menu__sep" role="separator"></div><div class="ds-opt" role="menuitem" tabindex="-1"><svg class="ds-ic" aria-hidden="true"><use href="#i-external"/></svg><span class="ds-opt__label">Sign out</span></div></div></span>
+    </div>
+  </header>
+  <nav class="ad-nav" id="ad-nav" aria-label="Main">
+    <div class="ad-nav__h">Overview</div><a href="index.html" title="Dashboard"><svg class="ds-ic" aria-hidden="true"><use href="#i-home"/></svg><span>Dashboard</span></a><a href="approvals.html" title="Approvals"><svg class="ds-ic" aria-hidden="true"><use href="#i-ok"/></svg><span>Approvals</span><span class="ds-badge ds-badge--count ds-badge--alert ds-s" data-ap-count>5</span></a><a href="notifications.html" title="Notifications"><svg class="ds-ic" aria-hidden="true"><use href="#i-bell"/></svg><span>Notifications</span></a>
+    <div class="ad-nav__h">People & access</div><a href="users.html" title="Users"><svg class="ds-ic" aria-hidden="true"><use href="#i-users"/></svg><span>Users</span></a><a href="access.html" title="Access control"><svg class="ds-ic" aria-hidden="true"><use href="#i-lock"/></svg><span>Access control</span></a><a href="tenants.html" title="Tenants"><svg class="ds-ic" aria-hidden="true"><use href="#i-globe"/></svg><span>Tenants</span></a>
+    <div class="ad-nav__h">Data</div><a href="reports.html" title="Report builder"><svg class="ds-ic" aria-hidden="true"><use href="#i-chart"/></svg><span>Report builder</span></a><a href="import.html" title="Data import"><svg class="ds-ic" aria-hidden="true"><use href="#i-upload"/></svg><span>Data import</span></a><a href="audit.html" title="Audit log"><svg class="ds-ic" aria-hidden="true"><use href="#i-list"/></svg><span>Audit log</span></a>
+    <div class="ad-nav__h">Automation</div><a href="workflows.html" title="Workflows"><svg class="ds-ic" aria-hidden="true"><use href="#i-bolt"/></svg><span>Workflows</span></a><a href="flags.html" title="Feature flags"><svg class="ds-ic" aria-hidden="true"><use href="#i-flag"/></svg><span>Feature flags</span></a><a href="integrations.html" title="Integrations & API"><svg class="ds-ic" aria-hidden="true"><use href="#i-link"/></svg><span>Integrations & API</span></a>
+    <div class="ad-nav__h">Governance</div><a href="security.html" aria-current="page" title="Security center"><svg class="ds-ic" aria-hidden="true"><use href="#i-lock"/></svg><span>Security center</span></a><a href="compliance.html" title="Compliance"><svg class="ds-ic" aria-hidden="true"><use href="#i-file"/></svg><span>Compliance</span></a><a href="billing.html" title="Billing & usage"><svg class="ds-ic" aria-hidden="true"><use href="#i-tag"/></svg><span>Billing & usage</span></a><a href="status.html" title="System status"><svg class="ds-ic" aria-hidden="true"><use href="#i-monitor"/></svg><span>System status</span></a>
+    <div class="ad-nav__h">Settings</div><a href="settings.html" title="Organization settings"><svg class="ds-ic" aria-hidden="true"><use href="#i-sliders"/></svg><span>Organization settings</span></a><a href="../ux-design-fluent-admin/index.html" title="Admin v1 template"><svg class="ds-ic" aria-hidden="true"><use href="#i-external"/></svg><span>Admin v1 template</span></a>
+    <div class="ad-nav__foot">Ledger Admin 2 · Enterprise</div>
+  </nav>
+  <div class="ad-scrim"></div>
+  <main class="ad-main" id="main" tabindex="-1"><div class="ad-page">
+<div class="envbar" data-envbar hidden role="status"><svg class="ds-ic" aria-hidden="true"><use href="#i-warn"/></svg><span data-envbar-text></span></div>
+<header class="ad-ph"><div class="ad-ph__t"><nav aria-label="Breadcrumb"><ol class="ds-crumbs"><li><a class="ds-crumb" href="index.html">Governance</a></li><li><span aria-current="page">Security center</span></li></ol></nav><h1>Security center</h1><p>Your security score updates as you change policies.</p></div><div class="ad-ph__a"></div></header><div data-security class="g">
+<div class="g g-21"><section class="cd" aria-labelledby="h60"><div class="cd__h"><h2 id="h60">Security score</h2></div><div class="cd__b"><div class="score"><span class="ds-ring" role="progressbar" aria-label="Security score" aria-valuenow="78" style="--v:78"><span>78</span></span><div><b style="font-size:18px" data-score-label>Good, with gaps</b><ul class="checks" style="margin-top:8px"><li data-check-for="#p-mfa" class="ok"><svg class="ds-ic" aria-hidden="true"><use href="#i-ok"/></svg>Require MFA for everyone</li><li data-check-for="#p-sso" class="ok"><svg class="ds-ic" aria-hidden="true"><use href="#i-ok"/></svg>SSO-only sign-in</li><li data-check-for="#p-sess" class="no"><svg class="ds-ic" aria-hidden="true"><use href="#i-warn"/></svg>Session timeout of 15 minutes</li><li data-check-for="#p-dev" class="no"><svg class="ds-ic" aria-hidden="true"><use href="#i-warn"/></svg>Block unmanaged devices</li></ul></div></div></div></section><section class="cd" aria-labelledby="h61"><div class="cd__h"><h2 id="h61">Recommendations</h2></div><div class="cd__b"><div class="ds-alert ds-alert--warning" role="status"><span class="ds-alert__ic"><svg class="ds-ic" aria-hidden="true"><use href="#i-warn"/></svg></span><div class="ds-alert__body"><p class="ds-alert__title">12 users don’t have MFA</p><p class="ds-alert__text">Remind them, or enforce MFA below.</p><div class="ds-alert__actions"><button type="button" class="ds-btn ds-s" data-save="Reminders sent to 12 users"><span>Send reminders</span></button></div></div></div><div class="ds-alert ds-alert--info" role="status"><span class="ds-alert__ic"><svg class="ds-ic" aria-hidden="true"><use href="#i-info"/></svg></span><div class="ds-alert__body"><p class="ds-alert__title">Add an IP allowlist</p><p class="ds-alert__text">Restrict admin sign-in to your office and VPN ranges.</p></div></div></div></section></div>
+<div class="g g-2"><section class="cd" aria-labelledby="h62"><div class="cd__h"><h2 id="h62">Policies</h2></div><div class="cd__b"><div class="ds-choices"><label class="ds-switch"><input type="checkbox" role="switch" id="p-mfa" data-score="15" checked><span class="ds-switch__track"></span><span>Require MFA for everyone</span></label><label class="ds-switch"><input type="checkbox" role="switch" id="p-sso" data-score="10" checked><span class="ds-switch__track"></span><span>SSO-only sign-in (disable passwords)</span></label><label class="ds-switch"><input type="checkbox" role="switch" id="p-sess" data-score="8"><span class="ds-switch__track"></span><span>Sign out after 15 minutes of inactivity</span></label><label class="ds-switch"><input type="checkbox" role="switch" id="p-dev" data-score="7"><span class="ds-switch__track"></span><span>Block sign-in from unmanaged devices</span></label></div><button type="button" class="ds-btn ds-btn--link" data-timeout-demo style="justify-self:start"><span>Preview the timeout warning</span></button></div></section><section class="cd" aria-labelledby="h64"><div class="cd__h"><h2 id="h64">IP allowlist</h2></div><div class="cd__b"><form data-ipform novalidate class="cond-row" style="grid-template-columns:minmax(0,1fr) auto"><div class="ds-field"><label class="ds-label" for="f63">Add address or range</label><div class="ds-control"><input id="f63" type="text" placeholder="203.0.113.0/24" aria-describedby="f63-h"></div><p class="ds-help" id="f63-h">IPv4 address or CIDR range, e.g. 203.0.113.0/24</p></div><button type="submit" class="ds-btn ds-btn--primary" style="align-self:center"><span>Add</span></button></form><ul data-iplist style="list-style:none;margin:0;padding:0;display:flex;gap:6px;flex-wrap:wrap"></ul></div></section></div>
+<section class="cd" aria-labelledby="h65"><div class="cd__h"><h2 id="h65">Active admin sessions</h2></div><div class="cd__b cd__b--flush"><div class="ds-tablewrap"><table class="ds-table"><caption class="ds-sr">Sessions</caption><thead><tr><th scope="col">User</th><th scope="col">Device</th><th scope="col">Location</th><th scope="col">Signed in</th><th scope="col" class="num"><span class="ds-sr">Revoke</span></th></tr></thead><tbody><tr><td>Maya Ruiz</td><td>Windows · Edge</td><td>Lisbon, PT</td><td>Today 09:12</td><td class="num"><button type="button" class="ds-btn ds-s" data-save="Session for Maya Ruiz revoked"><span>Revoke</span></button></td></tr><tr><td>Chen Li</td><td>macOS · Safari</td><td>Berlin, DE</td><td>Today 08:40</td><td class="num"><button type="button" class="ds-btn ds-s" data-save="Session for Chen Li revoked"><span>Revoke</span></button></td></tr><tr><td>Priya Nair</td><td>iPhone · Ledger app</td><td>Porto, PT</td><td>Yesterday 21:40</td><td class="num"><button type="button" class="ds-btn ds-s" data-save="Session for Priya Nair revoked"><span>Revoke</span></button></td></tr></tbody></table></div></div></section>
+</div>
+  </div></main>
+</div>
+
+<script src="assets/core.js"></script>
+<script src="assets/admin.js"></script>
+<script src="assets/enterprise.js"></script>
+</body>
+</html>

@@ -1,0 +1,104 @@
+/* =====================================================================
+   Reports & Analytics — design tokens
+   Fluent 2 neutrals, brand and type ramp, plus the data-viz palette.
+   Themes are attribute-scoped, so any element (a card, a preview) can
+   carry its own data-theme and everything inside re-themes, charts too.
+   ===================================================================== */
+:root,[data-theme="light"]{
+  color-scheme:light;
+  /* neutrals */
+  --canvas:#f5f5f5; --bg1:#ffffff; --bg2:#fafafa; --bg3:#f5f5f5; --bg4:#f0f0f0;
+  --hover:#f5f5f5; --pressed:#e0e0e0; --selected:#ebebeb;
+  --fg1:#242424; --fg2:#424242; --fg3:#616161; --fg4:#707070; --fg-dis:#bdbdbd;
+  --stroke1:#d1d1d1; --stroke2:#e0e0e0; --stroke3:#f0f0f0; --stroke-acc:#616161;
+  /* brand */
+  --brand:#0f6cbd; --brand-hover:#115ea3; --brand-pressed:#0c3b5e; --on-brand:#ffffff;
+  --brand-fg:#0f6cbd; --brand-bg2:#ebf3fc; --brand-bg3:#cfe4fa; --brand-stroke:#0f6cbd;
+  /* status (UI) */
+  --ok-fg:#0e700e; --ok-bg:#f1faf1; --ok-bd:#9fd89f;
+  --warn-fg:#bc4b09; --warn-bg:#fff9f5; --warn-bd:#fdcfb4;
+  --err-fg:#b10e1c; --err-bg:#fdf3f4; --err-bd:#eeacb2;
+  --info-fg:#424242; --info-bg:#fafafa; --info-bd:#d1d1d1;
+  /* elevation */
+  --sh2:0 0 2px rgba(0,0,0,.12),0 1px 2px rgba(0,0,0,.14);
+  --sh4:0 0 2px rgba(0,0,0,.12),0 2px 4px rgba(0,0,0,.14);
+  --sh8:0 0 2px rgba(0,0,0,.12),0 4px 8px rgba(0,0,0,.14);
+  --sh16:0 0 2px rgba(0,0,0,.12),0 8px 16px rgba(0,0,0,.14);
+  --sh28:0 0 8px rgba(0,0,0,.12),0 14px 28px rgba(0,0,0,.14);
+  --sh64:0 0 8px rgba(0,0,0,.12),0 32px 64px rgba(0,0,0,.14);
+  --scrim:rgba(0,0,0,.4);
+  --focus:#000000; --focus-in:#ffffff;
+  /* data viz: categorical (validated order), sequential, ordinal, diverging, status */
+  --c1:#2a78d6; --c2:#eb6834; --c3:#1baf7a; --c4:#eda100; --c5:#e87ba4; --c6:#008300; --c7:#6250d6; --c8:#e34948;
+  --q1:#cde2fb; --q2:#b7d3f6; --q3:#9ec5f4; --q4:#6da7ec; --q5:#3987e5; --q6:#2a78d6; --q7:#1c5cab; --q8:#184f95; --q9:#0d366b;
+  --o1:#86b6ef; --o2:#5598e7; --o3:#2a78d6; --o4:#256abf; --o5:#184f95; --o6:#0d366b;
+  --dv-neg:#e34948; --dv-pos:#2a78d6; --dv-mid:#f0efec;
+  --st-good:#0ca30c; --st-warn:#fab219; --st-serious:#ec835a; --st-crit:#d03b3b;
+  --ch-surface:#ffffff; --ch-ink:#242424; --ch-ink2:#424242; --ch-muted:#616161;
+  --ch-grid:#ebebeb; --ch-axis:#c7c7c7; --ch-mute-mark:#d1d1d1; --ch-hover:rgba(0,0,0,.04);
+}
+[data-theme="dark"]{
+  color-scheme:dark;
+  --canvas:#1f1f1f; --bg1:#292929; --bg2:#262626; --bg3:#1f1f1f; --bg4:#333333;
+  --hover:#3d3d3d; --pressed:#1f1f1f; --selected:#383838;
+  --fg1:#ffffff; --fg2:#d6d6d6; --fg3:#adadad; --fg4:#999999; --fg-dis:#5c5c5c;
+  --stroke1:#666666; --stroke2:#525252; --stroke3:#3d3d3d; --stroke-acc:#adadad;
+  --brand:#115ea3; --brand-hover:#0f6cbd; --brand-pressed:#0c3b5e; --on-brand:#ffffff;
+  --brand-fg:#479ef5; --brand-bg2:#082338; --brand-bg3:#0c3b5e; --brand-stroke:#479ef5;
+  --ok-fg:#54b054; --ok-bg:#052505; --ok-bd:#107c10;
+  --warn-fg:#faa06b; --warn-bg:#411200; --warn-bd:#bc4b09;
+  --err-fg:#dc626d; --err-bg:#3b0509; --err-bd:#b10e1c;
+  --info-fg:#d6d6d6; --info-bg:#333333; --info-bd:#666666;
+  --sh2:0 0 2px rgba(0,0,0,.24),0 1px 2px rgba(0,0,0,.28);
+  --sh4:0 0 2px rgba(0,0,0,.24),0 2px 4px rgba(0,0,0,.28);
+  --sh8:0 0 2px rgba(0,0,0,.24),0 4px 8px rgba(0,0,0,.28);
+  --sh16:0 0 2px rgba(0,0,0,.24),0 8px 16px rgba(0,0,0,.28);
+  --sh28:0 0 8px rgba(0,0,0,.24),0 14px 28px rgba(0,0,0,.28);
+  --sh64:0 0 8px rgba(0,0,0,.24),0 32px 64px rgba(0,0,0,.28);
+  --scrim:rgba(0,0,0,.6);
+  --focus:#ffffff; --focus-in:#000000;
+  --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#008300; --c7:#9085e9; --c8:#e66767;
+  --q1:#0d366b; --q2:#104281; --q3:#184f95; --q4:#1c5cab; --q5:#256abf; --q6:#3987e5; --q7:#6da7ec; --q8:#9ec5f4; --q9:#cde2fb;
+  --o1:#184f95; --o2:#256abf; --o3:#3987e5; --o4:#5598e7; --o5:#86b6ef; --o6:#b7d3f6;
+  --dv-neg:#e66767; --dv-pos:#3987e5; --dv-mid:#383835;
+  --ch-surface:#292929; --ch-ink:#ffffff; --ch-ink2:#d6d6d6; --ch-muted:#adadad;
+  --ch-grid:#3a3a3a; --ch-axis:#5c5c5c; --ch-mute-mark:#525252; --ch-hover:rgba(255,255,255,.06);
+}
+[data-theme="hc"]{
+  color-scheme:dark;
+  --canvas:#000000; --bg1:#000000; --bg2:#000000; --bg3:#000000; --bg4:#000000;
+  --hover:#1a1a1a; --pressed:#000000; --selected:#1a1a1a;
+  --fg1:#ffffff; --fg2:#ffffff; --fg3:#ffffff; --fg4:#ffffff; --fg-dis:#3ff23f;
+  --stroke1:#ffffff; --stroke2:#ffffff; --stroke3:#ffffff; --stroke-acc:#ffffff;
+  --brand:#ffff00; --brand-hover:#ffff00; --brand-pressed:#ffff00; --on-brand:#000000;
+  --brand-fg:#ffff00; --brand-bg2:#000000; --brand-bg3:#000000; --brand-stroke:#ffff00;
+  --ok-fg:#3ff23f; --ok-bg:#000000; --ok-bd:#3ff23f;
+  --warn-fg:#ffff00; --warn-bg:#000000; --warn-bd:#ffff00;
+  --err-fg:#ff6b6b; --err-bg:#000000; --err-bd:#ff6b6b;
+  --info-fg:#ffffff; --info-bg:#000000; --info-bd:#ffffff;
+  --sh2:0 0 0 1px #ffffff; --sh4:0 0 0 1px #ffffff; --sh8:0 0 0 1px #ffffff;
+  --sh16:0 0 0 2px #ffffff; --sh28:0 0 0 2px #ffffff; --sh64:0 0 0 2px #ffffff;
+  --scrim:rgba(0,0,0,.75);
+  --focus:#ffff00; --focus-in:#000000;
+  --c1:#3987e5; --c2:#d95926; --c3:#199e70; --c4:#c98500; --c5:#d55181; --c6:#2fa82f; --c7:#9085e9; --c8:#e66767;
+  --q1:#0d366b; --q2:#104281; --q3:#184f95; --q4:#1c5cab; --q5:#256abf; --q6:#3987e5; --q7:#6da7ec; --q8:#9ec5f4; --q9:#cde2fb;
+  --o1:#184f95; --o2:#256abf; --o3:#3987e5; --o4:#5598e7; --o5:#86b6ef; --o6:#b7d3f6;
+  --dv-neg:#e66767; --dv-pos:#3987e5; --dv-mid:#5c5c5c;
+  --ch-surface:#000000; --ch-ink:#ffffff; --ch-ink2:#ffffff; --ch-muted:#ffffff;
+  --ch-grid:#5c5c5c; --ch-axis:#ffffff; --ch-mute-mark:#5c5c5c; --ch-hover:rgba(255,255,255,.12);
+}
+:root{
+  --font:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,"Helvetica Neue",Roboto,Arial,sans-serif;
+  --mono:"Cascadia Mono",Consolas,"SF Mono",Menlo,monospace;
+  /* Fluent type ramp: size/line-height */
+  --t-cap2:10px/14px var(--font); --t-cap:12px/16px var(--font); --t-body:14px/20px var(--font);
+  --t-sub2:600 16px/22px var(--font); --t-sub1:600 20px/28px var(--font);
+  --t-title3:600 24px/32px var(--font); --t-title2:600 28px/36px var(--font); --t-title1:600 32px/40px var(--font);
+  --t-large:600 40px/52px var(--font); --t-display:600 68px/92px var(--font);
+  /* 8px spacing system (4px half-step for tight controls) */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px; --s12:48px;
+  --r-s:2px; --r:4px; --r-m:6px; --r-l:8px;
+  --h-s:24px; --h-m:32px; --h-l:40px;
+  --hd-h:48px; --sb-w:264px; --sb-rail:48px;
+  --ease:cubic-bezier(.33,0,.67,1); --ease-out:cubic-bezier(.1,.9,.2,1); --dur:.15s;
+}

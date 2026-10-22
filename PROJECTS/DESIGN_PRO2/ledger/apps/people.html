@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>People · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .ppl { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 18px; align-items: start; }
+  .people-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  .pcard { padding: 16px; display: grid; gap: 12px; }
+  .pcard__top { display: flex; gap: 12px; align-items: center; }
+  .pcard__meta { display: flex; justify-content: space-between; font-size: var(--t-xs); color: var(--ink-3); border-top: 1px solid var(--rule); padding-top: 10px; }
+  .away-row { display: grid; grid-template-columns: 110px repeat(10, 1fr); gap: 2px; align-items: center; font-size: var(--t-xs); }
+  .away-row > span:first-child { color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .away-row i { height: 18px; border-radius: 2px; background: var(--paper-sunken); }
+  .away-row i.on { background: var(--d2); }
+  .away-row i.sick { background: var(--d3); }
+  .away-row i.we { background: transparent; }
+  .away-head i { height: auto; background: none; font-style: normal; text-align: center; color: var(--ink-3); font-family: var(--font-mono); font-size: 10px; }
+  @media (max-width: 1180px) { .ppl { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body data-page="apps/people" data-root="../">
+<div class="site">
+<main class="page page--wide" id="main">
+<div class="page__main">
+
+  <header class="doc-head" style="padding-bottom:24px">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="finance.html">Example apps</a></li><li aria-current="page">People</li></ol>
+    <h1 class="h1">Directory &amp; time off</h1>
+    <p class="lede">The lightest of the four apps: a people directory, who's away over the next two weeks, and a request form in a drawer.</p>
+  </header>
+
+  <div class="window" style="margin-top:28px">
+    <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/people</span></div>
+    <div class="app">
+      <nav class="app__nav" aria-label="People">
+        <div class="app__brand"><i>N</i>Northwind</div>
+        <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Directory</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Time off<span class="count">2</span></a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg>Roles</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg>Policies</a>
+        <div class="app__navfoot"><div class="person" style="padding:4px 6px"><span class="avatar avatar--sm" data-c="3">MA</span><div><div class="person__name small">Mo Adeyemi</div><div class="person__meta">People team</div></div></div></div>
+      </nav>
+      <div class="app__main">
+        <div class="app__top">
+          <div class="search" style="flex:1; max-width:360px"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="input input--sm" type="search" placeholder="Search 148 people" aria-label="Search people" id="ppl-q"></div>
+          <span style="flex:1"></span>
+          <button class="btn btn--primary btn--sm" data-open="req"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Request time off</button>
+        </div>
+        <div class="app__body">
+          <div class="app__title">
+            <div><h2 class="h2">Finance &amp; operations</h2><p class="muted small" style="margin-top:4px">12 people · 3 sites</p></div>
+            <div class="tabs" role="tablist" aria-label="Team" style="border:0">
+              <button role="tab" aria-selected="true" aria-controls="tp-team" id="tt1">Team</button>
+              <button role="tab" aria-selected="false" aria-controls="tp-away" id="tt2">Who's away <span class="count">3</span></button>
+            </div>
+          </div>
+          <div class="ppl">
+            <div>
+              <div role="tabpanel" id="tp-team" aria-labelledby="tt1">
+                <div class="people-grid" id="ppl-grid">
+                  <div class="panel pcard"><div class="pcard__top"><span class="avatar avatar--lg" data-c="5">LF<span class="avatar__dot avatar__dot--on"></span></span><div><div class="person__name">Lena Fischer</div><div class="person__meta">Financial controller</div></div></div><div class="pcard__meta"><span>Frankfurt</span><span>Reports to CFO</span></div></div>
+                  <div class="panel pcard"><div class="pcard__top"><span class="avatar avatar--lg" data-c="1">PR<span class="avatar__dot avatar__dot--on"></span></span><div><div class="person__name">Priya Raman</div><div class="person__meta">Operations manager</div></div></div><div class="pcard__meta"><span>Leeds</span><span>4 reports</span></div></div>
+                  <div class="panel pcard"><div class="pcard__top"><span class="avatar avatar--lg" data-c="2">TO<span class="avatar__dot avatar__dot--away"></span></span><div><div class="person__name">Tom Okafor</div><div class="person__meta">Senior accountant</div></div></div><div class="pcard__meta"><span>London</span><span class="badge badge--note">Away until 28 Oct</span></div></div>
+                  <div class="panel pcard"><div class="pcard__top"><span class="avatar avatar--lg" data-c="6">AR<span class="avatar__dot avatar__dot--on"></span></span><div><div class="person__name">Ana Ruiz</div><div class="person__meta">Account executive</div></div></div><div class="pcard__meta"><span>Madrid</span><span>Sales</span></div></div>
+                  <div class="panel pcard"><div class="pcard__top"><span class="avatar avatar--lg" data-c="5">SI<span class="avatar__dot avatar__dot--busy"></span></span><div><div class="person__name">Sam Ito</div><div class="person__meta">Systems analyst</div></div></div><div class="pcard__meta"><span>London</span><span>In a meeting</span></div></div>
+                  <div class="panel pcard"><div class="pcard__top"><span class="avatar avatar--lg" data-c="1">BC<span class="avatar__dot"></span></span><div><div class="person__name">Ben Carr</div><div class="person__meta">Payroll lead</div></div></div><div class="pcard__meta"><span>Glasgow</span><span>Offline</span></div></div>
+                </div>
+              </div>
+              <div role="tabpanel" id="tp-away" aria-labelledby="tt2" hidden>
+                <div class="panel panel__body stack" style="--_g:8px">
+                  <div class="away-row away-head"><span></span><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i></div>
+                  <div class="away-row"><span>Tom Okafor</span><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+                  <div class="away-row"><span>Ben Carr</span><i></i><i></i><i class="sick"></i><i class="sick"></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+                  <div class="away-row"><span>Lena Fischer</span><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i class="on"></i><i class="on"></i></div>
+                  <div class="legend" style="margin-top:10px"><span><i style="--c:var(--d2)"></i>Holiday</span><span><i style="--c:var(--d3)"></i>Sick</span></div>
+                </div>
+              </div>
+            </div>
+            <aside class="stack" style="--_g:18px">
+              <section class="panel">
+                <div class="panel__head"><h3 class="h4">Waiting for you</h3><span class="count">2</span></div>
+                <ul class="list list--inset">
+                  <li><span class="avatar avatar--sm" data-c="6">AR</span><div class="list__main"><div class="list__title">Ana Ruiz · 4 days</div><div class="list__meta">3–6 Nov · Holiday</div></div><button class="btn btn--sm" data-toast="Approved. Ana has been told." data-toast-kind="pos">Approve</button></li>
+                  <li><span class="avatar avatar--sm" data-c="5">SI</span><div class="list__main"><div class="list__title">Sam Ito · ½ day</div><div class="list__meta">29 Oct pm · Appointment</div></div><button class="btn btn--sm" data-toast="Approved. Sam has been told." data-toast-kind="pos">Approve</button></li>
+                </ul>
+              </section>
+              <section class="panel panel__body stack" style="--_g:10px">
+                <div class="h4">Your allowance</div>
+                <div class="stat"><span class="stat__value num">14 <small>of 25 days left</small></span></div>
+                <div class="meter" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+                <p class="small faint">11 used. Up to 5 days carry over into April.</p>
+              </section>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="drawer" id="req" aria-labelledby="req-t">
+    <div class="dialog__head"><div style="flex:1"><p class="eyebrow">Time off</p><h2 class="dialog__title" id="req-t" style="margin-top:4px">Request time off</h2></div><button class="btn btn--quiet btn--icon btn--sm" data-close aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="dialog__body" style="color:var(--ink)">
+      <fieldset style="border:0; padding:0; margin:0" class="choices choices--row"><legend class="label" style="margin-bottom:8px">Type</legend>
+        <label class="radio"><input type="radio" name="tt" checked> Holiday</label><label class="radio"><input type="radio" name="tt"> Sick</label><label class="radio"><input type="radio" name="tt"> Other</label>
+      </fieldset>
+      <div class="field"><span class="label">Dates</span><div class="panel" style="width:max-content; max-width:100%"><div class="cal" data-cal data-range data-no-weekend></div></div></div>
+      <div class="field"><label class="label" for="req-n">Note for your manager <span class="opt">optional</span></label><textarea class="textarea" id="req-n" style="min-height:64px"></textarea></div>
+      <div class="callout"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg><div class="callout__body" style="grid-column:2">Priya approves your time off. She's usually quick.</div></div>
+    </div>
+    <div class="dialog__foot"><button class="btn btn--quiet" data-close>Cancel</button><button class="btn btn--primary" data-close="Request sent to Priya">Send request</button></div>
+  </dialog>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  document.getElementById('ppl-q').addEventListener('input', function () {
+    var q = this.value.trim().toLowerCase();
+    document.querySelectorAll('#ppl-grid .pcard').forEach(function (c) { c.hidden = c.textContent.toLowerCase().indexOf(q) < 0; });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Accessibility · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="foundations/accessibility" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="colour.html">Foundations</a></li><li aria-current="page">Accessibility</li></ol>
+    <h1 class="h1">What we check, every time</h1>
+    <p class="lede">We aim for WCAG 2.2 AA. A component isn't finished until it has been used with only a keyboard, at 200% zoom, and with a screen reader. Below is the checklist we work through.</p>
+  </header>
+
+  <section class="sec" id="checklist">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Before a component ships</h2>
+      <p class="sec__intro">Tick these off as you go. They're only saved in this browser.</p></div>
+    <div class="block">
+      <div class="panel">
+        <div class="panel__body choices" id="a11y-list" style="gap:14px">
+          <label class="check"><input type="checkbox"> <span><b>Keyboard</b> — every action works with Tab, Enter, Space, the arrow keys and Escape. Focus never gets lost or trapped.<span class="check__sub">Menus and listboxes: arrows move and Escape returns focus to the trigger. Dialogs: focus starts inside and returns to the trigger on close.</span></span></label>
+          <label class="check"><input type="checkbox"> <span><b>Visible focus</b> — a 2px green ring with a 2px paper gap, at 3:1 against both paper and ink.</span></label>
+          <label class="check"><input type="checkbox"> <span><b>Names</b> — every control has an accessible name, and it matches the visible label.<span class="check__sub">Icon-only buttons use aria-label. Placeholders don't count as names.</span></span></label>
+          <label class="check"><input type="checkbox"> <span><b>Contrast</b> — text at 4.5:1, large text and component borders at 3:1.<span class="check__sub">Ink-3 (#726C60) is the lightest tone allowed for text.</span></span></label>
+          <label class="check"><input type="checkbox"> <span><b>Not colour alone</b> — status has an icon or a word, links are underlined, and chart series are labelled.</span></label>
+          <label class="check"><input type="checkbox"> <span><b>Target size</b> — at least 24 × 24px, with 28px or more preferred. Small icon buttons are 28px.</span></label>
+          <label class="check"><input type="checkbox"> <span><b>Zoom &amp; reflow</b> — usable at 200% and at a 320px viewport, with no sideways scrolling except inside tables.</span></label>
+          <label class="check"><input type="checkbox"> <span><b>Motion</b> — respects reduced motion. Nothing flashes more than three times a second.</span></label>
+          <label class="check"><input type="checkbox"> <span><b>Announcements</b> — results of actions are announced through role="status", and blocking errors through role="alert".</span></label>
+          <label class="check"><input type="checkbox"> <span><b>Forced colours</b> — still usable in Windows High Contrast. Shapes keep their borders.</span></label>
+        </div>
+        <div class="panel__foot" style="justify-content:space-between"><span class="small faint" id="a11y-count" role="status"></span><button class="btn btn--sm btn--quiet" id="a11y-reset">Reset</button></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="focus">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">The focus ring</h2>
+      <p class="sec__intro">Press Tab to move through these controls. The ring only appears for keyboard focus, never on mouse click.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Tab through" data-nocode>
+        <div class="specimen__stage">
+          <button class="btn">Default</button>
+          <button class="btn btn--primary">Primary</button>
+          <a class="link" href="#focus">A link</a>
+          <label class="check"><input type="checkbox"> Checkbox</label>
+          <label class="switch"><input type="checkbox" role="switch" aria-label="Switch"></label>
+          <input class="input" style="width:160px" aria-label="Field" placeholder="Field">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="sr">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Screen-reader test matrix</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Reader</th><th>Browser</th><th>How often</th></tr></thead>
+        <tbody>
+          <tr><td>NVDA</td><td>Firefox, Chrome</td><td>Every component, every release</td></tr>
+          <tr><td>JAWS</td><td>Chrome, Edge</td><td>Tables, grids and forms. Our finance users rely on it the most.</td></tr>
+          <tr><td>VoiceOver</td><td>Safari (macOS, iOS)</td><td>Every component, every release</td></tr>
+          <tr><td>TalkBack</td><td>Chrome (Android)</td><td>Patterns and apps, each quarter</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  (function () {
+    var boxes = document.querySelectorAll('#a11y-list input'), out = document.getElementById('a11y-count');
+    var saved = []; try { saved = JSON.parse(localStorage.getItem('ledger:a11y') || '[]'); } catch (e) {}
+    boxes.forEach(function (b, i) { b.checked = saved[i] === 1; });
+    function sync() {
+      var s = [].map.call(boxes, function (b) { return b.checked ? 1 : 0; });
+      try { localStorage.setItem('ledger:a11y', JSON.stringify(s)); } catch (e) {}
+      var n = s.filter(Boolean).length;
+      out.textContent = n === boxes.length ? 'All ten checked. Ship it.' : n + ' of ' + boxes.length + ' checked';
+    }
+    boxes.forEach(function (b) { b.addEventListener('change', sync); });
+    document.getElementById('a11y-reset').addEventListener('click', function () { boxes.forEach(function (b) { b.checked = false; }); sync(); });
+    sync();
+  })();
+</script>
+</body>
+</html>

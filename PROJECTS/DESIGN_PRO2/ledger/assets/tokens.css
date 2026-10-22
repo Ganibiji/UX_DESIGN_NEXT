@@ -1,0 +1,193 @@
+/* Ledger — design tokens
+   ---------------------------------------------------------------
+   Warm paper, black ink, one green for intent. Everything else is
+   built from these values; components never use raw hex.
+
+   Naming: --paper-* surfaces, --ink-* text, --rule-* lines,
+   --accent-* the single brand colour, --pos/--warn/--neg/--note
+   for status. Dark theme swaps values, not names.
+   --------------------------------------------------------------- */
+
+:root {
+  /* Surfaces */
+  --paper:        #F5F2EA;   /* page canvas */
+  --paper-raised: #FFFDF7;   /* cards, inputs, menus */
+  --paper-sunken: #ECE7DB;   /* wells, code, table headers */
+  --paper-hover:  #EDE8DC;
+  --paper-press:  #E3DDCE;
+
+  /* Ink */
+  --ink:        #1C1A15;
+  --ink-2:      #55514A;
+  --ink-3:      #726C60;     /* 4.7:1 on paper, 5.1:1 on raised — the floor for meaningful text */
+  --ink-faint:  #ADA696;     /* decoration only, never text that matters */
+  --ink-invert: #FBF9F3;
+
+  /* Lines */
+  --rule:        #DDD6C7;
+  --rule-strong: #C4BBA8;
+  --rule-ink:    #8C8577;    /* input borders: 3:1 against paper */
+
+  /* Accent — Ledger green */
+  --accent:       #1F5F4A;
+  --accent-hover: #184D3C;
+  --accent-press: #123C2F;
+  --accent-tint:  #E2EDE6;
+  --accent-ink:   #1A5240;   /* accent used as text */
+
+  /* Primary action is ink, not accent. Accent marks selection and focus. */
+  --action:       #1C1A15;
+  --action-hover: #34312A;
+  --action-press: #000000;
+  --on-action:    #FBF9F3;
+
+  /* Status */
+  --pos:       #2C6E3F;  --pos-tint:  #E3EFDF;
+  --warn:      #8F5A0B;  --warn-tint: #F7EBD3;
+  --neg:       #A8321F;  --neg-tint:  #F6E1DA;
+  --note:      #2C557E;  --note-tint: #E1E9F1;
+
+  /* Data — six categorical hues in a fixed order. Validated for
+     deuteranopia/protanopia separation (adjacent ΔE ≥ 14) on both surfaces.
+     Slot 5 (ochre) sits under 3:1 on paper: always label it directly. */
+  --d1: #00704E;  /* green */
+  --d2: #376DAF;  /* blue  */
+  --d3: #CB713F;  /* clay  */
+  --d4: #864A81;  /* plum  */
+  --d5: #CA9D33;  /* ochre */
+  --d6: #03999F;  /* teal  */
+
+  /* Focus */
+  --focus: #1F5F4A;
+  --focus-ring: 0 0 0 2px var(--paper-raised), 0 0 0 4px var(--focus);
+
+  /* Type */
+  --font-sans:    "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-serif:   "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --t-xs:   12px;
+  --t-sm:   13px;
+  --t-base: 14px;
+  --t-md:   16px;
+  --t-lg:   19px;
+  --t-xl:   24px;
+  --t-2xl:  32px;
+  --t-3xl:  44px;
+  --t-4xl:  60px;
+
+  /* Space — 4px base, but the scale skips where we never use a step */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+
+  /* Shape — small radii; the system is drawn, not inflated */
+  --r-1: 3px;   /* chips, checkboxes */
+  --r-2: 5px;   /* controls */
+  --r-3: 8px;   /* panels, menus */
+  --r-pill: 999px;
+
+  /* Sizes */
+  --h-sm: 28px;
+  --h-md: 34px;
+  --h-lg: 42px;
+
+  /* Depth — two levels and a lift. Shadows are warm, not grey. */
+  --lift-1: 0 1px 0 rgba(60, 48, 24, .06), 0 1px 2px rgba(60, 48, 24, .06);
+  --lift-2: 0 1px 2px rgba(60, 48, 24, .08), 0 6px 16px -4px rgba(60, 48, 24, .14);
+  --lift-3: 0 2px 6px rgba(40, 30, 10, .10), 0 24px 48px -12px rgba(40, 30, 10, .28);
+  --scrim:  rgba(28, 26, 21, .42);
+
+  /* Motion */
+  --ease-out:  cubic-bezier(.2, .7, .2, 1);
+  --ease-in:   cubic-bezier(.5, 0, .75, 0);
+  --dur-1: 90ms;
+  --dur-2: 160ms;
+  --dur-3: 260ms;
+
+  color-scheme: light;
+}
+
+/* ---------- Dark: lamp-lit desk, not pure black ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #191814;
+    --paper-raised: #211F1A;
+    --paper-sunken: #14130F;
+    --paper-hover:  #2A2822;
+    --paper-press:  #33302A;
+    --ink:        #EDE8DC;
+    --ink-2:      #B9B2A3;
+    --ink-3:      #948D7F;
+    --ink-faint:  #625D53;
+    --ink-invert: #1C1A15;
+    --rule:        #322F28;
+    --rule-strong: #46423A;
+    --rule-ink:    #6F695E;
+    --accent:       #6FB596;
+    --accent-hover: #86C4A8;
+    --accent-press: #A0D3BB;
+    --accent-tint:  #1E3229;
+    --accent-ink:   #8CC8AC;
+    --action:       #EDE8DC;
+    --action-hover: #FFFFFF;
+    --action-press: #D6D0C3;
+    --on-action:    #1C1A15;
+    --pos:  #7CC08C;  --pos-tint:  #1F2E21;
+    --warn: #E0AE5A;  --warn-tint: #332818;
+    --neg:  #EE8A74;  --neg-tint:  #3A201A;
+    --note: #8DB3DA;  --note-tint: #1C2733;
+    --d1: #3F9A6F; --d2: #5788C7; --d3: #D37947; --d4: #9B5896; --d5: #AF8E2A; --d6: #0D9298;
+    --focus: #8CC8AC;
+    --lift-1: 0 1px 0 rgba(0,0,0,.3);
+    --lift-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -6px rgba(0,0,0,.5);
+    --lift-3: 0 2px 6px rgba(0,0,0,.4), 0 28px 56px -12px rgba(0,0,0,.7);
+    --scrim:  rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:        #191814;
+  --paper-raised: #211F1A;
+  --paper-sunken: #14130F;
+  --paper-hover:  #2A2822;
+  --paper-press:  #33302A;
+  --ink:        #EDE8DC;
+  --ink-2:      #B9B2A3;
+  --ink-3:      #948D7F;
+  --ink-faint:  #625D53;
+  --ink-invert: #1C1A15;
+  --rule:        #322F28;
+  --rule-strong: #46423A;
+  --rule-ink:    #6F695E;
+  --accent:       #6FB596;
+  --accent-hover: #86C4A8;
+  --accent-press: #A0D3BB;
+  --accent-tint:  #1E3229;
+  --accent-ink:   #8CC8AC;
+  --action:       #EDE8DC;
+  --action-hover: #FFFFFF;
+  --action-press: #D6D0C3;
+  --on-action:    #1C1A15;
+  --pos:  #7CC08C;  --pos-tint:  #1F2E21;
+  --warn: #E0AE5A;  --warn-tint: #332818;
+  --neg:  #EE8A74;  --neg-tint:  #3A201A;
+  --note: #8DB3DA;  --note-tint: #1C2733;
+  --d1: #3F9A6F; --d2: #5788C7; --d3: #D37947; --d4: #9B5896; --d5: #AF8E2A; --d6: #0D9298;
+  --focus: #8CC8AC;
+  --lift-1: 0 1px 0 rgba(0,0,0,.3);
+  --lift-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -6px rgba(0,0,0,.5);
+  --lift-3: 0 2px 6px rgba(0,0,0,.4), 0 28px 56px -12px rgba(0,0,0,.7);
+  --scrim:  rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+}

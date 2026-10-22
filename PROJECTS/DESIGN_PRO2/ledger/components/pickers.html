@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pickers · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/pickers" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Pickers</li></ol>
+    <h1 class="h1">Pickers</h1>
+    <p class="lede">Dates, times, files and colours. Each picker is a helper for a field people can also type into — never the only way in.</p>
+  </header>
+
+  <section class="sec" id="date">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Date picker</h2>
+      <p class="sec__intro">The field accepts typed dates in any sensible format. The calendar is for when someone needs to see the week — "the Friday after next".</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Typed or picked. Weekends disabled for payment dates.">
+        <div class="specimen__stage" style="min-height:420px; align-items:flex-start">
+          <div class="field anchor" style="width:240px">
+            <label class="label" for="dp-1">Payment date</label>
+            <div class="affix">
+              <input class="input" id="dp-1" value="22 Oct 2026" aria-describedby="dp-1-h">
+              <button class="btn btn--quiet btn--icon btn--sm" style="margin-right:3px" aria-label="Choose date" aria-haspopup="dialog" aria-expanded="false" aria-controls="dp-1-pop" data-pop="nofocus"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg></button>
+            </div>
+            <span class="hint" id="dp-1-h">Banks don't process on weekends.</span>
+            <div class="pop" id="dp-1-pop" role="dialog" aria-label="Choose payment date" hidden style="top:68px; left:0; padding:0">
+              <div class="cal" data-cal="dp-1" data-no-weekend></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="range">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Date range</h2>
+      <p class="sec__intro">Two clicks: start, then end. Presets beat calendars for reporting — most people want "last month", not 1 September to 30 September.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Presets beside an inline range calendar">
+        <div class="specimen__stage" style="align-items:flex-start; gap:0; padding:0">
+          <div class="menu" style="padding:12px; border-right:1px solid var(--rule); min-width:170px; align-self:stretch">
+            <div class="menu__label">Presets</div>
+            <button role="menuitem">Today</button>
+            <button role="menuitem">Last 7 days</button>
+            <button role="menuitem">This month</button>
+            <button role="menuitem">Last month</button>
+            <button role="menuitem">Quarter to date</button>
+            <button role="menuitem">Year to date</button>
+          </div>
+          <div class="cal" data-cal data-range style="width:300px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="time">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Time picker</h2>
+      <p class="sec__intro">A typed field with a list of likely slots. Show the timezone whenever more than one office will see the value.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Time with suggested slots and a timezone">
+        <div class="specimen__stage" style="min-height:340px; align-items:flex-start">
+          <div class="field anchor" style="width:200px">
+            <span class="label" id="tp-l">Run payroll at</span>
+            <button class="select-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="tp-list" aria-labelledby="tp-l tp-v" data-pop data-select><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg><span id="tp-v" data-value class="num">09:30</span><svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+            <div class="pop menu" id="tp-list" role="listbox" hidden style="top:calc(100% + 4px); left:0; right:0; max-height:220px; overflow:auto; min-width:0">
+              <div role="option" tabindex="-1" aria-selected="false" class="num">08:00<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" class="num">08:30<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" class="num">09:00<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="true" class="num">09:30<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" class="num">10:00<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" class="num">10:30<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" class="num">11:00<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" class="num">11:30<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+            </div>
+            <span class="hint">London time (BST, UTC+1)</span>
+          </div>
+          <div class="field" style="width:220px">
+            <label class="label" for="tp-2">Cut-off</label>
+            <div class="affix"><input class="input num" id="tp-2" value="17:00" inputmode="numeric" style="max-width:80px"><span class="affix__part affix__part--box-end" style="margin-left:auto; padding:0 10px">CET</span></div>
+            <span class="hint">Shown in the Frankfurt office's time.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="upload">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">File upload</h2>
+      <p class="sec__intro">Drop or browse. Say the limits before people hit them, show progress per file, and let each file be removed on its own.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Drop files here, or click to choose. Files over 10 MB show an error.">
+        <div class="specimen__stage specimen__stage--col" style="max-width:560px">
+          <div class="field">
+            <span class="label">Receipts</span>
+            <div class="drop" tabindex="0" role="button" aria-describedby="up-h" data-list="up-files">
+              <svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>
+              <span class="drop__title">Drop receipts here or <span class="link">browse</span></span>
+              <span class="drop__hint" id="up-h">PDF, JPG or PNG · up to 10 MB each</span>
+              <input type="file" multiple hidden accept=".pdf,.jpg,.jpeg,.png">
+            </div>
+          </div>
+          <ul class="files" id="up-files">
+            <li class="file"><span class="file__type">PDF</span><span class="file__name">hotel-leeds-14oct.pdf</span><button class="btn btn--quiet btn--icon btn--sm" data-dismiss aria-label="Remove hotel-leeds-14oct.pdf"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button><span class="file__meta">212 KB · Uploaded</span></li>
+            <li class="file is-error"><span class="file__type">JPG</span><span class="file__name">IMG_20261014_scan_full_res.jpg</span><button class="btn btn--quiet btn--icon btn--sm" data-dismiss aria-label="Remove IMG_20261014_scan_full_res.jpg"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button><span class="file__meta"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-alert"/></svg>14.2 MB — over the 10 MB limit. Try a lower-resolution scan.</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="colour">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Colour swatches</h2>
+      <p class="sec__intro">For labelling things — tags, calendars, projects. A fixed palette keeps them legible in both themes. Each swatch has a name, because "the third green" isn't one.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Radio group of named colours">
+        <div class="specimen__stage specimen__stage--col">
+          <div class="field">
+            <span class="label" id="sw-l">Project colour · <span id="sw-out" class="faint" style="font-weight:400">Green</span></span>
+            <div class="swatches" role="radiogroup" aria-labelledby="sw-l" data-out="sw-out">
+              <button class="swatch" role="radio" aria-checked="true" aria-label="Green" style="--c:var(--d1)"></button>
+              <button class="swatch" role="radio" aria-checked="false" aria-label="Blue" style="--c:var(--d2)"></button>
+              <button class="swatch" role="radio" aria-checked="false" aria-label="Clay" style="--c:var(--d3)"></button>
+              <button class="swatch" role="radio" aria-checked="false" aria-label="Plum" style="--c:var(--d4)"></button>
+              <button class="swatch" role="radio" aria-checked="false" aria-label="Ochre" style="--c:var(--d5)"></button>
+              <button class="swatch" role="radio" aria-checked="false" aria-label="Teal" style="--c:var(--d6)"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Long forms &amp; wizards · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .wz { display: grid; gap: 0; background: var(--paper-raised); }
+  .wz__head { padding: 22px 28px 20px; border-bottom: 1px solid var(--rule); display: grid; gap: 18px; }
+  .wz__body { padding: 26px 28px 30px; max-width: 620px; }
+  .wz__body .h3 { font-family: var(--font-serif); font-weight: 400; font-size: 24px; margin-bottom: 4px; outline: none; }
+  .wz__foot { display: flex; align-items: center; gap: 8px; padding: 14px 28px; border-top: 1px solid var(--rule); background: color-mix(in srgb, var(--paper-sunken) 45%, transparent); }
+  .wz__foot .faint { margin-right: auto; }
+  .form-sec { display: grid; grid-template-columns: 220px 1fr; gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--rule); }
+  .form-sec:last-of-type { border-bottom: 0; }
+  .form-sec__intro p { color: var(--ink-3); font-size: var(--t-sm); margin-top: 4px; }
+  .savebar { position: sticky; bottom: 0; display: flex; align-items: center; gap: 10px; padding: 12px 20px; background: var(--paper-raised); border-top: 1px solid var(--rule-strong); box-shadow: 0 -8px 20px -14px rgba(40,30,10,.25); }
+  .savebar span { margin-right: auto; font-size: var(--t-sm); color: var(--ink-2); display: inline-flex; align-items: center; gap: 8px; }
+  .savebar span::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #C9922C; }
+  @media (max-width: 900px) { .form-sec { grid-template-columns: 1fr; gap: 14px; } .wz__head, .wz__body, .wz__foot { padding-left: 16px; padding-right: 16px; } }
+</style>
+</head>
+<body data-page="patterns/forms" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="forms.html">Patterns</a></li><li aria-current="page">Long forms &amp; wizards</li></ol>
+    <h1 class="h1">Long forms &amp; wizards</h1>
+    <p class="lede">Use a wizard when the later steps depend on earlier answers, or when someone needs to stop halfway and come back. Otherwise use one long page with clear sections. It's quicker to fill in and easier to check.</p>
+  </header>
+
+  <section class="sec" id="wizard">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Wizard: add a supplier</h2>
+      <p class="sec__intro">Four steps, each checked before you can continue. Errors are listed at the top of the step and marked on each field. Back never loses what you typed. Try clicking Continue with the fields empty.</p></div>
+    <div class="block">
+      <div class="window" data-wizard>
+        <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/suppliers/new</span></div>
+        <div class="wz">
+          <div class="wz__head">
+            <div style="display:flex; align-items:baseline; gap:12px"><span class="h4" style="flex:1">New supplier</span><span class="small faint" data-wz-pos></span></div>
+            <ol class="steps" aria-label="Progress">
+              <li><span class="steps__label">Company</span></li>
+              <li><span class="steps__label">Contact</span></li>
+              <li><span class="steps__label">Bank details</span></li>
+              <li><span class="steps__label">Review</span></li>
+            </ol>
+          </div>
+
+          <div class="wz__body">
+            <div class="wizard-step stack">
+              <div><h3 class="h3">About the company</h3><p class="muted small">We use this to check the supplier with Companies House.</p></div>
+              <div class="callout callout--neg wizard-errors" role="alert" hidden><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg><div class="callout__title"><span data-n></span> an answer before you can continue</div></div>
+              <div class="field"><label class="label" for="w-name">Legal name</label><input class="input" id="w-name" required autocomplete="organization"></div>
+              <div class="cols-2">
+                <div class="field"><label class="label" for="w-crn">Company number</label><input class="input mono" id="w-crn" required inputmode="numeric" placeholder="8 digits" style="max-width:180px"></div>
+                <div class="field"><label class="label" for="w-vat">VAT number <span class="opt">optional</span></label><input class="input mono" id="w-vat" style="max-width:200px"></div>
+              </div>
+              <div class="field"><label class="label" for="w-cat">What do they supply?</label><select class="select" id="w-cat" style="max-width:280px"><option>Goods for resale</option><option>Freight &amp; logistics</option><option>Professional services</option><option>Facilities</option><option>Software</option></select></div>
+            </div>
+
+            <div class="wizard-step stack" hidden>
+              <div><h3 class="h3">Who do we talk to?</h3><p class="muted small">Remittances and payment queries go to this person.</p></div>
+              <div class="callout callout--neg wizard-errors" role="alert" hidden><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg><div class="callout__title"><span data-n></span> an answer before you can continue</div></div>
+              <div class="field"><label class="label" for="w-cname">Full name</label><input class="input" id="w-cname" required autocomplete="name"></div>
+              <div class="field"><label class="label" for="w-email">Email for remittances</label><input class="input" id="w-email" type="email" required autocomplete="email"></div>
+              <div class="field"><label class="label" for="w-tel">Phone <span class="opt">optional</span></label><input class="input" id="w-tel" type="tel" autocomplete="tel" style="max-width:220px"></div>
+            </div>
+
+            <div class="wizard-step stack" hidden>
+              <div><h3 class="h3">Where should we pay them?</h3><p class="muted small">A second person must approve new bank details before the first payment.</p></div>
+              <div class="callout callout--neg wizard-errors" role="alert" hidden><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg><div class="callout__title"><span data-n></span> an answer before you can continue</div></div>
+              <div class="field"><label class="label" for="w-accname">Name on the account</label><input class="input" id="w-accname" required></div>
+              <div class="cols-2">
+                <div class="field"><label class="label" for="w-sort">Sort code</label><input class="input mono" id="w-sort" required inputmode="numeric" placeholder="00-00-00" style="max-width:140px"></div>
+                <div class="field"><label class="label" for="w-acc">Account number</label><input class="input mono" id="w-acc" required inputmode="numeric" placeholder="8 digits" style="max-width:180px"></div>
+              </div>
+              <div class="callout callout--warn"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><div class="callout__title">Check these details by phone</div><div class="callout__body">Fraudsters often send fake "change of bank details" emails. Call the supplier on a number you already have, not one from the email.</div></div>
+            </div>
+
+            <div class="wizard-step stack" hidden>
+              <div><h3 class="h3">Check and submit</h3><p class="muted small">Finance will review this within two working days.</p></div>
+              <dl class="kv"><dt>Company</dt><dd><span data-echo="w-name"></span> · <span class="mono" data-echo="w-crn"></span></dd><dt>Contact</dt><dd><span data-echo="w-cname"></span>, <span data-echo="w-email"></span></dd><dt>Bank</dt><dd><span class="mono" data-echo="w-sort"></span> · <span class="mono" data-echo="w-acc"></span> <span class="badge badge--warn" style="margin-left:6px">Needs a second approver</span></dd></dl>
+              <label class="check"><input type="checkbox"> <span>I've confirmed the bank details by phone</span></label>
+            </div>
+          </div>
+
+          <div class="wz__foot">
+            <span class="small faint">Your answers are saved as you go</span>
+            <button class="btn btn--quiet" data-wz="back">Back</button>
+            <button class="btn btn--primary" data-wz="next">Continue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="long">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">One long page</h2>
+      <p class="sec__intro">Each section has its heading and a short explanation on the left, with the fields on the right. When something has changed, a save bar sticks to the bottom of the screen and says so. It doesn't appear until there's something to save.</p></div>
+    <div class="block">
+      <form class="window" id="long-form" onsubmit="return false">
+        <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/settings/company</span></div>
+        <div style="padding:0 28px; background:var(--paper-raised)">
+          <div class="form-sec">
+            <div class="form-sec__intro"><h3 class="h4">Company</h3><p>Printed on invoices and remittances.</p></div>
+            <div class="stack">
+              <div class="field"><label class="label" for="l-name">Trading name</label><input class="input" id="l-name" value="Northwind"></div>
+              <div class="field"><label class="label" for="l-addr">Registered address</label><textarea class="textarea" id="l-addr" rows="3" style="min-height:0">4 Old Street
+London EC1V 9HL</textarea></div>
+            </div>
+          </div>
+          <div class="form-sec">
+            <div class="form-sec__intro"><h3 class="h4">Financial year</h3><p>Changing this re-labels periods but doesn't move any entries.</p></div>
+            <div class="cols-2">
+              <div class="field"><label class="label" for="l-fy">Year starts</label><select class="select" id="l-fy"><option>1 January</option><option selected>1 April</option><option>1 July</option></select></div>
+              <div class="field"><label class="label" for="l-cur">Base currency</label><select class="select" id="l-cur" disabled><option>GBP</option></select><span class="hint">Fixed once the first entry is posted.</span></div>
+            </div>
+          </div>
+          <div class="form-sec">
+            <div class="form-sec__intro"><h3 class="h4">Approvals</h3><p>Who has to sign off before money leaves.</p></div>
+            <div class="choices">
+              <label class="check"><input type="checkbox" checked> <span>Two approvers for payments over £10,000</span></label>
+              <label class="check"><input type="checkbox" checked> <span>Second approver for new bank details</span></label>
+              <label class="check"><input type="checkbox"> <span>Approve every expense claim, whatever the amount</span></label>
+            </div>
+          </div>
+        </div>
+        <div class="savebar" id="savebar" hidden><span>You have unsaved changes</span><button class="btn btn--quiet btn--sm" type="reset">Discard</button><button class="btn btn--primary btn--sm" data-loading="Settings saved">Save changes</button></div>
+      </form>
+    </div>
+  </section>
+
+  <section class="sec" id="rules">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Rules for long forms</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>One column.</strong> Put fields side by side only when they belong together, like sort code and account number.</li>
+        <li><strong>Mark the exception.</strong> If most fields are required, mark the optional ones, and the other way round.</li>
+        <li><strong>Check on submit, then as people fix things.</strong> Put a summary at the top that moves focus to the first problem.</li>
+        <li><strong>Never clear a form because of an error.</strong> Keep every value the user typed, including the wrong ones.</li>
+        <li><strong>Save drafts</strong> for anything that takes longer than two minutes, and say that you're doing it.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  (function () {
+    var f = document.getElementById('long-form'), bar = document.getElementById('savebar');
+    f.addEventListener('input', function () { bar.hidden = false; });
+    f.addEventListener('change', function () { bar.hidden = false; });
+    f.addEventListener('reset', function () { setTimeout(function () { bar.hidden = true; }); });
+    bar.querySelector('[data-loading]').addEventListener('click', function () { setTimeout(function () { bar.hidden = true; }, 1450); });
+  })();
+</script>
+</body>
+</html>

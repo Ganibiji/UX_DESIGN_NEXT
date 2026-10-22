@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feedback · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/feedback" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Feedback</li></ol>
+    <h1 class="h1">Feedback</h1>
+    <p class="lede">How the system talks back. Match the volume of the message to how much it matters — most things deserve a whisper.</p>
+  </header>
+
+  <section class="sec" id="callout">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Callout</h2>
+      <p class="sec__intro">Sits in the page, next to what it's about. Each tone has its own icon and a left rule, so the meaning survives without colour.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Note, positive, warning, negative">
+        <div class="specimen__stage specimen__stage--col">
+          <div class="callout" role="note">
+            <svg class="ic" aria-hidden="true"><use href="#i-info"/></svg>
+            <div class="callout__title">VAT returns are now filed through Making Tax Digital</div>
+            <div class="callout__body">Nothing changes for you. We send the return; HMRC sends the receipt here.</div>
+          </div>
+          <div class="callout callout--pos" role="status">
+            <svg class="ic" aria-hidden="true"><use href="#i-ok"/></svg>
+            <div class="callout__title">September is closed and locked</div>
+            <div class="callout__body">All 1,412 entries are posted. Reports for September won't change again.</div>
+            <button class="callout__x" aria-label="Dismiss" data-dismiss><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg></button>
+          </div>
+          <div class="callout callout--warn" role="note">
+            <svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>
+            <div class="callout__title">3 bank lines haven't been matched</div>
+            <div class="callout__body">Close can't start until they are. They total £1,904.20.</div>
+            <div class="callout__actions"><a class="link" href="#callout">Match them now</a><a class="link link--quiet" href="#callout">Why this matters</a></div>
+          </div>
+          <div class="callout callout--neg" role="alert">
+            <svg class="ic" aria-hidden="true"><use href="#i-error"/></svg>
+            <div class="callout__title">The payment file was rejected by Barclays</div>
+            <div class="callout__body">Line 14 has a sort code the bank doesn't recognise (20-00-0). Fix the supplier's bank details, then resend. No money has left the account.</div>
+            <div class="callout__actions"><a class="link" href="#callout">Open supplier</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="banner">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Banner</h2>
+      <p class="sec__intro">Full width, top of the app, about the whole system: maintenance, trial ending, a sandbox you're working in. One at a time.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="System banner and a warning banner">
+        <div class="specimen__stage specimen__stage--flush">
+          <div class="banner"><svg class="ic" aria-hidden="true"><use href="#i-flag"/></svg>You're in the sandbox. Nothing here touches real money. <a class="link" href="#banner">Switch to live</a><button class="banner__x" aria-label="Dismiss" data-dismiss><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          <div class="banner banner--warn"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>Bank feeds will pause for maintenance on Sunday, 02:00–04:00 GMT.<button class="banner__x" aria-label="Dismiss" data-dismiss><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="toast">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Toast</h2>
+      <p class="sec__intro">Confirms something that just happened, in the corner, then leaves. If the action can be undone, the toast offers it and stays longer. Hovering pauses the timer. Never put an error that needs fixing in a toast.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Click to fire" data-nocode>
+        <div class="specimen__stage">
+          <button class="btn" data-toast="Invoice INV-2041 saved">Simple</button>
+          <button class="btn" data-toast="All 12 entries balance and are posted." data-toast-title="Journal posted" data-toast-kind="pos">With title</button>
+          <button class="btn" data-toast="3 invoices archived" data-toast-action="Undo">With undo</button>
+          <button class="btn" data-toast="We couldn't reach the bank. We'll retry in 5 minutes." data-toast-kind="neg">Couldn't connect</button>
+        </div>
+      </div>
+      <div class="code" style="margin-top:12px"><pre><span class="c">// From script</span>
+ledgerToast({ title: <span class="s">'Journal posted'</span>, text: <span class="s">'All 12 entries balance.'</span>, kind: <span class="s">'pos'</span>, action: <span class="s">'Undo'</span> });</pre></div>
+    </div>
+  </section>
+
+  <section class="sec" id="progress">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Progress</h2>
+      <p class="sec__intro">If you know how far along it is, show a bar and the number. If you don't, an indeterminate bar or spinner — plus words about what's happening.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Determinate, indeterminate, segmented meter, ring, spinner">
+        <div class="specimen__stage specimen__stage--col" style="max-width:520px; gap:22px">
+          <div class="progress-row">
+            <div class="progress-row__top"><span>Importing bank statement</span><span class="num faint">642 of 1,000 lines</span></div>
+            <div class="progress" role="progressbar" aria-valuenow="64" aria-valuemin="0" aria-valuemax="100" aria-label="Importing bank statement"><span style="--v:64%"></span></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-row__top"><span>Fetching exchange rates…</span></div>
+            <div class="progress progress--indeterminate" role="progressbar" aria-label="Fetching exchange rates"><span></span></div>
+          </div>
+          <div class="progress-row">
+            <div class="progress-row__top"><span>Seats used</span><span class="num faint">8 of 10</span></div>
+            <div class="meter meter--warn" aria-hidden="true"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div>
+          </div>
+          <div class="cluster" style="--_g:24px">
+            <div class="ring" style="--v:72" role="img" aria-label="72% complete"><span>72%</span></div>
+            <div class="cluster" style="--_g:10px"><span class="spinner" aria-hidden="true"></span><span class="small muted" role="status">Recalculating balances</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="skeleton">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Skeleton</h2>
+      <p class="sec__intro">Shape of the content before the content. Match the real layout closely, or the page jumps when data arrives — which is worse than a spinner.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Loading a list of records" data-nocode>
+        <div class="specimen__stage specimen__stage--col" style="max-width:520px" aria-busy="true" aria-label="Loading">
+          <ul class="list">
+            <li><span class="skel" style="width:32px;height:32px;border-radius:50%"></span><div class="list__main stack" style="--_g:7px"><span class="skel" style="width:46%"></span><span class="skel" style="width:70%;height:10px"></span></div><span class="skel" style="width:64px"></span></li>
+            <li><span class="skel" style="width:32px;height:32px;border-radius:50%"></span><div class="list__main stack" style="--_g:7px"><span class="skel" style="width:38%"></span><span class="skel" style="width:58%;height:10px"></span></div><span class="skel" style="width:56px"></span></li>
+            <li><span class="skel" style="width:32px;height:32px;border-radius:50%"></span><div class="list__main stack" style="--_g:7px"><span class="skel" style="width:52%"></span><span class="skel" style="width:64%;height:10px"></span></div><span class="skel" style="width:70px"></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="empty">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Empty states</h2>
+      <p class="sec__intro">Three different situations that look the same but need different words: nothing yet, nothing matches, and nothing you're allowed to see.</p></div>
+    <div class="block">
+      <div class="cols-3">
+        <div class="panel">
+          <div class="empty">
+            <svg class="empty__art" viewBox="0 0 96 72" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="18" y="10" width="60" height="52" rx="3"/><path d="M28 24h40M28 34h28M28 44h34"/><path d="M62 54l10 10M70 52a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" stroke="var(--accent)"/></svg>
+            <h3 class="empty__title">No invoices yet</h3>
+            <p class="empty__body">Invoices from suppliers will appear here once you forward them to bills@northwind.ledger.app</p>
+            <div class="btn-row"><button class="btn btn--primary btn--sm">Upload an invoice</button></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="empty">
+            <svg class="empty__art" viewBox="0 0 96 72" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><circle cx="42" cy="32" r="18"/><path d="m55 45 14 14"/><path d="M35 32h14" stroke="var(--accent)"/></svg>
+            <h3 class="empty__title">Nothing matches</h3>
+            <p class="empty__body">No invoices from “Northwnd” over £10,000. Check the spelling, or remove a filter.</p>
+            <div class="btn-row"><button class="btn btn--sm">Clear filters</button></div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="empty">
+            <svg class="empty__art" viewBox="0 0 96 72" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="30" y="30" width="36" height="28" rx="3"/><path d="M38 30v-7a10 10 0 0 1 20 0v7"/><path d="M48 41v6" stroke="var(--accent)"/></svg>
+            <h3 class="empty__title">Payroll is private</h3>
+            <p class="empty__body">Only people in the Payroll team can see salaries. Ask Lena Fischer if you need access.</p>
+            <div class="btn-row"><button class="btn btn--sm">Request access</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="live">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Announcing changes</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Situation</th><th>Role / attribute</th></tr></thead>
+        <tbody>
+          <tr><td>Toasts, saved indicators</td><td><code>role="status"</code> — polite, waits for a pause.</td></tr>
+          <tr><td>Errors that block progress</td><td><code>role="alert"</code> — interrupts. Use sparingly; it's loud.</td></tr>
+          <tr><td>Region that's loading</td><td><code>aria-busy="true"</code> on the region, removed when done.</td></tr>
+          <tr><td>Progress bar</td><td><code>role="progressbar"</code> with <code>aria-valuenow</code>, or no value when indeterminate.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Finance app · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .fin-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 18px; }
+  @media (max-width: 1180px) { .fin-grid { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body data-page="apps/finance" data-root="../">
+<div class="site">
+<main class="page page--wide" id="main">
+<div class="page__main">
+
+  <header class="doc-head" style="padding-bottom:24px">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="finance.html">Example apps</a></li><li aria-current="page">Finance</li></ol>
+    <h1 class="h1">Month-end close</h1>
+    <p class="lede">A controller's home screen on the 22nd: what's left to do, what's blocking the close, and whether the numbers look right.</p>
+  </header>
+
+  <div class="window" style="margin-top:28px">
+    <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/close/2026-10</span></div>
+    <div class="banner banner--warn"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>October locks in 9 days. 3 tasks are overdue.<button class="banner__x" aria-label="Dismiss" data-dismiss><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="app">
+      <nav class="app__nav" aria-label="Finance">
+        <div class="app__brand"><i>N</i>Northwind</div>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Overview</a>
+        <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Close<span class="count">7</span></a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg>Approvals<span class="count">6</span></a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-receipt"/></svg>Payables</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Bank</a>
+        <div class="app__navlabel">Reports</div>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Profit &amp; loss</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Balance sheet</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-trend"/></svg>Cash flow</a>
+        <div class="app__navfoot"><div class="person" style="padding:4px 6px"><span class="avatar avatar--sm" data-c="5">LF</span><div><div class="person__name small">Lena Fischer</div><div class="person__meta">Controller</div></div></div></div>
+      </nav>
+      <div class="app__main">
+        <div class="app__top">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Close</a></li><li aria-current="page">October 2026</li></ol></nav>
+          <span style="flex:1"></span>
+          <div class="search" style="width:220px"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="input input--sm" type="search" placeholder="Search" aria-label="Search"></div>
+          <button class="btn btn--quiet btn--icon btn--sm" aria-label="Notifications"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg></button>
+        </div>
+        <div class="app__body">
+          <div class="app__title">
+            <div><p class="eyebrow">Northwind group · GBP</p><h2 class="h2" style="margin-top:6px">October close</h2></div>
+            <div class="seg" role="group" aria-label="Entity"><button aria-pressed="true">Group</button><button aria-pressed="false">UK</button><button aria-pressed="false">IE</button><button aria-pressed="false">DE</button></div>
+            <div class="split anchor">
+              <button class="btn btn--primary" data-toast="Close report sent to the board pack">Send close report</button>
+              <button class="btn btn--primary" aria-label="More" aria-haspopup="menu" aria-expanded="false" aria-controls="fin-more" data-pop><svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+              <div class="pop menu" id="fin-more" role="menu" hidden style="top:calc(100% + 6px); right:0; width:220px">
+                <button role="menuitem">Export trial balance</button><button role="menuitem">Download as PDF</button><div class="menu__sep"></div><button role="menuitem">Lock October early…</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat"><span class="stat__label">Close progress</span><span class="stat__value num">18 <small>of 25 tasks</small></span><div class="progress" style="margin-top:8px" role="progressbar" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100" aria-label="Close progress"><span style="--v:72%"></span></div></div>
+            <div class="stat"><span class="stat__label">Revenue, Oct to date</span><span class="stat__value num">£312<small>k</small></span><span class="stat__delta delta--up"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow-ur"/></svg>9% <span>vs 22 Oct 2025</span></span></div>
+            <div class="stat"><span class="stat__label">Unmatched bank lines</span><span class="stat__value num">3</span><span class="stat__delta delta--down">£1,904.20 <span>blocking close</span></span></div>
+            <div class="stat"><span class="stat__label">Cash at bank</span><span class="stat__value num">£2.41<small>m</small></span><span class="stat__delta delta--up"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow-ur"/></svg>4.2% <span>vs Sept</span></span></div>
+          </div>
+
+          <div class="fin-grid">
+            <section class="panel">
+              <div class="panel__head"><h3 class="h4">Operating profit, budget to actual</h3><span class="small faint">Q3</span></div>
+              <div class="panel__body">
+                <figure class="figure" data-chart="waterfall">
+                  <script type="application/json">{"title":"Operating profit, budget to actual","prefix":"£","valueName":"Change","height":240,"steps":[{"label":"Budget","value":410000,"total":true},{"label":"Volume","value":86000},{"label":"Price","value":24000},{"label":"Freight","value":-41000},{"label":"Rent","value":-22000},{"label":"FX","value":-9000},{"label":"Actual","value":448000,"total":true}]}</script>
+                </figure>
+              </div>
+            </section>
+            <section class="panel">
+              <div class="panel__head"><h3 class="h4">Close checklist</h3><a class="link small" href="#">All 25</a></div>
+              <div class="panel__body">
+                <ol class="steps steps--vertical">
+                  <li data-state="done"><span class="steps__label">Bank reconciliation</span><span class="steps__sub">Tom · 18 Oct</span></li>
+                  <li data-state="done"><span class="steps__label">Accruals &amp; prepayments</span><span class="steps__sub">Priya · 20 Oct</span></li>
+                  <li data-state="error"><span class="steps__label">Intercompany</span><span class="steps__sub" style="color:var(--neg)">£1,240 off with Northwind IE</span></li>
+                  <li aria-current="step"><span class="steps__label">Fixed asset depreciation</span><span class="steps__sub">You · due today</span></li>
+                  <li><span class="steps__label">Review &amp; lock</span><span class="steps__sub">Lena · 31 Oct</span></li>
+                </ol>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel__head"><h3 class="h4">Revenue by month</h3><span class="small faint">Closed months, 2026 against 2025</span></div>
+            <div class="panel__body">
+              <figure class="figure" data-chart="bar">
+                <script type="application/json">{"title":"Revenue by month, 2026 vs 2025","prefix":"£","height":220,"labels":["Apr","May","Jun","Jul","Aug","Sep"],"series":[{"name":"2026","values":[412000,438000,401000,466000,452000,489000]},{"name":"2025","values":[371000,392000,388000,402000,419000,433000],"color":"var(--d2)"}]}</script>
+              </figure>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel__head"><h3 class="h4">Needs attention</h3><span class="count count--neg">3</span></div>
+            <div class="table-wrap" style="border:0; border-radius:0 0 var(--r-3) var(--r-3)">
+              <table class="table">
+                <thead><tr><th>Item</th><th>Entity</th><th>Owner</th><th>Status</th><th class="num">Amount (£)</th><th class="shrink"></th></tr></thead>
+                <tbody>
+                  <tr><td>Intercompany mismatch</td><td>IE</td><td><div class="person"><span class="avatar avatar--sm" data-c="2">TO</span>Tom Okafor</div></td><td><span class="status status--neg">2 days overdue</span></td><td class="num">1,240.00</td><td><button class="btn btn--sm">Open</button></td></tr>
+                  <tr><td>Unmatched bank lines (3)</td><td>UK</td><td><div class="person"><span class="avatar avatar--sm" data-c="1">PR</span>Priya Raman</div></td><td><span class="status status--neg">1 day overdue</span></td><td class="num">1,904.20</td><td><button class="btn btn--sm">Match</button></td></tr>
+                  <tr><td>Depreciation run</td><td>Group</td><td><div class="person"><span class="avatar avatar--sm" data-c="5">LF</span>You</div></td><td><span class="status status--warn">Due today</span></td><td class="num">38,410.00</td><td><button class="btn btn--sm btn--primary" data-loading="Depreciation posted for October">Run</button></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script src="../assets/charts.js"></script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tables · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/tables" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Tables</li></ol>
+    <h1 class="h1">Tables</h1>
+    <p class="lede">The workhorse. People scan down columns far more than across rows, so we design for the column: aligned, tabular, and with nothing in the way.</p>
+  </header>
+
+  <section class="sec" id="rules">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Five rules</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>Numbers right, text left.</strong> Decimal points line up, so magnitudes can be compared without reading.</li>
+        <li><strong>Tabular figures always.</strong> <code>font-variant-numeric: tabular-nums</code> is on every <code>.num</code> cell.</li>
+        <li><strong>Rules, not stripes.</strong> Hairlines between rows; hover tints the row you're on. Zebra stripes fight with selection colour.</li>
+        <li><strong>Headers stick.</strong> Once you've scrolled 40 rows, "which column was this?" is the only question left.</li>
+        <li><strong>Units in the header, not the cell.</strong> "Amount (GBP)" once beats "£" fifty times — unless currencies are mixed.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="sec" id="basic">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Basic table</h2>
+      <p class="sec__intro">With a totals row and an inline bar where proportion matters more than the figure.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Budget vs actual, Q3">
+        <div class="specimen__stage specimen__stage--flush">
+          <div class="table-wrap" style="border:0; border-radius:0">
+            <table class="table">
+              <thead><tr><th>Cost centre</th><th class="num">Budget (£)</th><th class="num">Actual (£)</th><th class="num">Variance (£)</th><th style="width:28%">Spent</th></tr></thead>
+              <tbody>
+                <tr><td>Head office</td><td class="num">420,000</td><td class="num">398,212</td><td class="num">21,788</td><td><div class="cellbar"><div class="cellbar__track"><div class="cellbar__fill" style="width:95%"></div></div><span class="num small faint">95%</span></div></td></tr>
+                <tr><td>Leeds warehouse</td><td class="num">260,000</td><td class="num">281,940</td><td class="num neg">−21,940</td><td><div class="cellbar"><div class="cellbar__track"><div class="cellbar__fill" style="width:100%;background:var(--neg)"></div></div><span class="num small" style="color:var(--neg)">108%</span></div></td></tr>
+                <tr><td>Glasgow depot</td><td class="num">145,000</td><td class="num">112,480</td><td class="num">32,520</td><td><div class="cellbar"><div class="cellbar__track"><div class="cellbar__fill" style="width:78%"></div></div><span class="num small faint">78%</span></div></td></tr>
+                <tr><td>Field sales</td><td class="num">90,000</td><td class="num">87,104</td><td class="num">2,896</td><td><div class="cellbar"><div class="cellbar__track"><div class="cellbar__fill" style="width:97%"></div></div><span class="num small faint">97%</span></div></td></tr>
+              </tbody>
+              <tfoot><tr><td>Total</td><td class="num">915,000</td><td class="num">879,736</td><td class="num">35,264</td><td><span class="num small faint">96%</span></td></tr></tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="interactive">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Sort, filter &amp; select</h2>
+      <p class="sec__intro">Click a header to sort; click again to flip it. Selecting rows swaps the toolbar for bulk actions, in ink, so it's obvious the mode has changed.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Try sorting, filtering and selecting" data-nocode>
+        <div class="specimen__stage specimen__stage--flush">
+          <div class="table-bar" id="inv-bar">
+            <div class="search" data-when="idle" style="width:240px"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="input input--sm" type="search" placeholder="Filter invoices" aria-label="Filter invoices" data-filter-table="inv-table" data-count="inv-count"></div>
+            <span class="small faint" data-when="idle"><span id="inv-count" class="num">8</span> invoices</span>
+            <span data-when="selecting" data-selected-count hidden style="font-weight:600"></span>
+            <span class="table-bar__spacer"></span>
+            <button class="btn btn--sm" data-when="idle"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Export</button>
+            <button class="btn btn--sm" data-when="selecting" hidden data-toast="Payment run created">Pay selected</button>
+            <button class="btn btn--sm" data-when="selecting" hidden data-toast="Archived" data-toast-action="Undo">Archive</button>
+          </div>
+          <div class="table-wrap" style="border:0; border-radius:0; max-height:380px">
+            <table class="table" id="inv-table" data-sortable>
+              <thead><tr>
+                <th class="shrink"><label class="check"><input type="checkbox" aria-label="Select all invoices" data-select-all="inv-bar"></label></th>
+                <th aria-sort="ascending"><button class="sort">Invoice<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                <th><button class="sort">Supplier<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                <th><button class="sort">Due<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                <th>Status</th>
+                <th class="num"><button class="sort">Amount (£)<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                <th class="shrink"><span class="vh">Actions</span></th>
+              </tr></thead>
+              <tbody>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2034"></label></td><td class="mono">INV-2034</td><td>Fabrikam Freight</td><td data-v="2026-10-12">12 Oct</td><td><span class="status status--neg">10 days overdue</span></td><td class="num" data-v="3180">3,180.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2034"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2036"></label></td><td class="mono">INV-2036</td><td>Contoso Office</td><td data-v="2026-10-20">20 Oct</td><td><span class="status status--neg">2 days overdue</span></td><td class="num" data-v="412.5">412.50</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2036"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2038"></label></td><td class="mono">INV-2038</td><td>Litware Systems</td><td data-v="2026-10-24">24 Oct</td><td><span class="status status--warn">Due in 2 days</span></td><td class="num" data-v="8900">8,900.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2038"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2041"></label></td><td class="mono">INV-2041</td><td>Northwind Traders</td><td data-v="2026-10-25">25 Oct</td><td><span class="status status--warn">Due in 3 days</span></td><td class="num" data-v="12480">12,480.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2041"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2043"></label></td><td class="mono">INV-2043</td><td>Adatum Cleaning</td><td data-v="2026-10-31">31 Oct</td><td><span class="status status--note">Scheduled</span></td><td class="num" data-v="1240">1,240.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2043"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2044"></label></td><td class="mono">INV-2044</td><td>Tailspin Logistics</td><td data-v="2026-11-04">4 Nov</td><td><span class="status">Draft</span></td><td class="num" data-v="27300">27,300.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2044"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2045"></label></td><td class="mono">INV-2045</td><td>Woodgrove Bank</td><td data-v="2026-11-10">10 Nov</td><td><span class="status status--note">Scheduled</span></td><td class="num" data-v="96">96.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2045"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+                <tr><td><label class="check"><input type="checkbox" aria-label="Select INV-2046"></label></td><td class="mono">INV-2046</td><td>Northwind Traders</td><td data-v="2026-11-25">25 Nov</td><td><span class="status status--pos">Paid early</span></td><td class="num" data-v="4620">4,620.00</td><td><button class="btn btn--quiet btn--icon btn--sm" aria-label="Actions for INV-2046"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="grid">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Editable grid</h2>
+      <p class="sec__intro">For bulk entry: budgets, journals, timesheets. Cells look like text until hovered. Changed cells get a small clay corner, and the footer counts what's unsaved.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Change a figure and tab away" data-nocode>
+        <div class="specimen__stage specimen__stage--flush" data-dirty-count="#grid-state">
+          <div class="table-wrap" style="border:0; border-radius:0">
+            <table class="table table--dense">
+              <thead><tr><th>Account</th><th class="num">Oct</th><th class="num">Nov</th><th class="num">Dec</th><th class="num">Q4</th></tr></thead>
+              <tbody>
+                <tr><td><span class="mono faint">6100</span> Warehouse rent</td><td class="num"><input class="cell-edit" value="21,500" aria-label="Warehouse rent, October"></td><td class="num"><input class="cell-edit" value="21,500" aria-label="Warehouse rent, November"></td><td class="num"><input class="cell-edit" value="21,500" aria-label="Warehouse rent, December"></td><td class="num">64,500</td></tr>
+                <tr><td><span class="mono faint">6110</span> Utilities</td><td class="num"><input class="cell-edit" value="3,200" aria-label="Utilities, October"></td><td class="num"><input class="cell-edit" value="3,900" aria-label="Utilities, November"></td><td class="num"><input class="cell-edit" value="4,400" aria-label="Utilities, December"></td><td class="num">11,500</td></tr>
+                <tr><td><span class="mono faint">6200</span> Travel</td><td class="num"><input class="cell-edit" value="6,000" aria-label="Travel, October"></td><td class="num"><input class="cell-edit" value="6,000" aria-label="Travel, November"></td><td class="num"><input class="cell-edit" value="2,500" aria-label="Travel, December"></td><td class="num">14,500</td></tr>
+                <tr><td><span class="mono faint">8400</span> Software</td><td class="num"><input class="cell-edit" value="8,120" aria-label="Software, October"></td><td class="num"><input class="cell-edit" value="8,120" aria-label="Software, November"></td><td class="num"><input class="cell-edit" value="8,120" aria-label="Software, December"></td><td class="num">24,360</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="specimen__bar" style="border-top:1px solid var(--rule)"><span id="grid-state" role="status">All changes saved</span><span class="spacer"></span><button class="btn btn--sm">Discard</button><button class="btn btn--sm btn--primary">Save budget</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="density">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Density</h2>
+      <p class="sec__intro">Three row heights: 32px dense for grids and power users, 42px default, 54px relaxed for rows with two lines. Let people choose; remember the choice.</p></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Class</th><th>Row</th><th>When</th></tr></thead>
+        <tbody>
+          <tr><td><code>.table--dense</code></td><td class="num">32px</td><td>Spreadsheet-like entry, 50+ rows on screen</td></tr>
+          <tr><td><code>.table</code></td><td class="num">42px</td><td>Most lists of records</td></tr>
+          <tr><td><code>.table--relaxed</code></td><td class="num">54px</td><td>Rows with an avatar and two lines of text</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

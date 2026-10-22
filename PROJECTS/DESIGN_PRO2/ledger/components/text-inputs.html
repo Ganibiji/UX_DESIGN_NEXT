@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Text inputs · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/text-inputs" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Text inputs</li></ol>
+    <h1 class="h1">Text inputs</h1>
+    <p class="lede">Labels sit above, hints sit below, and errors replace hints. The field itself stays quiet until someone touches it.</p>
+    <div class="doc-head__meta"><span><b>Status</b> Stable</span><span><b>Classes</b> <code class="mono">.field</code> <code class="mono">.input</code> <code class="mono">.affix</code></span></div>
+  </header>
+
+  <section class="sec" id="anatomy">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Anatomy</h2></div>
+    <div class="block anatomy">
+      <div class="anatomy__fig">
+        <div class="field" style="width:100%; max-width:320px">
+          <label class="label" for="an-ref">Supplier reference <span class="opt">optional</span></label>
+          <input class="input" id="an-ref" value="NW-2026-0418" aria-describedby="an-ref-h">
+          <span class="hint" id="an-ref-h">Printed on the supplier's invoice, top right.</span>
+        </div>
+      </div>
+      <ol>
+        <li><span><b>Label.</b> Always visible, always above. Placeholder text is not a label — it vanishes the moment someone starts typing.</span></li>
+        <li><span><b>Optional marker.</b> Mark the exceptions. If most fields are optional, mark the required ones instead.</span></li>
+        <li><span><b>Field.</b> 34px tall, border at 3:1 contrast against the page.</span></li>
+        <li><span><b>Hint.</b> Tells people where to find the answer, not what the field is.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="fields">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Text field</h2>
+      <p class="sec__intro">Size the field to the answer. A postcode field that's 600px wide tells people you don't know what you're asking for.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Widths follow the expected answer">
+        <div class="specimen__stage specimen__stage--col" style="max-width:560px">
+          <div class="field">
+            <label class="label" for="f-name">Legal entity name</label>
+            <input class="input" id="f-name" autocomplete="organization" value="Northwind Traders Ltd">
+          </div>
+          <div class="cols-2">
+            <div class="field">
+              <label class="label" for="f-vat">VAT number</label>
+              <input class="input mono" id="f-vat" placeholder="GB 123 4567 89" style="max-width:200px">
+            </div>
+            <div class="field">
+              <label class="label" for="f-post">Postcode</label>
+              <input class="input" id="f-post" autocomplete="postal-code" style="max-width:120px" value="EC1V 9HL">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="specimen" data-label="States" data-nocode>
+        <div class="specimen__stage">
+          <div class="states" style="grid-template-columns:repeat(auto-fill,minmax(190px,1fr))">
+            <div style="justify-items:stretch"><input class="input" placeholder="Placeholder" aria-label="Rest"><span class="states__label">rest</span></div>
+            <div style="justify-items:stretch"><input class="input is-hover" value="Hovered" aria-label="Hover"><span class="states__label">:hover</span></div>
+            <div style="justify-items:stretch"><input class="input is-focus" value="Focused" aria-label="Focus"><span class="states__label">:focus</span></div>
+            <div style="justify-items:stretch"><input class="input" value="not-an-email" aria-invalid="true" aria-label="Invalid"><span class="states__label">[aria-invalid]</span></div>
+            <div style="justify-items:stretch"><input class="input" value="Locked by period close" disabled aria-label="Disabled"><span class="states__label">:disabled</span></div>
+            <div style="justify-items:stretch"><input class="input" value="ACC-00412" readonly aria-label="Read only"><span class="states__label">[readonly]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="affixes">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Prefixes &amp; suffixes</h2>
+      <p class="sec__intro">Units belong next to the number, not in the label. Put currency before, percentages and units after.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Currency, unit, URL and clearable">
+        <div class="specimen__stage specimen__stage--col" style="max-width:560px">
+          <div class="cols-2">
+            <div class="field">
+              <label class="label" for="f-amt">Amount</label>
+              <div class="affix"><span class="affix__part affix__part--box">GBP</span><input class="input num" id="f-amt" inputmode="decimal" value="12,480.00"></div>
+            </div>
+            <div class="field">
+              <label class="label" for="f-disc">Early-payment discount</label>
+              <div class="affix" style="max-width:140px"><input class="input num" id="f-disc" inputmode="decimal" value="2.5"><span class="affix__part">%</span></div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label" for="f-url">Supplier portal</label>
+            <div class="affix"><span class="affix__part affix__part--box">https://</span><input class="input" id="f-url" value="portal.northwind.co.uk"></div>
+          </div>
+          <div class="field">
+            <label class="label" for="f-ref">Payment reference</label>
+            <div class="affix"><input class="input mono" id="f-ref" value="INV-2041 / PO-8812"><button class="affix__clear" aria-label="Clear payment reference"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="search">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Search</h2>
+      <p class="sec__intro">A search field filters what's already on screen as you type. If it has to go to the server, wait for Enter and say how many results came back.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Search with a keyboard hint, and one at toolbar size">
+        <div class="specimen__stage specimen__stage--col" style="max-width:460px">
+          <div class="search">
+            <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input" type="search" placeholder="Search invoices, suppliers, amounts" aria-label="Search invoices">
+            <span class="kbd">/</span>
+          </div>
+          <div class="search" style="max-width:240px">
+            <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+            <input class="input input--sm" type="search" placeholder="Filter rows" aria-label="Filter rows">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="textarea">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Text area</h2>
+      <p class="sec__intro">For anything longer than a sentence. Show the count only when there's a limit, and count down, not up.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Text area with a live character limit">
+        <div class="specimen__stage specimen__stage--col" style="max-width:560px">
+          <div class="field">
+            <label class="label" for="f-note">Note to approver</label>
+            <textarea class="textarea" id="f-note" data-max="280" aria-describedby="f-note-h f-note-count">Q3 accrual for the Leeds warehouse lease. Landlord invoice is late; amount agreed by email on 14 October.</textarea>
+            <div style="display:flex; justify-content:space-between; gap:12px"><span class="hint" id="f-note-h">The approver sees this in their queue.</span><span class="counter" id="f-note-count" aria-live="polite"></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="validation">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Validation</h2>
+      <p class="sec__intro">Check when someone leaves a field, not while they type. Clear the error the moment it's fixed. Say what's wrong and how to fix it, in that order.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Tab out of the email field with a bad address">
+        <div class="specimen__stage specimen__stage--col" style="max-width:420px">
+          <div class="field">
+            <label class="label" for="v-email">Remittance email</label>
+            <input class="input" id="v-email" type="email" value="accounts@northwind" data-validate="v-email-msg" aria-describedby="v-email-msg" autocomplete="email">
+            <span class="msg msg--neg" id="v-email-msg" hidden><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg>Enter an email address with a domain, like accounts@northwind.co.uk</span>
+          </div>
+          <div class="field">
+            <label class="label" for="v-iban">IBAN</label>
+            <input class="input mono" id="v-iban" value="GB29 NWBK 6016 1331 9268 19" aria-describedby="v-iban-msg">
+            <span class="msg msg--pos" id="v-iban-msg"><svg class="ic" aria-hidden="true"><use href="#i-ok"/></svg>NatWest, London. Checked against the bank directory.</span>
+          </div>
+          <div class="field">
+            <label class="label" for="v-pw">Password</label>
+            <div class="affix"><input class="input" id="v-pw" type="password" value="hunter2" autocomplete="new-password"><button class="btn btn--quiet btn--sm" style="margin-right:3px" data-reveal="v-pw" aria-pressed="false">Show</button></div>
+            <span class="hint">At least 12 characters. A short sentence works well.</span>
+          </div>
+        </div>
+      </div>
+      <div class="dd" style="margin-top:18px">
+        <div class="dd__item dd__item--do">
+          <div class="dd__stage" style="justify-content:flex-start"><span class="msg msg--neg"><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg>Enter a date after the invoice date (3 Oct 2026)</span></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</b>Name the rule and give the value that would pass.</div>
+        </div>
+        <div class="dd__item dd__item--dont">
+          <div class="dd__stage" style="justify-content:flex-start"><span class="msg msg--neg"><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg>Invalid input</span></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Don't</b>Blame the user with a word from the database.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="aria">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">ARIA</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Attribute</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><code>&lt;label for&gt;</code></td><td>Every field needs one. Clicking the label focuses the field, which matters on touch.</td></tr>
+          <tr><td><code>aria-describedby</code></td><td>Points at the hint and any error, so they're read after the label.</td></tr>
+          <tr><td><code>aria-invalid="true"</code></td><td>Drives the red border. Set it on blur, remove it as soon as the value passes.</td></tr>
+          <tr><td><code>autocomplete</code></td><td>Lets browsers and password managers fill fields. Use the real tokens: <code>email</code>, <code>postal-code</code>, <code>organization</code>.</td></tr>
+          <tr><td><code>inputmode</code></td><td>Brings up the right keyboard on phones. Prefer <code>inputmode="decimal"</code> over <code>type="number"</code> for money.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

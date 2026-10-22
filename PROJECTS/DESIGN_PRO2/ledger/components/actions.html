@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buttons &amp; links · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/actions" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Buttons &amp; links</li></ol>
+    <h1 class="h1">Buttons &amp; links</h1>
+    <p class="lede">A button does something. A link goes somewhere. Get that right and most of the rest of this page follows.</p>
+    <div class="doc-head__meta"><span><b>Status</b> Stable</span><span><b>Classes</b> <code class="mono">.btn</code> <code class="mono">.link</code></span><span><b>Since</b> 0.2</span></div>
+  </header>
+
+  <section class="sec" id="hierarchy">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Hierarchy</h2>
+      <p class="sec__intro">Four weights. Most screens need a default and a primary; quiet buttons carry the long tail of secondary actions in toolbars and table rows.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Default, primary, quiet, danger">
+        <div class="specimen__stage">
+          <button class="btn btn--primary">Post journal</button>
+          <button class="btn">Save draft</button>
+          <button class="btn btn--quiet">Cancel</button>
+          <button class="btn btn--danger">Delete entry</button>
+        </div>
+      </div>
+      <div class="sub" style="margin-top:22px">
+        <table class="spec">
+          <thead><tr><th>Variant</th><th>Class</th><th>Use it for</th></tr></thead>
+          <tbody>
+            <tr><td>Primary</td><td><code>.btn--primary</code></td><td>The one action that moves the task forward. Ink black, never more than one per view.</td></tr>
+            <tr><td>Default</td><td><code>.btn</code></td><td>Everything else that matters: Export, Save draft, Add line.</td></tr>
+            <tr><td>Quiet</td><td><code>.btn--quiet</code></td><td>Cancel, toolbar actions, row actions. No border until hover.</td></tr>
+            <tr><td>Accent</td><td><code>.btn--accent</code></td><td>Rare. Marketing moments and empty states where ink would feel cold.</td></tr>
+            <tr><td>Danger</td><td><code>.btn--danger</code></td><td>Destructive actions in context. Use <code>.btn--danger-solid</code> only inside a confirmation dialog.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="states">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">States</h2>
+      <p class="sec__intro">Hover darkens the border, press nudges the button down one pixel. Focus gets a two-ring outline that reads on paper and on ink.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Forced states for reference" data-nocode>
+        <div class="specimen__stage">
+          <div class="states">
+            <div><button class="btn">Export</button><span class="states__label">rest</span></div>
+            <div><button class="btn is-hover">Export</button><span class="states__label">:hover</span></div>
+            <div><button class="btn is-press">Export</button><span class="states__label">:active</span></div>
+            <div><button class="btn is-focus">Export</button><span class="states__label">:focus-visible</span></div>
+            <div><button class="btn" disabled>Export</button><span class="states__label">:disabled</span></div>
+            <div><button class="btn is-loading" aria-busy="true">Export</button><span class="states__label">.is-loading</span></div>
+          </div>
+          <div class="states">
+            <div><button class="btn btn--primary">Approve</button><span class="states__label">rest</span></div>
+            <div><button class="btn btn--primary is-hover">Approve</button><span class="states__label">:hover</span></div>
+            <div><button class="btn btn--primary is-press">Approve</button><span class="states__label">:active</span></div>
+            <div><button class="btn btn--primary is-focus">Approve</button><span class="states__label">:focus-visible</span></div>
+            <div><button class="btn btn--primary" disabled>Approve</button><span class="states__label">:disabled</span></div>
+            <div><button class="btn btn--primary is-loading" aria-busy="true">Approve</button><span class="states__label">.is-loading</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="specimen" data-label="Try it — the button holds its width while it works">
+        <div class="specimen__stage">
+          <button class="btn btn--primary" data-loading="Payment run scheduled for Friday">Schedule payment run</button>
+          <button class="btn" data-loading="Report sent to 3 people">Email report</button>
+        </div>
+      </div>
+      <div class="callout callout--plain" style="margin-top:16px">
+        <svg class="ic" aria-hidden="true"><use href="#i-info"/></svg>
+        <div class="callout__title">Disabled buttons need a reason nearby</div>
+        <div class="callout__body">If a user can't tell why Approve is greyed out, they'll assume it's broken. Prefer leaving it enabled and explaining on click, or put the reason in a hint right beside it.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="sizes">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Sizes &amp; icons</h2>
+      <p class="sec__intro">34px is the default height. 28px is for dense tables and toolbars, 42px for a single call to action on an otherwise empty page. Icons lead the label, never trail it — except a chevron that opens a menu.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Small · medium · large">
+        <div class="specimen__stage">
+          <button class="btn btn--sm"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Add line</button>
+          <button class="btn"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>Add line</button>
+          <button class="btn btn--lg btn--primary"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>New invoice</button>
+        </div>
+      </div>
+      <div class="specimen" data-label="Icon-only buttons always carry an aria-label and a tooltip">
+        <div class="specimen__stage">
+          <span class="tip"><button class="btn btn--icon" aria-label="Edit"><svg class="ic" aria-hidden="true"><use href="#i-pencil"/></svg></button><span class="tip__bubble" role="tooltip">Edit</span></span>
+          <span class="tip"><button class="btn btn--icon" aria-label="Duplicate"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg></button><span class="tip__bubble" role="tooltip">Duplicate</span></span>
+          <span class="tip"><button class="btn btn--icon btn--quiet" aria-label="Download PDF"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg></button><span class="tip__bubble" role="tooltip">Download PDF</span></span>
+          <span class="tip"><button class="btn btn--icon btn--quiet btn--danger" aria-label="Delete"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg></button><span class="tip__bubble" role="tooltip">Delete</span></span>
+          <span class="tip"><button class="btn btn--icon btn--sm btn--quiet" aria-label="More actions"><svg class="ic" aria-hidden="true"><use href="#i-more"/></svg></button><span class="tip__bubble" role="tooltip">More actions</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="groups">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Groups &amp; split buttons</h2>
+      <p class="sec__intro">Join buttons when they act on the same thing. A split button pairs the common action with its less common siblings — the left half should be safe to press without reading the menu.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Joined group as a toggle (aria-pressed)">
+        <div class="specimen__stage">
+          <div class="btn-group" role="group" aria-label="Period" data-toggle="single">
+            <button class="btn" aria-pressed="false">Day</button>
+            <button class="btn" aria-pressed="true">Week</button>
+            <button class="btn" aria-pressed="false">Month</button>
+            <button class="btn" aria-pressed="false">Quarter</button>
+          </div>
+          <div class="btn-group" role="group" aria-label="Text alignment" data-toggle="single">
+            <button class="btn btn--icon" aria-pressed="true" aria-label="Align left"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+            <button class="btn btn--icon" aria-pressed="false" aria-label="List"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg></button>
+            <button class="btn btn--icon" aria-pressed="false" aria-label="Grid"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></button>
+          </div>
+        </div>
+      </div>
+      <div class="specimen" data-label="Split button">
+        <div class="specimen__stage specimen__stage--tall" style="align-items:flex-start">
+          <div class="split anchor">
+            <button class="btn btn--primary" data-toast="Invoice INV-2041 sent to Northwind">Send invoice</button>
+            <button class="btn btn--primary" aria-label="More send options" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu" data-pop><svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+            <div class="pop menu" id="split-menu" role="menu" hidden style="top:calc(100% + 6px); right:0; width:240px">
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-clock"/></svg>Schedule send…</button>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Download as PDF</button>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-link"/></svg>Copy payment link</button>
+              <div class="menu__sep" role="separator"></div>
+              <button role="menuitem">Mark as sent without emailing</button>
+            </div>
+          </div>
+          <div class="split anchor">
+            <button class="btn" data-toast="Exported 1,284 rows as CSV">Export CSV</button>
+            <button class="btn" aria-label="More export formats" aria-haspopup="menu" aria-expanded="false" aria-controls="split-menu-2" data-pop><svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+            <div class="pop menu" id="split-menu-2" role="menu" hidden style="top:calc(100% + 6px); right:0">
+              <button role="menuitem">Excel (.xlsx)</button>
+              <button role="menuitem">PDF summary</button>
+              <button role="menuitem">Google Sheets</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="links">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Links</h2>
+      <p class="sec__intro">Underlined, always. Colour alone fails for one in twelve men, and in a dense table an un-underlined link is just green text.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Inline, quiet and arrow links">
+        <div class="specimen__stage specimen__stage--col" style="gap:16px; max-width:560px">
+          <p>Payment terms follow the <a class="link" href="#links">supplier agreement</a> unless the PO says otherwise.</p>
+          <p class="muted">Changed your mind? <a class="link link--quiet" href="#links">Restore the previous version</a>.</p>
+          <a class="link link--arrow" href="#links">View all 14 overdue invoices <svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow-r"/></svg></a>
+          <a class="link" href="#links" target="_blank" rel="noopener">Tax guidance on gov.uk<svg class="ic ic--sm" style="display:inline;vertical-align:-2px;margin-left:3px" aria-hidden="true"><use href="#i-external"/></svg><span class="vh"> (opens in a new tab)</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="guidance">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Guidance</h2></div>
+    <div class="block">
+      <div class="dd">
+        <div class="dd__item dd__item--do">
+          <div class="dd__stage"><button class="btn btn--quiet">Cancel</button><button class="btn btn--primary">Post 12 entries</button></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</b>Name the outcome, with the count if there is one. The primary sits on the right, where the eye ends.</div>
+        </div>
+        <div class="dd__item dd__item--dont">
+          <div class="dd__stage"><button class="btn btn--primary">OK</button><button class="btn btn--primary">Cancel</button></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Don't</b>Two primaries, and labels that say nothing. "OK" to what?</div>
+        </div>
+        <div class="dd__item dd__item--do">
+          <div class="dd__stage"><a class="link" href="#guidance">Read the expense policy</a></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</b>Use a link when the result is a new page. Screen readers announce it as a link and users expect to be able to open it in a new tab.</div>
+        </div>
+        <div class="dd__item dd__item--dont">
+          <div class="dd__stage"><button class="btn">Read the expense policy</button></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Don't</b>Style navigation as a button. Middle-click and "open in new tab" stop working.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="keyboard">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Keyboard &amp; ARIA</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Key</th><th>Does</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">Enter</span> <span class="kbd">Space</span></td><td>Activates the button. Links respond to Enter only — that's the browser default, leave it.</td></tr>
+          <tr><td><span class="kbd">↓</span> on a split caret</td><td>Opens the menu and moves focus to the first item.</td></tr>
+          <tr><td><span class="kbd">Esc</span></td><td>Closes the menu and returns focus to the caret.</td></tr>
+        </tbody>
+      </table>
+      <div class="prose" style="margin-top:18px">
+        <ul>
+          <li>Use <code>aria-pressed</code> for toggles, not a class. The style is keyed to the attribute.</li>
+          <li>While loading, set <code>aria-busy="true"</code> and keep the button in the tab order. Don't swap the label for "Loading…" — the width jump makes the layout twitch.</li>
+          <li>Icon-only buttons get <code>aria-label</code>. The tooltip is for sighted mouse users; it isn't the accessible name.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

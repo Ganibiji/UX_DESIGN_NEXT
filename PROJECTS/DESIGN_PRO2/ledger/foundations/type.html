@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Type · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="foundations/type" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="colour.html">Foundations</a></li><li aria-current="page">Type</li></ol>
+    <h1 class="h1">A serif to read, a sans to work</h1>
+    <p class="lede">Newsreader sets headings and big numbers: it has the warmth of a printed report. Instrument Sans sets everything you interact with, because its figures are clear at 13px. IBM Plex Mono is for codes, references and tokens.</p>
+  </header>
+
+  <section class="sec" id="families">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Three families</h2></div>
+    <div class="block cols-3">
+      <div class="panel panel__body" style="display:grid; gap:10px">
+        <span class="eyebrow">Display &amp; numbers</span>
+        <span style="font:400 54px/1 var(--font-serif)">Aa 0123</span>
+        <span class="h4">Newsreader</span>
+        <span class="small muted">Page titles, section heads, statistics, dialog titles. Never used for UI labels.</span>
+      </div>
+      <div class="panel panel__body" style="display:grid; gap:10px">
+        <span class="eyebrow">Interface</span>
+        <span style="font:500 54px/1 var(--font-sans)">Aa 0123</span>
+        <span class="h4">Instrument Sans</span>
+        <span class="small muted">Body, labels, buttons, tables. Tabular figures are switched on wherever numbers line up.</span>
+      </div>
+      <div class="panel panel__body" style="display:grid; gap:10px">
+        <span class="eyebrow">Codes</span>
+        <span style="font:400 48px/1.1 var(--font-mono)">Aa 0123</span>
+        <span class="h4">IBM Plex Mono</span>
+        <span class="small muted">Invoice numbers, account codes, IBANs, eyebrows. Codes that people copy or read aloud.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="scale">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Scale</h2>
+      <p class="sec__intro">Nine sizes. The small end goes up in 1px steps because a dense table needs that precision. The large end grows by about a third at each step.</p></div>
+    <div class="block">
+      <div class="type-row"><div class="type-row__meta"><b>Display</b>60 / 1.02 · serif</div><div class="display">Year-end, closed.</div></div>
+      <div class="type-row"><div class="type-row__meta"><b>H1</b>44 / 1.08 · serif</div><div class="h1">Accounts payable</div></div>
+      <div class="type-row"><div class="type-row__meta"><b>H2</b>32 / 1.15 · serif</div><div class="h2">Overdue this week</div></div>
+      <div class="type-row"><div class="type-row__meta"><b>Lede</b>19 / 1.5 · serif</div><div class="lede" style="max-width:52ch">Twelve invoices from four suppliers need a decision before Friday's payment run.</div></div>
+      <div class="type-row"><div class="type-row__meta"><b>H3</b>19 / 1.3 · sans 600</div><div class="h3">Supplier details</div></div>
+      <div class="type-row"><div class="type-row__meta"><b>H4</b>16 / 1.35 · sans 600</div><div class="h4">Bank account</div></div>
+      <div class="type-row"><div class="type-row__meta"><b>Body</b>14 / 1.55 · sans 400</div><p style="max-width:62ch">Payments made after the 25th move to the next month's run. If a supplier needs paying sooner, use a one-off Faster Payment and note the reason.</p></div>
+      <div class="type-row"><div class="type-row__meta"><b>Small</b>13 / 1.5 · sans 400</div><p class="small muted">Last synced with Barclays 4 minutes ago</p></div>
+      <div class="type-row"><div class="type-row__meta"><b>Caption</b>12 / 1.45 · sans 400</div><p style="font-size:12px" class="faint">Rates from the European Central Bank, 16:00 CET</p></div>
+      <div class="type-row" style="border-bottom:0"><div class="type-row__meta"><b>Eyebrow</b>11 / mono · caps +8%</div><p class="eyebrow">Section · Payables</p></div>
+    </div>
+  </section>
+
+  <section class="sec" id="numbers">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Numbers</h2>
+      <p class="sec__intro">Our users read numbers more than words, so numbers get the most care. Use tabular figures in columns so the digits line up. Use a proper minus sign. Show currency once, in the header.</p></div>
+    <div class="block cols-2">
+      <div class="dd__item dd__item--do">
+        <div class="dd__stage" style="justify-content:flex-end; padding:18px 28px">
+          <div class="num" style="text-align:right; line-height:1.9">12,480.00<br>1,111.11<br>−3,180.50<br><b style="border-top:1px solid var(--ink);padding-top:2px">10,410.61</b></div>
+        </div>
+        <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Tabular, right-aligned</b>Thousands line up under thousands, and the eye can scan the column.</div>
+      </div>
+      <div class="dd__item dd__item--dont">
+        <div class="dd__stage" style="justify-content:flex-start; padding:18px 28px">
+          <div style="font-variant-numeric:proportional-nums; line-height:1.9">12,480.00<br>1,111.11<br>-3,180.50<br><b>10,410.61</b></div>
+        </div>
+        <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Proportional, left-aligned</b>The 1s are narrower, the hyphen is too short to read as a minus, and the magnitudes don't line up.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="rules">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">House rules</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>Sentence case everywhere.</strong> "Post journal", not "Post Journal". Title Case looks shouty in a dense UI.</li>
+        <li><strong>Line length 50–75 characters</strong> for anything people read as prose. Set <code>max-width</code> in <code>ch</code>.</li>
+        <li><strong>Two weights in the sans:</strong> 400 and 600, with 500 for buttons and labels. Never use bold inside a sentence for decoration.</li>
+        <li><strong>The serif never goes below 16px.</strong> Below that its details turn to mush on Windows.</li>
+        <li><strong>Codes in mono</strong> when people will copy them or read them over the phone. "INV-2041" in mono is hard to misread.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

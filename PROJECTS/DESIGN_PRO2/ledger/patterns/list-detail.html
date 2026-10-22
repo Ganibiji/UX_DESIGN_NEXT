@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List &amp; detail · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .md { display: grid; grid-template-columns: 340px minmax(0, 1fr); min-height: 520px; background: var(--paper-raised); }
+  .md__list { border-right: 1px solid var(--rule); display: flex; flex-direction: column; min-width: 0; }
+  .md__list .table-bar { border-bottom: 1px solid var(--rule); }
+  .md__list .list { overflow: auto; }
+  .md__list .list > li { padding: 12px 16px; align-items: flex-start; outline-offset: -2px; }
+  .md__list .list > li .num { font-weight: 500; }
+  .md__detail { padding: 24px 28px; display: grid; gap: 20px; align-content: start; transition: opacity var(--dur-2); }
+  .md__detail.is-swapping { opacity: .35; transition: none; }
+  .md__detail .h2 { font-size: 28px; }
+  @media (max-width: 900px) { .md { grid-template-columns: 1fr; } .md__list { border-right: 0; border-bottom: 1px solid var(--rule); max-height: 320px; } .md__detail { padding: 20px 16px; } }
+</style>
+</head>
+<body data-page="patterns/list-detail" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="forms.html">Patterns</a></li><li aria-current="page">List &amp; detail</li></ol>
+    <h1 class="h1">List &amp; detail</h1>
+    <p class="lede">Most back-office work is "go through the pile". The list stays put, the record opens beside it, and the arrow keys move to the next one without reaching for the mouse.</p>
+  </header>
+
+  <section class="sec" id="master">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Expense inbox</h2>
+      <p class="sec__intro">Click a claim, or focus the list and use ↑ ↓. The selected row has a green rule on its left edge, so selection doesn't depend on the tint alone.</p></div>
+    <div class="block">
+      <div class="window">
+        <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/expenses</span></div>
+        <div class="md">
+          <div class="md__list">
+            <div class="table-bar">
+              <div class="seg" role="group" aria-label="Filter"><button aria-pressed="true">To review <span class="faint">5</span></button><button aria-pressed="false">Done</button></div>
+            </div>
+            <ul class="list list--interactive" role="listbox" aria-label="Expense claims" data-master="claim">
+              <li role="option" tabindex="0" aria-selected="true" data-rec='{"who":"Tom Okafor","title":"Leeds site visit","amount":"£214.60","date":"14 Oct 2026","cc":"Leeds warehouse","items":"3 receipts","policy":"Within policy","ini":"TO"}'><span class="avatar avatar--sm" data-c="2">TO</span><div class="list__main"><div class="list__title">Leeds site visit</div><div class="list__meta">Tom Okafor · 14 Oct</div></div><span class="num">£214.60</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Ana Ruiz","title":"Client dinner, Madrid","amount":"£386.00","date":"11 Oct 2026","cc":"Field sales","items":"1 receipt","policy":"£86 over the meal limit","ini":"AR"}'><span class="avatar avatar--sm" data-c="6">AR</span><div class="list__main"><div class="list__title">Client dinner, Madrid</div><div class="list__meta">Ana Ruiz · 11 Oct</div></div><span class="num">£386.00</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Sam Ito","title":"Monitor and dock","amount":"£529.98","date":"9 Oct 2026","cc":"Head office","items":"2 receipts","policy":"Needs IT sign-off","ini":"SI"}'><span class="avatar avatar--sm" data-c="5">SI</span><div class="list__main"><div class="list__title">Monitor and dock</div><div class="list__meta">Sam Ito · 9 Oct</div></div><span class="num">£529.98</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Ben Carr","title":"Train to Glasgow","amount":"£148.40","date":"7 Oct 2026","cc":"Glasgow depot","items":"1 receipt","policy":"Within policy","ini":"BC"}'><span class="avatar avatar--sm" data-c="1">BC</span><div class="list__main"><div class="list__title">Train to Glasgow</div><div class="list__meta">Ben Carr · 7 Oct</div></div><span class="num">£148.40</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Priya Raman","title":"Conference ticket","amount":"£695.00","date":"2 Oct 2026","cc":"Head office","items":"1 receipt","policy":"Pre-approved by Lena","ini":"PR"}'><span class="avatar avatar--sm" data-c="1">PR</span><div class="list__main"><div class="list__title">Conference ticket</div><div class="list__meta">Priya Raman · 2 Oct</div></div><span class="num">£695.00</span></li>
+            </ul>
+          </div>
+          <article class="md__detail" id="claim" aria-live="polite">
+            <div style="display:flex; gap:14px; align-items:flex-start; flex-wrap:wrap">
+              <div style="flex:1; min-width:200px">
+                <p class="eyebrow">Expense claim</p>
+                <h3 class="h2" style="margin-top:6px" data-f="title">Leeds site visit</h3>
+                <p class="muted small" style="margin-top:4px"><span data-f="who">Tom Okafor</span> · <span data-f="date">14 Oct 2026</span></p>
+              </div>
+              <div class="stat" style="text-align:right"><span class="stat__label" style="justify-content:flex-end">Claimed</span><span class="stat__value num" data-f="amount">£214.60</span></div>
+            </div>
+            <dl class="kv kv--stack" style="padding:16px 18px; border:1px solid var(--rule); border-radius:var(--r-3)">
+              <div><dt>Cost centre</dt><dd data-f="cc">Leeds warehouse</dd></div>
+              <div><dt>Evidence</dt><dd data-f="items">3 receipts</dd></div>
+              <div><dt>Policy check</dt><dd data-f="policy">Within policy</dd></div>
+            </dl>
+            <div class="field"><label class="label" for="md-note">Note to claimant <span class="opt">optional</span></label><textarea class="textarea" id="md-note" style="min-height:70px"></textarea></div>
+            <div class="btn-row"><button class="btn btn--primary" data-toast="Claim approved. Paid in the next payroll." data-toast-kind="pos">Approve</button><button class="btn" data-toast="Sent back with your note">Send back</button><span class="small faint" style="margin-left:auto">↑ ↓ to move through the list</span></div>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="board">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Board view</h2>
+      <p class="sec__intro">The same records shown as cards in columns by stage. This works when the order of stages matters more than any single field. Drag a card to another column. Dragging is a shortcut, not the only way: in a real product each card also needs a keyboard-reachable "Move to" action.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Drag cards between columns" data-nocode>
+        <div class="specimen__stage specimen__stage--paper" style="display:block">
+          <div class="board">
+            <div class="lane"><div class="lane__head"><span class="status status--note"></span>Submitted<span class="faint" data-lane-count>2</span></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Conference ticket</span><div class="ticket__foot"><span class="num">£695.00</span><span class="avatar avatar--sm" data-c="1">PR</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Train to Glasgow</span><div class="ticket__foot"><span class="num">£148.40</span><span class="avatar avatar--sm" data-c="1">BC</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head"><span class="status status--warn"></span>In review<span class="faint" data-lane-count>2</span></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Client dinner, Madrid</span><span class="badge badge--warn" style="width:max-content">Over limit</span><div class="ticket__foot"><span class="num">£386.00</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Monitor and dock</span><div class="ticket__foot"><span class="num">£529.98</span><span class="avatar avatar--sm" data-c="5">SI</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head"><span class="status status--pos"></span>Approved<span class="faint" data-lane-count>1</span></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Leeds site visit</span><div class="ticket__foot"><span class="num">£214.60</span><span class="avatar avatar--sm" data-c="2">TO</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head"><span class="status"></span>Paid<span class="faint" data-lane-count>0</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="rules">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Rules</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>Keep the list where it is.</strong> Acting on a record must not scroll the list or reset its filters.</li>
+        <li><strong>After an action, move to the next item.</strong> Show a short toast with Undo, and don't make people close the record first.</li>
+        <li><strong>Deep-link every record.</strong> The URL changes when the selection does, so people can share "this one".</li>
+        <li><strong>On phones, show one pane at a time.</strong> The detail opens as its own page with a back link to the list.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

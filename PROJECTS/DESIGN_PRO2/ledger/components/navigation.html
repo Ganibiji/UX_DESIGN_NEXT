@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Navigation · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/navigation" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Navigation</li></ol>
+    <h1 class="h1">Navigation</h1>
+    <p class="lede">Where am I, what's next to me, and how do I get back. Each part below answers one of those.</p>
+  </header>
+
+  <section class="sec" id="sidebar">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">App sidebar</h2>
+      <p class="sec__intro">The product's main navigation. Sections are labelled, counts appear only when someone needs to act, and the current page is marked with weight and a raised surface — not only colour.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Sidebar with counts and a pinned footer">
+        <div class="specimen__stage specimen__stage--paper" style="padding:24px">
+          <nav class="app__nav" aria-label="Product" style="width:224px; border:1px solid var(--rule); border-radius:var(--r-3); min-height:420px">
+            <div class="app__brand"><i>N</i>Northwind</div>
+            <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Overview</a>
+            <a href="#sidebar" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg>Approvals<span class="count">6</span></a>
+            <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-receipt"/></svg>Invoices</a>
+            <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-wallet"/></svg>Payments</a>
+            <div class="app__navlabel">Reports</div>
+            <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Profit &amp; loss</a>
+            <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>Balance sheet</a>
+            <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-trend"/></svg>Cash flow</a>
+            <div class="app__navfoot">
+              <a href="#sidebar"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg>Settings</a>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="tabs">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Tabs</h2>
+      <p class="sec__intro">Peer views of one object. Tabs never trigger actions and never hold a step in a process — that's a stepper. Arrow keys move between tabs; Tab moves into the panel.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Tabs with counts">
+        <div class="specimen__stage specimen__stage--col" style="gap:0">
+          <div class="tabs" role="tablist" aria-label="Supplier">
+            <button role="tab" id="t1" aria-selected="true" aria-controls="tp1">Details</button>
+            <button role="tab" id="t2" aria-selected="false" aria-controls="tp2">Invoices <span class="count">24</span></button>
+            <button role="tab" id="t3" aria-selected="false" aria-controls="tp3">Payments</button>
+            <button role="tab" id="t4" aria-selected="false" aria-controls="tp4">Activity</button>
+          </div>
+          <div role="tabpanel" id="tp1" aria-labelledby="t1" style="padding-top:18px">
+            <dl class="kv"><dt>Legal name</dt><dd>Northwind Traders Ltd</dd><dt>Company no.</dt><dd class="mono">09412377</dd><dt>Terms</dt><dd>30 days end of month</dd></dl>
+          </div>
+          <div role="tabpanel" id="tp2" aria-labelledby="t2" hidden style="padding-top:18px"><p class="muted">24 invoices, 3 overdue. Oldest unpaid: INV-1988, 41 days.</p></div>
+          <div role="tabpanel" id="tp3" aria-labelledby="t3" hidden style="padding-top:18px"><p class="muted">Last paid £8,240.00 on 30 September by BACS.</p></div>
+          <div role="tabpanel" id="tp4" aria-labelledby="t4" hidden style="padding-top:18px"><p class="muted">Bank details changed by Lena Fischer, 2 days ago.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="breadcrumbs">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Breadcrumbs</h2>
+      <p class="sec__intro">For hierarchies more than two levels deep. The last crumb is the current page — not a link. Long trails collapse in the middle, never at the ends.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Full and collapsed">
+        <div class="specimen__stage specimen__stage--col" style="gap:18px; align-items:flex-start">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#breadcrumbs">Suppliers</a></li><li><a href="#breadcrumbs">Northwind Traders</a></li><li aria-current="page">INV-2041</li></ol></nav>
+          <nav aria-label="Breadcrumb" class="anchor"><ol class="crumbs">
+            <li><a href="#breadcrumbs">Group</a></li>
+            <li><button class="btn btn--quiet btn--sm" style="height:22px;padding:0 4px" aria-label="Show 3 more levels" aria-haspopup="menu" aria-expanded="false" aria-controls="bc-more" data-pop>…</button></li>
+            <li><a href="#breadcrumbs">Leeds</a></li>
+            <li aria-current="page">Journal 0412</li>
+          </ol>
+          <div class="pop menu" id="bc-more" role="menu" hidden style="top:28px; left:40px">
+            <button role="menuitem">Northwind UK</button><button role="menuitem">Operations</button><button role="menuitem">Warehouses</button>
+          </div></nav>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="pagination">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Pagination</h2>
+      <p class="sec__intro">Tell people where they are in absolute terms — "41–60 of 1,284" — not just "page 3". Keep the page-size picker beside it.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Pager bar under a table">
+        <div class="specimen__stage specimen__stage--col">
+          <div class="pager-bar">
+            <span class="num">Showing <b style="color:var(--ink)">41–60</b> of 1,284 invoices</span>
+            <div class="cluster" style="--_g:16px">
+              <label class="cluster" style="--_g:8px">Rows <select class="select select--sm" style="width:72px"><option>20</option><option>50</option><option>100</option></select></label>
+              <nav class="pager" aria-label="Pagination">
+                <button aria-label="Previous page"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-l"/></svg></button>
+                <button>1</button><button>2</button><button aria-current="page">3</button><button>4</button>
+                <span class="pager__gap">…</span><button>65</button>
+                <button aria-label="Next page"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-r"/></svg></button>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="stepper">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Stepper</h2>
+      <p class="sec__intro">Shows progress through a fixed sequence. Completed steps get a tick; the current step a halo. Keep it to five steps or fewer — beyond that, rethink the flow.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Horizontal">
+        <div class="specimen__stage specimen__stage--col">
+          <ol class="steps" aria-label="New supplier">
+            <li data-state="done"><span class="steps__label">Company</span></li>
+            <li data-state="done"><span class="steps__label">Contacts</span></li>
+            <li aria-current="step"><span class="steps__label">Bank details</span></li>
+            <li><span class="steps__label">Review</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="specimen" data-label="Vertical, with a step that needs attention">
+        <div class="specimen__stage specimen__stage--col" style="max-width:360px">
+          <ol class="steps steps--vertical" aria-label="Month-end close">
+            <li data-state="done"><span class="steps__label">Bank reconciliation</span><span class="steps__sub">Done by Tom · 18 Oct</span></li>
+            <li data-state="done"><span class="steps__label">Accruals &amp; prepayments</span><span class="steps__sub">Done by Priya · 20 Oct</span></li>
+            <li data-state="error"><span class="steps__label">Intercompany</span><span class="steps__sub" style="color:var(--neg)">£1,240 doesn't balance with Northwind IE</span></li>
+            <li aria-current="step"><span class="steps__label">Review &amp; lock</span><span class="steps__sub">Waiting on intercompany</span></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="tree">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Tree view</h2>
+      <p class="sec__intro">For real hierarchies: charts of accounts, org structures, folders. Click a chevron to open; arrows move; right opens, left closes or goes to the parent.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Chart of accounts">
+        <div class="specimen__stage specimen__stage--col" style="max-width:380px">
+          <ul class="tree" role="tree" aria-label="Chart of accounts">
+            <li role="treeitem" aria-expanded="true" aria-selected="false"><div class="tree__row"><span class="tree__tw"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-r"/></svg></span>Income<span class="tree__n">3</span></div>
+              <ul role="group">
+                <li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">4000</span> Sales</div></li>
+                <li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">4100</span> Services</div></li>
+                <li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">4900</span> Other income</div></li>
+              </ul>
+            </li>
+            <li role="treeitem" aria-expanded="true" aria-selected="false"><div class="tree__row"><span class="tree__tw"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-r"/></svg></span>Overheads<span class="tree__n">12</span></div>
+              <ul role="group">
+                <li role="treeitem" aria-expanded="true" aria-selected="false"><div class="tree__row"><span class="tree__tw"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-r"/></svg></span>Premises</div>
+                  <ul role="group">
+                    <li role="treeitem" aria-selected="true"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">6100</span> Warehouse rent</div></li>
+                    <li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">6110</span> Utilities</div></li>
+                  </ul>
+                </li>
+                <li role="treeitem" aria-expanded="false" aria-selected="false"><div class="tree__row"><span class="tree__tw"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-r"/></svg></span>People</div>
+                  <ul role="group">
+                    <li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">7000</span> Salaries</div></li>
+                    <li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">7100</span> Pensions</div></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+            <li role="treeitem" aria-expanded="false" aria-selected="false"><div class="tree__row"><span class="tree__tw"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-chev-r"/></svg></span>Assets<span class="tree__n">8</span></div>
+              <ul role="group"><li role="treeitem" aria-selected="false"><div class="tree__row"><span class="tree__leaf"></span><span class="mono faint">0010</span> Equipment</div></li></ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

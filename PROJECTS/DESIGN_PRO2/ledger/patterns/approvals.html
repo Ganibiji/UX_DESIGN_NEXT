@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Approvals · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .appr { display: grid; grid-template-columns: minmax(0, 1fr) 300px; background: var(--paper-raised); }
+  .appr__main { padding: 26px 28px; display: grid; gap: 22px; align-content: start; }
+  .appr__side { border-left: 1px solid var(--rule); padding: 22px; display: grid; gap: 16px; align-content: start; background: color-mix(in srgb, var(--paper-sunken) 35%, transparent); }
+  .decide { display: grid; gap: 10px; padding: 16px; border: 1px solid var(--rule-strong); border-radius: var(--r-3); background: var(--paper-raised); }
+  @media (max-width: 900px) { .appr { grid-template-columns: 1fr; } .appr__side { border-left: 0; border-top: 1px solid var(--rule); } .appr__main { padding: 20px 16px; } }
+</style>
+</head>
+<body data-page="patterns/approvals" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="forms.html">Patterns</a></li><li aria-current="page">Approvals</li></ol>
+    <h1 class="h1">Approvals</h1>
+    <p class="lede">An approval is a decision someone will be asked about in an audit. Show everything needed to decide on one screen, make the decision explicit, and record who decided, when and why.</p>
+  </header>
+
+  <section class="sec" id="screen">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Purchase order approval</h2>
+      <p class="sec__intro">Try each decision. Sending a request back needs a reason, because "returned" with no explanation is a dead end. Every decision is added to the history and can be undone for a short time.</p></div>
+    <div class="block">
+      <div class="window">
+        <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/approvals/PO-8813</span></div>
+        <div class="appr" data-approval>
+          <div class="appr__main">
+            <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap">
+              <div style="flex:1; min-width:220px">
+                <div class="cluster" style="--_g:8px"><span class="eyebrow">Purchase order · PO-8813</span><span class="badge badge--dot badge--note" data-status>Awaiting you</span></div>
+                <h3 class="h2" style="margin-top:8px; font-size:30px">Pallet racking for Leeds, phase 2</h3>
+                <p class="muted small" style="margin-top:6px">Requested by Priya Raman · 2 days ago</p>
+              </div>
+              <div class="stat" style="text-align:right"><span class="stat__label" style="justify-content:flex-end">Total</span><span class="stat__value num">£3,920.00</span><span class="small faint">ex. VAT</span></div>
+            </div>
+
+            <div class="callout callout--warn"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><div class="callout__title">This takes Leeds to 104% of its Q4 equipment budget</div><div class="callout__body">£3,920 against £3,770 remaining. You can approve it anyway; the overspend will show in the budget report.</div></div>
+
+            <div class="table-wrap">
+              <table class="table">
+                <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Unit (£)</th><th class="num">Total (£)</th></tr></thead>
+                <tbody>
+                  <tr><td>Racking upright frame, 3m</td><td class="num">8</td><td class="num">210.00</td><td class="num">1,680.00</td></tr>
+                  <tr><td>Beam pair, 2.7m</td><td class="num">16</td><td class="num">95.00</td><td class="num">1,520.00</td></tr>
+                  <tr><td>Installation</td><td class="num">1</td><td class="num">720.00</td><td class="num">720.00</td></tr>
+                </tbody>
+                <tfoot><tr><td colspan="3">Total</td><td class="num">3,920.00</td></tr></tfoot>
+              </table>
+            </div>
+
+            <div class="decide">
+              <div class="field">
+                <label class="label" for="ap-note">Note <span class="opt">required to send back</span></label>
+                <textarea class="textarea" id="ap-note" style="min-height:64px" aria-describedby="reject-msg" placeholder="e.g. Please get a second quote over £3,000"></textarea>
+                <span class="msg msg--neg" id="reject-msg" hidden><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg>Tell Priya what to change, so she can fix it and resubmit</span>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn--primary" data-decide="approve"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approve £3,920</button>
+                <button class="btn" data-decide="reject">Send back</button>
+                <button class="btn btn--quiet" data-decide="hold">Put on hold</button>
+                <button class="btn btn--quiet btn--sm" data-undo hidden style="margin-left:auto"><svg class="ic" aria-hidden="true"><use href="#i-history"/></svg>Undo decision</button>
+              </div>
+            </div>
+          </div>
+
+          <aside class="appr__side">
+            <div class="person"><span class="avatar" data-c="1">PR</span><div><div class="person__name">Priya Raman</div><div class="person__meta">Operations manager · Leeds</div></div></div>
+            <dl class="kv" style="font-size:var(--t-sm)">
+              <dt>Supplier</dt><dd>Northwind Traders</dd>
+              <dt>Cost centre</dt><dd>Leeds warehouse</dd>
+              <dt>Needed by</dt><dd>14 Nov</dd>
+              <dt>Quotes</dt><dd>1 attached</dd>
+            </dl>
+            <hr>
+            <div class="h4">History</div>
+            <ol class="timeline">
+              <li><span class="timeline__mark"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="timeline__text"><b>Tom Okafor</b> approved as budget holder</div><div class="timeline__time">Yesterday, 11:20</div></div></li>
+              <li><span class="timeline__mark timeline__mark--ink"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg></span><div><div class="timeline__text"><b>Priya Raman</b> submitted</div><div class="timeline__time">20 Oct, 16:48</div></div></li>
+            </ol>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="rules">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Rules</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>Put the amount on the approve button.</strong> "Approve £3,920" is harder to click by mistake than "Approve".</li>
+        <li><strong>Show what's unusual before the buttons.</strong> Overspends, first payments to new bank details and duplicates belong in a callout above the decision, not in a tooltip.</li>
+        <li><strong>Sending back needs a reason. Approving doesn't.</strong> Don't make the common case slower.</li>
+        <li><strong>Never let someone approve their own request.</strong> Hide the decision panel and explain why.</li>
+        <li><strong>The history is permanent.</strong> Undo adds a new entry. It doesn't delete the old one.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

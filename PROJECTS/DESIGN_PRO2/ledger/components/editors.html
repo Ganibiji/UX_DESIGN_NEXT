@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editors · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/editors" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Editors</li></ol>
+    <h1 class="h1">Editors</h1>
+    <p class="lede">For writing more than a field can hold: policy notes, approval comments, integration config. Keep the toolbar short. Most people only use bold and lists.</p>
+  </header>
+
+  <section class="sec" id="rich">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Rich text</h2>
+      <p class="sec__intro">Formatting buttons sit in groups, and each one shows whether it's active at the cursor. Every button has a keyboard shortcut. The word count sits at the bottom, out of the way.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Select text and use the toolbar or Ctrl B / Ctrl I" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <div class="editor">
+            <div class="editor__bar" role="toolbar" aria-label="Formatting">
+              <button class="btn btn--quiet btn--sm" data-cmd="formatBlock" data-arg="h3" aria-label="Heading"><svg class="ic" aria-hidden="true"><use href="#i-type"/></svg></button>
+              <span class="editor__sep"></span>
+              <button class="btn btn--quiet btn--sm" data-cmd="bold" aria-pressed="false" aria-label="Bold"><svg class="ic" aria-hidden="true"><use href="#i-bold"/></svg></button>
+              <button class="btn btn--quiet btn--sm" data-cmd="italic" aria-pressed="false" aria-label="Italic"><svg class="ic" aria-hidden="true"><use href="#i-italic"/></svg></button>
+              <button class="btn btn--quiet btn--sm" data-cmd="underline" aria-pressed="false" aria-label="Underline"><svg class="ic" aria-hidden="true"><use href="#i-underline"/></svg></button>
+              <button class="btn btn--quiet btn--sm" data-cmd="strikeThrough" aria-pressed="false" aria-label="Strikethrough"><svg class="ic" aria-hidden="true"><use href="#i-strike"/></svg></button>
+              <span class="editor__sep"></span>
+              <button class="btn btn--quiet btn--sm" data-cmd="insertUnorderedList" aria-pressed="false" aria-label="Bulleted list"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg></button>
+              <button class="btn btn--quiet btn--sm" data-cmd="insertOrderedList" aria-pressed="false" aria-label="Numbered list"><svg class="ic" aria-hidden="true"><use href="#i-list-ol"/></svg></button>
+              <button class="btn btn--quiet btn--sm" data-cmd="formatBlock" data-arg="blockquote" aria-label="Quote"><svg class="ic" aria-hidden="true"><use href="#i-quote"/></svg></button>
+              <span class="editor__sep"></span>
+              <button class="btn btn--quiet btn--sm" data-cmd="removeFormat" aria-label="Clear formatting">Clear</button>
+            </div>
+            <div class="editor__area" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Expense policy">
+              <h3>Travel &amp; subsistence</h3>
+              <p>Book the <b>cheapest reasonable</b> option. Reasonable means you arrive in time and rested. It doesn't mean the 05:40 train.</p>
+              <ul><li>Hotels: up to £140 a night in London, £95 elsewhere.</li><li>Meals: actual cost, with receipts, up to £35 a day.</li></ul>
+              <blockquote>If you're unsure, ask before you book. It's always fine to ask.</blockquote>
+            </div>
+            <div class="editor__foot"><span data-words></span><span>Saved 2 minutes ago</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="code">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Code block</h2>
+      <p class="sec__intro">Read-only code: config, API responses, webhook payloads. Line numbers help people refer to a line, and the line that matters is highlighted.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Webhook payload, line 6 highlighted" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <div class="code code--lines code-copy">
+<pre><span class="ln">{</span><span class="ln">  <span class="s">"event"</span>: <span class="s">"invoice.paid"</span>,</span><span class="ln">  <span class="s">"id"</span>: <span class="s">"evt_9f2c41"</span>,</span><span class="ln">  <span class="s">"invoice"</span>: {</span><span class="ln">    <span class="s">"number"</span>: <span class="s">"INV-2041"</span>,</span><span class="ln is-hl">    <span class="s">"amount"</span>: <span class="n">12480.00</span>,</span><span class="ln">    <span class="s">"currency"</span>: <span class="s">"GBP"</span>,</span><span class="ln">    <span class="s">"paid_at"</span>: <span class="s">"2026-10-24T09:30:00Z"</span>,</span><span class="ln">    <span class="s">"early"</span>: <span class="k">false</span></span><span class="ln">  }</span><span class="ln">}</span></pre>
+            <button class="btn btn--sm" data-copy-text='{"event":"invoice.paid","id":"evt_9f2c41"}'>Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="markdown">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Markdown with preview</h2>
+      <p class="sec__intro">For technical users writing release notes or runbooks. Source on the left, preview on the right, updating as you type. On narrow screens the two stack, with source on top.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Type in the left pane" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <div class="cols-2" style="gap:0; border:1px solid var(--rule-ink); border-radius:var(--r-3); overflow:hidden; background:var(--paper-raised)">
+            <div style="display:grid; grid-template-rows:auto 1fr; border-right:1px solid var(--rule)">
+              <div class="eyebrow" style="padding:9px 14px; border-bottom:1px solid var(--rule); background:var(--paper-sunken)">Markdown</div>
+              <textarea class="textarea mono" data-md="md-out" aria-label="Markdown source" style="border:0; border-radius:0; box-shadow:none; min-height:260px; font-size:12.5px">## Month-end runbook
+
+Run these **in order**. Don't skip ahead.
+
+- Import the last bank statement
+- Match open lines (see `Reconcile`)
+- Post accruals from the *shared sheet*
+
+&gt; Lock the period only after the controller signs off.
+
+Questions? Ask in [#finance-ops](#markdown).</textarea>
+            </div>
+            <div style="display:grid; grid-template-rows:auto 1fr">
+              <div class="eyebrow" style="padding:9px 14px; border-bottom:1px solid var(--rule); background:var(--paper-sunken)">Preview</div>
+              <div class="editor__area" id="md-out" aria-live="polite"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="keys">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Shortcuts</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Keys</th><th>Does</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">Ctrl</span><span class="kbd">B</span></td><td>Bold</td></tr>
+          <tr><td><span class="kbd">Ctrl</span><span class="kbd">I</span></td><td>Italic</td></tr>
+          <tr><td><span class="kbd">Ctrl</span><span class="kbd">U</span></td><td>Underline</td></tr>
+          <tr><td><span class="kbd">Alt</span><span class="kbd">F10</span></td><td>Move focus to the toolbar. Arrow keys then move between buttons.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data display · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/data-display" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Data display</li></ol>
+    <h1 class="h1">Data display</h1>
+    <p class="lede">The small parts that carry facts: status, people, numbers, history. Most of them are read hundreds of times a day, so they're plain on purpose.</p>
+  </header>
+
+  <section class="sec" id="badge">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Badges &amp; status</h2>
+      <p class="sec__intro">A badge labels a state. In dense tables use the status dot instead — lighter, and it lines up better in a column.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Badges, dot badges, counts and status dots">
+        <div class="specimen__stage specimen__stage--col" style="gap:18px; align-items:flex-start">
+          <div class="cluster" style="--_g:8px">
+            <span class="badge">Draft</span>
+            <span class="badge badge--note">Sent</span>
+            <span class="badge badge--warn">Due soon</span>
+            <span class="badge badge--neg">Overdue</span>
+            <span class="badge badge--pos">Paid</span>
+            <span class="badge badge--accent">New</span>
+            <span class="badge badge--ink">Locked</span>
+          </div>
+          <div class="cluster" style="--_g:8px">
+            <span class="badge badge--dot badge--pos">Live</span>
+            <span class="badge badge--dot badge--warn">Syncing</span>
+            <span class="badge badge--dot badge--neg">Disconnected</span>
+            <span class="count">6</span>
+            <span class="count count--neg">12</span>
+          </div>
+          <div class="cluster" style="--_g:20px">
+            <span class="status status--pos">Reconciled</span>
+            <span class="status status--warn">Needs review</span>
+            <span class="status status--neg">Failed</span>
+            <span class="status status--note">Scheduled</span>
+            <span class="status">Draft</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="tag">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Tags</h2>
+      <p class="sec__intro">User-applied labels. Removable when the user owns them; plain when they don't.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Removable tags">
+        <div class="specimen__stage">
+          <span class="tag">Capex<button class="tag__x" aria-label="Remove Capex" data-dismiss><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+          <span class="tag">Leeds<button class="tag__x" aria-label="Remove Leeds" data-dismiss><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+          <span class="tag">Project Atlas<button class="tag__x" aria-label="Remove Project Atlas" data-dismiss><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></span>
+          <span class="tag" style="padding-right:9px">Recurring</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="avatar">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Avatars &amp; people</h2>
+      <p class="sec__intro">Initials on a soft tint, picked from the name so the same person is always the same colour. Presence dots only where presence matters — chat, not invoices.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Sizes, presence, stack, person">
+        <div class="specimen__stage" style="gap:28px">
+          <div class="cluster" style="--_g:10px">
+            <span class="avatar avatar--sm" data-c="1">PR</span>
+            <span class="avatar" data-c="2">TO</span>
+            <span class="avatar avatar--lg" data-c="3">LF</span>
+            <span class="avatar avatar--xl" data-c="4">MA</span>
+          </div>
+          <div class="cluster" style="--_g:14px">
+            <span class="avatar" data-c="5" aria-label="Sam Ito, online">SI<span class="avatar__dot avatar__dot--on"></span></span>
+            <span class="avatar" data-c="6" aria-label="Ana Ruiz, away">AR<span class="avatar__dot avatar__dot--away"></span></span>
+            <span class="avatar" data-c="1" aria-label="Ben Carr, busy">BC<span class="avatar__dot avatar__dot--busy"></span></span>
+          </div>
+          <div class="avatars" aria-label="Priya, Tom, Lena and 4 others">
+            <span class="avatar avatar--sm" data-c="1">PR</span><span class="avatar avatar--sm" data-c="2">TO</span><span class="avatar avatar--sm" data-c="5">LF</span><span class="avatar avatar--sm">+4</span>
+          </div>
+          <div class="person">
+            <span class="avatar" data-c="3">LF</span>
+            <div><div class="person__name">Lena Fischer</div><div class="person__meta">Financial controller · Frankfurt</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="card">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Cards &amp; panels</h2>
+      <p class="sec__intro">A panel groups content on a page. A card is one item among many and is usually a link. If you're nesting cards inside cards, you want a list.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Linked cards, and a panel with header and footer">
+        <div class="specimen__stage specimen__stage--col specimen__stage--paper">
+          <div class="cols-3">
+            <a class="card" href="#card">
+              <div class="card__body">
+                <span class="eyebrow">Entity</span>
+                <span class="h3" style="font-family:var(--font-serif);font-weight:400;font-size:22px">Northwind UK</span>
+                <span class="small muted">GBP · 1,284 open items</span>
+              </div>
+              <div class="card__foot"><span class="status status--pos">Closed for Sept</span></div>
+            </a>
+            <a class="card" href="#card">
+              <div class="card__body">
+                <span class="eyebrow">Entity</span>
+                <span class="h3" style="font-family:var(--font-serif);font-weight:400;font-size:22px">Northwind IE</span>
+                <span class="small muted">EUR · 412 open items</span>
+              </div>
+              <div class="card__foot"><span class="status status--warn">2 tasks left</span></div>
+            </a>
+            <a class="card" href="#card">
+              <div class="card__body">
+                <span class="eyebrow">Entity</span>
+                <span class="h3" style="font-family:var(--font-serif);font-weight:400;font-size:22px">Northwind DE</span>
+                <span class="small muted">EUR · 96 open items</span>
+              </div>
+              <div class="card__foot"><span class="status status--neg">Intercompany off</span></div>
+            </a>
+          </div>
+          <section class="panel">
+            <div class="panel__head"><h3 class="h4">Payment terms</h3><button class="btn btn--quiet btn--sm"><svg class="ic" aria-hidden="true"><use href="#i-pencil"/></svg>Edit</button></div>
+            <div class="panel__body">
+              <dl class="kv kv--stack">
+                <div><dt>Terms</dt><dd>30 days EOM</dd></div>
+                <div><dt>Early payment</dt><dd>2.5% within 10 days</dd></div>
+                <div><dt>Late fee</dt><dd>None agreed</dd></div>
+                <div><dt>Currency</dt><dd>GBP</dd></div>
+              </dl>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="list">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Lists</h2>
+      <p class="sec__intro">Rows separated by rules. A title, a line of metadata, and one thing on the right — usually the number people came for.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Activity list">
+        <div class="specimen__stage specimen__stage--col" style="max-width:560px">
+          <ul class="list">
+            <li><span class="avatar" data-c="2">TO</span><div class="list__main"><div class="list__title">Expense claim — Leeds site visit</div><div class="list__meta">Tom Okafor · 3 receipts · 2 hours ago</div></div><span class="num">£214.60</span></li>
+            <li><span class="avatar" data-c="1">PR</span><div class="list__main"><div class="list__title">Purchase order PO-8813</div><div class="list__meta">Priya Raman · Northwind Traders · yesterday</div></div><span class="num">£3,920.00</span></li>
+            <li><span class="avatar" data-c="5">LF</span><div class="list__main"><div class="list__title">Supplier bank details change</div><div class="list__meta">Lena Fischer · needs a second approver</div></div><span class="badge badge--warn">Check</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="stat">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Statistics</h2>
+      <p class="sec__intro">A label, a number in the serif, and a comparison that says what it's compared to. "+4.2%" alone is a riddle; "+4.2% vs Sept" is a fact.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Stat row with sparklines">
+        <div class="specimen__stage specimen__stage--col specimen__stage--paper">
+          <div class="stat-row">
+            <div class="stat"><span class="stat__label">Cash at bank</span><span class="stat__value num">£2.41<small>m</small></span><span class="stat__delta delta--up"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-arrow-ur"/></svg>4.2% <span>vs Sept</span></span>
+              <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path class="area" d="M0 22 L12 20 L25 23 L37 16 L50 18 L62 12 L75 14 L87 8 L100 6 L100 30 L0 30Z"/><path d="M0 22 L12 20 L25 23 L37 16 L50 18 L62 12 L75 14 L87 8 L100 6"/></svg></div>
+            <div class="stat"><span class="stat__label">Owed to us</span><span class="stat__value num">£684<small>k</small></span><span class="stat__delta delta--down"><svg class="ic ic--sm" aria-hidden="true" style="transform:rotate(90deg)"><use href="#i-arrow-ur"/></svg>£41k overdue <span>· 14 invoices</span></span>
+              <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 12 L12 14 L25 11 L37 15 L50 13 L62 17 L75 16 L87 20 L100 19"/></svg></div>
+            <div class="stat"><span class="stat__label">We owe</span><span class="stat__value num">£402<small>k</small></span><span class="stat__delta delta--flat">— <span>flat vs Sept</span></span>
+              <svg class="spark" viewBox="0 0 100 30" preserveAspectRatio="none" aria-hidden="true"><path d="M0 15 L12 16 L25 14 L37 15 L50 15 L62 14 L75 16 L87 15 L100 15"/></svg></div>
+            <div class="stat"><span class="stat__label">Runway</span><span class="stat__value num">19 <small>months</small></span><span class="stat__delta delta--up">+2 <span>since the August raise</span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="timeline">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Timeline</h2>
+      <p class="sec__intro">The audit trail, newest first. Who, did what, when — and the note they left, quoted.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Audit trail">
+        <div class="specimen__stage specimen__stage--col" style="max-width:520px">
+          <ol class="timeline">
+            <li><span class="timeline__mark timeline__mark--pos"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span><div><div class="timeline__text"><b>Lena Fischer</b> approved the payment</div><div class="timeline__time">Today, 10:42</div></div></li>
+            <li><span class="timeline__mark"><svg class="ic" aria-hidden="true"><use href="#i-message"/></svg></span><div><div class="timeline__text"><b>Priya Raman</b> commented</div><div class="timeline__time">Yesterday, 16:05</div><div class="timeline__quote">Matches the PO. Racking delivered and signed for on the 14th.</div></div></li>
+            <li><span class="timeline__mark"><svg class="ic" aria-hidden="true"><use href="#i-pencil"/></svg></span><div><div class="timeline__text"><b>Priya Raman</b> changed the cost centre from <i>Head office</i> to <i>Leeds</i></div><div class="timeline__time">Yesterday, 15:58</div></div></li>
+            <li><span class="timeline__mark timeline__mark--ink"><svg class="ic" aria-hidden="true"><use href="#i-mail"/></svg></span><div><div class="timeline__text">Invoice received from <b>Northwind Traders</b> by email</div><div class="timeline__time">25 Sep, 09:12</div></div></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="accordion">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Accordion</h2>
+      <p class="sec__intro">Built on <code class="inline-code">&lt;details&gt;</code>, so it works with no script and the browser's find-in-page can open it. Good for FAQs and settings people rarely change. Bad for anything people need to compare.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Native details/summary">
+        <div class="specimen__stage specimen__stage--col" style="max-width:620px">
+          <div class="accordion">
+            <details open><summary>When does a period lock?</summary><div class="accordion__body">At midnight on the last working day of the following month, unless a controller locks it earlier. You'll get a reminder three days before.</div></details>
+            <details><summary>Can I reverse a posted journal?</summary><div class="accordion__body">Yes, until the period locks. Reversing creates a mirror journal dated the same day, so the audit trail keeps both.</div></details>
+            <details><summary>Who can see payroll figures?</summary><div class="accordion__body">Only members of the Payroll team and the two named directors. Everyone else sees payroll as a single line in reports.</div></details>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

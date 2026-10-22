@@ -1,0 +1,233 @@
+/* Ledger — design tokens
+   ---------------------------------------------------------------
+   Iris edition. Clean white workspace, a lavender index, an apricot
+   cream reading surface and one deep indigo for action and selection.
+   Token names are shared with the green edition (--paper-mint is the
+   lavender index tint here), so the component CSS is identical. Everything else is built
+   from these values; components never use raw hex.
+
+   Naming: --paper-* surfaces, --ink-* text, --rule-* lines,
+   --accent-* the brand indigo, --pos/--warn/--neg/--note for status,
+   --cat-* pastel category pairs. Dark theme swaps values, not names.
+   --------------------------------------------------------------- */
+
+:root {
+  /* Surfaces */
+  --paper:        #FFFFFF;   /* page canvas */
+  --paper-raised: #FFFFFF;   /* cards, inputs, menus */
+  --paper-warm:   #FFF8F3;   /* detail panes, reading surfaces */
+  --paper-sunken: #F5F4FA;   /* wells, code, table headers */
+  --paper-hover:  #F3F1FC;
+  --paper-press:  #E6E3F8;
+  --paper-mint:   #F0EEFC;   /* lavender: index rail, selected rows */
+
+  /* Ink */
+  --ink:        #1B1A2E;
+  --ink-2:      #4D4B63;
+  --ink-3:      #69677F;     /* 5.5:1 on white, 4.8:1 on lavender — the floor for meaningful text */
+  --ink-faint:  #ADABC0;     /* decoration only, never text that matters */
+  --ink-invert: #FFFFFF;
+
+  /* Lines */
+  --rule:        #E7E5F0;
+  --rule-strong: #D6D3E6;
+  --rule-ink:    #85839A;    /* input borders: 3.7:1 on white, 3.5:1 on warm */
+
+  /* Accent — Ledger iris */
+  --accent:       #4B45C6;
+  --accent-hover: #3E38AD;
+  --accent-press: #322D90;
+  --accent-tint:  #ECEBFC;
+  --accent-ink:   #3F3AB0;   /* accent used as text */
+
+  /* Primary action is the brand indigo */
+  --action:       #4B45C6;
+  --action-hover: #3E38AD;
+  --action-press: #322D90;
+  --on-action:    #FFFFFF;
+
+  /* Status */
+  --pos:       #1E7A4C;  --pos-tint:  #E1F3E8;
+  --warn:      #9A5B00;  --warn-tint: #FFF1DA;
+  --neg:       #B4362A;  --neg-tint:  #FDE7E3;
+  --note:      #2F5FA6;  --note-tint: #E5EEFB;
+
+  /* Categories — pastel fill with a deep text colour, for tags and avatars */
+  --cat-blue:   #2F5FA6;  --cat-blue-tint:   #E6EEFB;
+  --cat-plum:   #7A3E9D;  --cat-plum-tint:   #F2E8FA;
+  --cat-green:  #1E6B4E;  --cat-green-tint:  #E3F2EA;
+  --cat-rose:   #A8345C;  --cat-rose-tint:   #FCE6EE;
+  --cat-peach:  #A5531E;  --cat-peach-tint:  #FDEBDD;
+  --cat-teal:   #11716F;  --cat-teal-tint:   #DFF3F1;
+
+  /* Page band — the pastel wash behind every page title */
+  --band: linear-gradient(100deg, #E9E4FB 0%, #F1E8F8 45%, #FCE8EE 75%, #FFE9DA 100%);
+  --band-shine: rgba(255, 255, 255, .55);   /* light diagonal stripe */
+  --band-shape: rgba(255, 214, 190, .7);    /* apricot wedge on the right */
+
+  /* Data — six categorical hues in a fixed order. Validated for
+     deuteranopia/protanopia separation (adjacent ΔE ≥ 14) on both surfaces.
+     Slot 5 (ochre) sits under 3:1 on white: always label it directly. */
+  --d1: #00704E;  /* green */
+  --d2: #376DAF;  /* blue  */
+  --d3: #CB713F;  /* clay  */
+  --d4: #864A81;  /* plum  */
+  --d5: #CA9D33;  /* ochre */
+  --d6: #03999F;  /* teal  */
+
+  /* Focus */
+  --focus: #4B45C6;
+  --focus-ring: 0 0 0 2px var(--paper-raised), 0 0 0 4px var(--focus);
+
+  /* Type */
+  --font-sans:    "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --font-serif:   "Newsreader", "Iowan Old Style", Georgia, serif;
+  --font-mono:    "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --t-xs:   12px;
+  --t-sm:   13px;
+  --t-base: 14px;
+  --t-md:   16px;
+  --t-lg:   19px;
+  --t-xl:   24px;
+  --t-2xl:  32px;
+  --t-3xl:  46px;
+  --t-4xl:  60px;
+
+  /* Space — 4px base, but the scale skips where we never use a step */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 24px;
+  --s-6: 32px;
+  --s-7: 48px;
+  --s-8: 64px;
+  --s-9: 96px;
+
+  /* Shape — soft, rounded controls and panels */
+  --r-1: 6px;   /* chips, checkboxes */
+  --r-2: 10px;  /* controls */
+  --r-3: 14px;  /* panels, menus */
+  --r-pill: 999px;
+
+  /* Sizes */
+  --h-sm: 30px;
+  --h-md: 38px;
+  --h-lg: 46px;
+
+  /* Depth — soft and violet-tinted; never a hard grey drop */
+  --lift-1: 0 1px 2px rgba(40, 34, 90, .05);
+  --lift-2: 0 2px 4px rgba(40, 34, 90, .05), 0 10px 24px -8px rgba(40, 34, 90, .16);
+  --lift-3: 0 4px 10px rgba(40, 34, 90, .08), 0 28px 56px -16px rgba(40, 34, 90, .28);
+  --scrim:  rgba(20, 18, 46, .40);
+
+  /* Motion */
+  --ease-out:  cubic-bezier(.2, .7, .2, 1);
+  --ease-in:   cubic-bezier(.5, 0, .75, 0);
+  --dur-1: 90ms;
+  --dur-2: 160ms;
+  --dur-3: 260ms;
+
+  color-scheme: light;
+}
+
+/* ---------- Dark: deep ink-violet, not pure black ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper:        #13121F;
+    --paper-raised: #1A1929;
+    --paper-warm:   #1E1B26;
+    --paper-sunken: #0E0D18;
+    --paper-hover:  #23213A;
+    --paper-press:  #2C2A47;
+    --paper-mint:   #1A1830;
+    --ink:        #EEEDF7;
+    --ink-2:      #BDBBD2;
+    --ink-3:      #9896B0;
+    --ink-faint:  #5E5C75;
+    --ink-invert: #13121F;
+    --rule:        #29273D;
+    --rule-strong: #3A3853;
+    --rule-ink:    #6E6C88;
+    --accent:       #A39DFF;
+    --accent-hover: #B7B2FF;
+    --accent-press: #CAC6FF;
+    --accent-tint:  #2A2752;
+    --accent-ink:   #B5B0FF;
+    --action:       #A39DFF;
+    --action-hover: #B7B2FF;
+    --action-press: #CAC6FF;
+    --on-action:    #15132B;
+    --pos:  #6FCB95;  --pos-tint:  #163024;
+    --warn: #E9B25E;  --warn-tint: #332611;
+    --neg:  #F08A7B;  --neg-tint:  #3A1E1A;
+    --note: #8DB3E8;  --note-tint: #19263A;
+    --cat-blue:  #9DBDF0; --cat-blue-tint:  #1C2A40;
+    --cat-plum:  #CFA6E8; --cat-plum-tint:  #2E2038;
+    --cat-green: #7FCDA8; --cat-green-tint: #183328;
+    --cat-rose:  #F0A2BD; --cat-rose-tint:  #3A1C28;
+    --cat-peach: #F2B48A; --cat-peach-tint: #3A2618;
+    --cat-teal:  #7AD3CD; --cat-teal-tint:  #143331;
+    --band: linear-gradient(100deg, #221E45 0%, #2A1E3E 48%, #3A1F2E 78%, #3B2620 100%);
+    --band-shine: rgba(255, 255, 255, .05);
+    --band-shape: rgba(140, 80, 70, .22);
+    --d1: #3F9A6F; --d2: #5788C7; --d3: #D37947; --d4: #9B5896; --d5: #AF8E2A; --d6: #0D9298;
+    --focus: #B5B0FF;
+    --lift-1: 0 1px 0 rgba(0,0,0,.3);
+    --lift-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -6px rgba(0,0,0,.5);
+    --lift-3: 0 2px 6px rgba(0,0,0,.4), 0 28px 56px -12px rgba(0,0,0,.7);
+    --scrim:  rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper:        #13121F;
+  --paper-raised: #1A1929;
+  --paper-warm:   #1E1B26;
+  --paper-sunken: #0E0D18;
+  --paper-hover:  #23213A;
+  --paper-press:  #2C2A47;
+  --paper-mint:   #1A1830;
+  --ink:        #EEEDF7;
+  --ink-2:      #BDBBD2;
+  --ink-3:      #9896B0;
+  --ink-faint:  #5E5C75;
+  --ink-invert: #13121F;
+  --rule:        #29273D;
+  --rule-strong: #3A3853;
+  --rule-ink:    #6E6C88;
+  --accent:       #A39DFF;
+  --accent-hover: #B7B2FF;
+  --accent-press: #CAC6FF;
+  --accent-tint:  #2A2752;
+  --accent-ink:   #B5B0FF;
+  --action:       #A39DFF;
+  --action-hover: #B7B2FF;
+  --action-press: #CAC6FF;
+  --on-action:    #15132B;
+  --pos:  #6FCB95;  --pos-tint:  #163024;
+  --warn: #E9B25E;  --warn-tint: #332611;
+  --neg:  #F08A7B;  --neg-tint:  #3A1E1A;
+  --note: #8DB3E8;  --note-tint: #19263A;
+  --cat-blue:  #9DBDF0; --cat-blue-tint:  #1C2A40;
+  --cat-plum:  #CFA6E8; --cat-plum-tint:  #2E2038;
+  --cat-green: #7FCDA8; --cat-green-tint: #183328;
+  --cat-rose:  #F0A2BD; --cat-rose-tint:  #3A1C28;
+  --cat-peach: #F2B48A; --cat-peach-tint: #3A2618;
+  --cat-teal:  #7AD3CD; --cat-teal-tint:  #143331;
+  --band: linear-gradient(100deg, #221E45 0%, #2A1E3E 48%, #3A1F2E 78%, #3B2620 100%);
+  --band-shine: rgba(255, 255, 255, .05);
+  --band-shape: rgba(140, 80, 70, .22);
+  --d1: #3F9A6F; --d2: #5788C7; --d3: #D37947; --d4: #9B5896; --d5: #AF8E2A; --d6: #0D9298;
+  --focus: #B5B0FF;
+  --lift-1: 0 1px 0 rgba(0,0,0,.3);
+  --lift-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -6px rgba(0,0,0,.5);
+  --lift-3: 0 2px 6px rgba(0,0,0,.4), 0 28px 56px -12px rgba(0,0,0,.7);
+  --scrim:  rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+}

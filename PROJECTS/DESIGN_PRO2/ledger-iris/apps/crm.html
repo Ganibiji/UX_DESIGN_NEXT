@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales pipeline · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .lane__sum { padding: 0 4px 4px; font: 400 18px/1 var(--font-serif); font-variant-numeric: tabular-nums; }
+  .ticket__co { font-size: var(--t-xs); color: var(--ink-3); margin-top: -4px; }
+  .ticket .num { color: var(--ink); font-weight: 600; font-size: var(--t-sm); }
+  .ticket--stale { box-shadow: inset 3px 0 0 #C9922C, var(--lift-1); }
+</style>
+</head>
+<body data-page="apps/crm" data-root="../">
+<div class="site">
+<main class="page page--wide" id="main">
+<div class="page__main">
+
+  <header class="doc-head" style="padding-bottom:24px">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="finance.html">Example apps</a></li><li aria-current="page">Sales pipeline</li></ol>
+    <h1 class="h1">Sales pipeline</h1>
+    <p class="lede">Deals by stage, with the money at the top of each column. Deals nobody has touched for two weeks get an ochre edge. Drag a deal to move it to another stage.</p>
+  </header>
+
+  <div class="window" style="margin-top:28px">
+    <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/pipeline</span></div>
+    <div class="app">
+      <nav class="app__nav" aria-label="Sales">
+        <div class="app__brand"><i>N</i>Northwind</div>
+        <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-kanban"/></svg>Pipeline</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-building"/></svg>Accounts</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-users"/></svg>Contacts</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg>Activities<span class="count">4</span></a>
+        <div class="app__navlabel">Insights</div>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-trend"/></svg>Forecast</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-chart"/></svg>Win rate</a>
+        <div class="app__navfoot"><div class="person" style="padding:4px 6px"><span class="avatar avatar--sm" data-c="6">AR</span><div><div class="person__name small">Ana Ruiz</div><div class="person__meta">Account exec</div></div></div></div>
+      </nav>
+      <div class="app__main">
+        <div class="app__top">
+          <div class="seg" role="group" aria-label="View"><button aria-pressed="true"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-kanban"/></svg>Board</button><button aria-pressed="false"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-table"/></svg>Table</button></div>
+          <span style="flex:1"></span>
+          <div class="search" style="width:220px"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="input input--sm" type="search" placeholder="Find a deal" aria-label="Find a deal"></div>
+          <button class="btn btn--primary btn--sm" data-open="new-deal"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>New deal</button>
+        </div>
+        <div class="app__body">
+          <div class="app__title">
+            <div><p class="eyebrow">Q4 · EMEA</p><h2 class="h2" style="margin-top:6px">£1.09m open in the pipeline</h2></div>
+            <div class="cluster" style="--_g:8px">
+              <button class="chip" aria-pressed="true">My deals</button>
+              <button class="chip" aria-pressed="false">Closing this month <span class="chip__n">6</span></button>
+              <button class="chip" aria-pressed="false">Stale <span class="chip__n">3</span></button>
+            </div>
+          </div>
+
+          <div class="stat-row">
+            <div class="stat"><span class="stat__label">Weighted forecast</span><span class="stat__value num">£412<small>k</small></span><span class="stat__delta delta--up">78% <span>of £530k target</span></span></div>
+            <div class="stat"><span class="stat__label">Won this quarter</span><span class="stat__value num">£186<small>k</small></span><span class="stat__delta delta--flat">9 deals</span></div>
+            <div class="stat"><span class="stat__label">Win rate</span><span class="stat__value num">31<small>%</small></span><span class="stat__delta delta--down">−4 pts <span>vs Q3</span></span></div>
+            <div class="stat"><span class="stat__label">Average cycle</span><span class="stat__value num">47 <small>days</small></span><span class="stat__delta delta--flat">— <span>flat</span></span></div>
+          </div>
+
+          <div class="board">
+            <div class="lane"><div class="lane__head">Qualified<span class="faint" data-lane-count>3</span></div><div class="lane__sum">£214,000</div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Warehouse automation pilot</span><span class="ticket__co">Tailspin Logistics</span><div class="ticket__foot"><span class="num">£96,000</span><span>Nov</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+              <div class="ticket ticket--stale" draggable="true"><span class="ticket__title">Fleet tracking renewal</span><span class="ticket__co">Fabrikam Freight</span><div class="ticket__foot"><span class="num">£64,000</span><span>18 days quiet</span><span class="avatar avatar--sm" data-c="2">TO</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Cold-store racking</span><span class="ticket__co">Adatum Foods</span><div class="ticket__foot"><span class="num">£54,000</span><span>Dec</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head">Proposal<span class="faint" data-lane-count>3</span></div><div class="lane__sum">£488,000</div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Three-site rollout</span><span class="ticket__co">Contoso Retail</span><span class="badge badge--accent" style="width:max-content">Strategic</span><div class="ticket__foot"><span class="num">£310,000</span><span>Dec</span><span class="avatar avatar--sm" data-c="1">BC</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Returns hub fit-out</span><span class="ticket__co">Litware</span><div class="ticket__foot"><span class="num">£122,000</span><span>Nov</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+              <div class="ticket ticket--stale" draggable="true"><span class="ticket__title">Mezzanine floor</span><span class="ticket__co">Woodgrove</span><div class="ticket__foot"><span class="num">£56,000</span><span>15 days quiet</span><span class="avatar avatar--sm" data-c="5">SI</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head">Negotiation<span class="faint" data-lane-count>2</span></div><div class="lane__sum">£392,000</div>
+              <div class="ticket" draggable="true"><span class="ticket__title">National distribution deal</span><span class="ticket__co">Northwind Traders</span><div class="ticket__foot"><span class="num">£340,000</span><span>Nov</span><span class="avatar avatar--sm" data-c="1">BC</span></div></div>
+              <div class="ticket ticket--stale" draggable="true"><span class="ticket__title">Pallet pooling</span><span class="ticket__co">Proseware</span><div class="ticket__foot"><span class="num">£52,000</span><span>21 days quiet</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head">Won<span class="faint" data-lane-count>2</span></div><div class="lane__sum">£186,000</div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Leeds DC extension</span><span class="ticket__co">Fourth Coffee</span><span class="badge badge--pos" style="width:max-content">Signed 14 Oct</span><div class="ticket__foot"><span class="num">£128,000</span><span class="avatar avatar--sm" data-c="2">TO</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Annual service plan</span><span class="ticket__co">Blue Yonder Air</span><div class="ticket__foot"><span class="num">£58,000</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="dialog" id="new-deal" aria-labelledby="nd-t">
+    <div class="dialog__head"><h2 class="dialog__title" id="nd-t">New deal</h2><button class="btn btn--quiet btn--icon btn--sm" data-close aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+    <div class="dialog__body">
+      <div class="field"><label class="label" for="nd-name">Deal name</label><input class="input" id="nd-name" autofocus placeholder="e.g. Glasgow depot racking"></div>
+      <div class="cols-2">
+        <div class="field"><label class="label" for="nd-acc">Account</label><input class="input" id="nd-acc" placeholder="Search accounts"></div>
+        <div class="field"><label class="label" for="nd-val">Value</label><div class="affix"><span class="affix__part affix__part--box">£</span><input class="input num" id="nd-val" inputmode="decimal"></div></div>
+      </div>
+      <div class="field"><label class="label" for="nd-stage">Stage</label><select class="select" id="nd-stage"><option>Qualified</option><option>Proposal</option><option>Negotiation</option></select></div>
+    </div>
+    <div class="dialog__foot"><button class="btn btn--quiet" data-close>Cancel</button><button class="btn btn--primary" data-close="Deal added to Qualified">Add deal</button></div>
+  </dialog>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

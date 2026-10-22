@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Depth &amp; motion · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .lift-card { height: 110px; border-radius: var(--r-3); background: var(--paper-raised); display: grid; place-items: end start; padding: 12px 14px; font-size: var(--t-sm); }
+  .track { position: relative; height: 44px; border-radius: var(--r-2); background: var(--paper-sunken); border: 1px solid var(--rule); overflow: hidden; }
+  .track i { position: absolute; top: 9px; left: 10px; width: 24px; height: 24px; border-radius: 4px; background: var(--ink); }
+  .track.is-go i { left: calc(100% - 34px); }
+  .motion-row { display: grid; grid-template-columns: 170px 1fr; gap: 18px; align-items: center; }
+</style>
+</head>
+<body data-page="foundations/depth-motion" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="colour.html">Foundations</a></li><li aria-current="page">Depth &amp; motion</li></ol>
+    <h1 class="h1">Depth &amp; motion</h1>
+    <p class="lede">Shadows show that something is floating. Motion shows where something came from or went. If an effect does neither, leave it out.</p>
+  </header>
+
+  <section class="sec" id="depth">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Three lifts</h2>
+      <p class="sec__intro">The shadows are warm brown, not grey, so they look like paper on a desk. In dark mode they get darker and borders take over most of the separation.</p></div>
+    <div class="block cols-4">
+      <div class="lift-card" style="border:1px solid var(--rule)"><span><b>Flat</b><br><span class="faint">Panels, tables</span></span></div>
+      <div class="lift-card" style="box-shadow:var(--lift-1); border:1px solid var(--rule)"><span><b>--lift-1</b><br><span class="faint">Buttons, inputs</span></span></div>
+      <div class="lift-card" style="box-shadow:var(--lift-2)"><span><b>--lift-2</b><br><span class="faint">Menus, hovered cards</span></span></div>
+      <div class="lift-card" style="box-shadow:var(--lift-3)"><span><b>--lift-3</b><br><span class="faint">Dialogs, toasts</span></span></div>
+    </div>
+  </section>
+
+  <section class="sec" id="layers">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Layers</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Layer</th><th>z-index</th><th>Contains</th></tr></thead>
+        <tbody>
+          <tr><td>Sticky</td><td class="num">2–30</td><td>Table headers, the top bar</td></tr>
+          <tr><td>Popup</td><td class="num">40</td><td>Menus, popovers, listboxes</td></tr>
+          <tr><td>Tooltip</td><td class="num">50</td><td>Tooltips, which can sit over menus</td></tr>
+          <tr><td>Modal</td><td class="num">top layer</td><td>Dialogs and drawers. They use the native <code>&lt;dialog&gt;</code> top layer, so no z-index is needed.</td></tr>
+          <tr><td>Toast</td><td class="num">90</td><td>Toasts, above everything except a modal's backdrop</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="motion">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Three speeds, two curves</h2>
+      <p class="sec__intro">Entering animations ease out: they start fast and settle. Exits ease in and run quicker, because once someone has dismissed something they don't need to watch it leave. Nothing takes longer than 260ms.</p></div>
+    <div class="block stack" style="--_g:14px">
+      <div class="motion-row"><span><b class="mono small">--dur-1</b> <span class="faint small">90ms</span><br><span class="small muted">Hover, press, colour</span></span><div class="track" data-dur="var(--dur-1)"><i></i></div></div>
+      <div class="motion-row"><span><b class="mono small">--dur-2</b> <span class="faint small">160ms</span><br><span class="small muted">Menus, switches, tabs</span></span><div class="track" data-dur="var(--dur-2)"><i></i></div></div>
+      <div class="motion-row"><span><b class="mono small">--dur-3</b> <span class="faint small">260ms</span><br><span class="small muted">Dialogs, drawers, toasts</span></span><div class="track" data-dur="var(--dur-3)"><i></i></div></div>
+      <div><button class="btn btn--sm" id="play"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Play</button></div>
+    </div>
+  </section>
+
+  <section class="sec" id="reduced">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Reduced motion</h2>
+      <p class="sec__intro">When someone has asked their system for reduced motion, every duration token drops to zero. Things still change state, they just don't move. Skeleton shimmer stops too. You don't have to do anything per component: it's all handled in <code class="inline-code">tokens.css</code>.</p></div>
+    <div class="block code"><pre>@media (prefers-reduced-motion: reduce) {
+  :root { --dur-1: 0ms; --dur-2: 0ms; --dur-3: 0ms; }
+}</pre></div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  document.getElementById('play').addEventListener('click', function () {
+    document.querySelectorAll('.track').forEach(function (t) {
+      var i = t.querySelector('i');
+      i.style.transition = 'left ' + t.getAttribute('data-dur') + ' var(--ease-out)';
+      t.classList.toggle('is-go');
+    });
+  });
+</script>
+</body>
+</html>

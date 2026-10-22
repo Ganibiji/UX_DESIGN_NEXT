@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Writing · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/tokens.css">
+<link rel="stylesheet" href="assets/ledger.css">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body data-page="writing" data-root="">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="index.html">Ledger</a></li><li aria-current="page">Writing</li></ol>
+    <h1 class="h1">Write like a good colleague</h1>
+    <p class="lede">Our users are accountants and operations staff. They're busy, precise, and they'll notice a wrong word. Write the way a helpful senior colleague talks across the desk: plain, specific, and calm.</p>
+  </header>
+
+  <section class="sec" id="voice">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Voice</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>We are</th><th>So we</th><th>We're not</th></tr></thead>
+        <tbody>
+          <tr><td>Precise</td><td>Give the number, the date and the name. "£3,180 from Fabrikam, due 12 Oct."</td><td>Vague. "Some invoices need attention."</td></tr>
+          <tr><td>Calm</td><td>State the problem and the fix in the same tone, even when it's serious.</td><td>Alarmed. "Critical error!!"</td></tr>
+          <tr><td>Plain</td><td>Use the words our users use. "Bank line", "supplier", "paid".</td><td>Jargony. "Transaction entity", "vendor object".</td></tr>
+          <tr><td>Brief</td><td>Cut every word that doesn't change the meaning.</td><td>Chatty. "Oops! Looks like something went a bit wrong there 😅"</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="buttons">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Buttons say what happens</h2>
+      <p class="sec__intro">Use a verb, then the thing it acts on. Someone should be able to read only the button and know what it does.</p></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Instead of</th><th>Write</th></tr></thead>
+        <tbody>
+          <tr><td>OK</td><td>Post journal</td></tr>
+          <tr><td>Submit</td><td>Send for approval</td></tr>
+          <tr><td>Yes / No</td><td>Delete supplier / Keep supplier</td></tr>
+          <tr><td>Click here</td><td>Download the remittance (PDF, 84 KB)</td></tr>
+          <tr><td>Proceed</td><td>Continue to bank details</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="errors">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Error messages</h2>
+      <p class="sec__intro">Say what happened, why if it helps, and what to do next. Don't blame the user, don't apologise at length, and never show an error code on its own.</p></div>
+    <div class="block stack" style="--_g:14px">
+      <div class="dd">
+        <div class="dd__item dd__item--do">
+          <div class="dd__stage" style="justify-content:flex-start"><div class="callout callout--neg" style="width:100%"><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg><div class="callout__title">Barclays rejected the payment file</div><div class="callout__body">Line 14 has a sort code with 5 digits. Fix it on the supplier, then resend. No money has moved.</div></div></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>What, where, next</b>The user knows what to fix and knows their money is safe.</div>
+        </div>
+        <div class="dd__item dd__item--dont">
+          <div class="dd__stage" style="justify-content:flex-start"><div class="callout callout--neg" style="width:100%"><svg class="ic" aria-hidden="true"><use href="#i-error"/></svg><div class="callout__title">Error 422</div><div class="callout__body">An unexpected error occurred. Please try again later.</div></div></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Code and a shrug</b>Trying again won't help, and the user is left wondering whether money moved.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="numbers">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Numbers, dates, money</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Thing</th><th>Format</th><th>Example</th></tr></thead>
+        <tbody>
+          <tr><td>Money in a table</td><td>Two decimals, currency in the header</td><td class="num">12,480.00</td></tr>
+          <tr><td>Money in a sentence</td><td>Symbol, no decimals if whole</td><td class="num">£12,480</td></tr>
+          <tr><td>Negative</td><td>Real minus sign, not a hyphen and not brackets in the UI</td><td class="num">−3,180.50</td></tr>
+          <tr><td>Big figures</td><td>Abbreviate only in headlines and charts</td><td class="num">£2.41m · £684k</td></tr>
+          <tr><td>Dates</td><td>Day, short month, and year if it isn't this year</td><td>22 Oct · 3 Mar 2025</td></tr>
+          <tr><td>Relative time</td><td>Under a day only, then switch to the date</td><td>4 minutes ago · Yesterday · 18 Oct</td></tr>
+          <tr><td>Percentages</td><td>One decimal place when the change is small</td><td class="num">4.2%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="words">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Word list</h2>
+      <p class="sec__intro">Use one word for one thing. If you call it a "supplier" here and a "vendor" there, people will assume they're different.</p></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Use</th><th>Not</th><th>Note</th></tr></thead>
+        <tbody>
+          <tr><td>supplier</td><td>vendor, payee</td><td>"Payee" only in a payment file.</td></tr>
+          <tr><td>customer</td><td>client, account</td><td>"Account" means a nominal account.</td></tr>
+          <tr><td>sign in / sign out</td><td>log in, login</td><td>"Sign-in" when it's a noun.</td></tr>
+          <tr><td>delete</td><td>remove, erase</td><td>"Remove" is for taking something out of a list without destroying it.</td></tr>
+          <tr><td>void</td><td>cancel, delete</td><td>For a posted invoice. It stays in the audit trail.</td></tr>
+          <tr><td>period</td><td>month, cycle</td><td>An accounting period may not be a calendar month.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="assets/icons.js"></script>
+<script src="assets/site.js"></script>
+</body>
+</html>

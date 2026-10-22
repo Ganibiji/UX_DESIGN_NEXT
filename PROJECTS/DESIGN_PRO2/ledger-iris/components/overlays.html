@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Menus &amp; overlays · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/overlays" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Menus &amp; overlays</li></ol>
+    <h1 class="h1">Menus &amp; overlays</h1>
+    <p class="lede">Things that float. The rule of thumb: the more an overlay blocks, the more it has to earn its place.</p>
+  </header>
+
+  <section class="sec" id="ladder">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">From light to heavy</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Overlay</th><th>Blocks the page?</th><th>Use for</th></tr></thead>
+        <tbody>
+          <tr><td>Tooltip</td><td>No</td><td>Naming an icon. A few words, never anything you can click.</td></tr>
+          <tr><td>Popover</td><td>No</td><td>A small amount of extra detail or a quick edit, close to its trigger.</td></tr>
+          <tr><td>Menu</td><td>No</td><td>A list of actions. Closes after one is chosen.</td></tr>
+          <tr><td>Drawer</td><td>Yes, partly</td><td>Editing or inspecting a record while keeping the list in view.</td></tr>
+          <tr><td>Dialog</td><td>Yes</td><td>A decision that must be made before anything else. Confirmation, short forms.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="menu">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Menu</h2>
+      <p class="sec__intro">Group related items, show shortcuts on the right, put destructive items last and in red. Arrow keys move; Escape closes and returns focus.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Row actions menu and a view-options menu with checkable items">
+        <div class="specimen__stage" style="min-height:380px; align-items:flex-start">
+          <div class="anchor">
+            <button class="btn" aria-haspopup="menu" aria-expanded="false" aria-controls="m-1" data-pop>Actions<svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+            <div class="pop menu" id="m-1" role="menu" hidden style="top:calc(100% + 6px); left:0; width:250px">
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-pencil"/></svg>Edit<span class="menu__kbd">E</span></button>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg>Duplicate<span class="menu__kbd">Ctrl D</span></button>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Download PDF</button>
+              <div class="menu__sep" role="separator"></div>
+              <div class="menu__label">Move to</div>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg>Q4 accruals</button>
+              <button role="menuitem" aria-disabled="true"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg>Q3 (locked)</button>
+              <div class="menu__sep" role="separator"></div>
+              <button role="menuitem" class="is-danger"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Void invoice</button>
+            </div>
+          </div>
+          <div class="anchor">
+            <button class="btn btn--quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="m-2" data-pop><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg>Columns</button>
+            <div class="pop menu" id="m-2" role="menu" hidden style="top:calc(100% + 6px); left:0; width:220px">
+              <div class="menu__label">Show columns</div>
+              <button role="menuitemcheckbox" aria-checked="true">Supplier<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+              <button role="menuitemcheckbox" aria-checked="true">Due date<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+              <button role="menuitemcheckbox" aria-checked="false">Cost centre<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+              <button role="menuitemcheckbox" aria-checked="true">Amount<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+              <button role="menuitemcheckbox" aria-checked="false">Created by<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="context">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Context menu</h2>
+      <p class="sec__intro">A shortcut for people who already know where things are. Every item in it must also be reachable another way — a right-click is invisible.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Right-click inside the box" data-nocode>
+        <div class="specimen__stage specimen__stage--grid" style="padding:0">
+          <div data-context="ctx-1" style="position:relative; width:100%; height:260px; display:grid; place-items:center; color:var(--ink-3); cursor:context-menu">
+            <span>Right-click anywhere here</span>
+            <div class="pop menu" id="ctx-1" role="menu" hidden style="width:220px">
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>Open</button>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-link"/></svg>Copy link</button>
+              <button role="menuitem"><svg class="ic" aria-hidden="true"><use href="#i-star"/></svg>Add to favourites</button>
+              <div class="menu__sep" role="separator"></div>
+              <button role="menuitem" class="is-danger"><svg class="ic" aria-hidden="true"><use href="#i-trash"/></svg>Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="popover">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Popover &amp; tooltip</h2>
+      <p class="sec__intro">A popover can hold a sentence, a link or a tiny form. A tooltip holds a few words and appears after a short delay, so it doesn't flicker as the pointer passes.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="A popover explaining a figure, and tooltips on icons">
+        <div class="specimen__stage" style="min-height:300px; align-items:flex-start">
+          <div class="anchor">
+            <span class="stat__label">Days sales outstanding <button class="btn btn--quiet btn--icon btn--sm" aria-label="How this is calculated" aria-expanded="false" aria-controls="po-1" data-pop><svg class="ic ic--sm" aria-hidden="true"><use href="#i-info"/></svg></button></span>
+            <div class="stat__value num">38.4 <small>days</small></div>
+            <div class="pop popover" id="po-1" role="dialog" aria-label="Days sales outstanding" hidden style="top:30px; left:0">
+              <div class="popover__body">
+                <div class="h4">How we work this out</div>
+                <p class="small muted">Trade debtors ÷ credit sales for the last 90 days × 90. Excludes intercompany and disputed invoices.</p>
+                <a class="link small" href="#popover">Read the full definition</a>
+              </div>
+            </div>
+          </div>
+          <div class="cluster" style="margin-left:auto">
+            <span class="tip"><button class="btn btn--icon" aria-label="Refresh"><svg class="ic" aria-hidden="true"><use href="#i-refresh"/></svg></button><span class="tip__bubble" role="tooltip">Refresh</span></span>
+            <span class="tip tip--below"><button class="btn btn--icon" aria-label="Full screen"><svg class="ic" aria-hidden="true"><use href="#i-expand"/></svg></button><span class="tip__bubble" role="tooltip">Full screen <span class="kbd" style="height:16px;min-width:16px;margin-left:4px;color:inherit;background:transparent;border-color:rgba(255,255,255,.3)">F</span></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="dialog">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Dialog</h2>
+      <p class="sec__intro">Built on the native <code class="inline-code">&lt;dialog&gt;</code>, which traps focus and restores it for free. The title is a question or an outcome; the buttons answer it.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Form dialog, confirmation, and type-to-confirm" data-nocode>
+        <div class="specimen__stage">
+          <button class="btn" data-open="dlg-form">Add bank account</button>
+          <button class="btn" data-open="dlg-confirm">Post journal</button>
+          <button class="btn btn--danger" data-open="dlg-danger">Delete entity</button>
+        </div>
+      </div>
+
+      <dialog class="dialog" id="dlg-form" aria-labelledby="dlg-form-t">
+        <div class="dialog__head"><h2 class="dialog__title" id="dlg-form-t">Add a bank account</h2><button class="btn btn--quiet btn--icon btn--sm" data-close aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+        <div class="dialog__body">
+          <div class="field"><label class="label" for="ba-name">Account name</label><input class="input" id="ba-name" autofocus placeholder="e.g. Operating account"></div>
+          <div class="cols-2">
+            <div class="field"><label class="label" for="ba-sort">Sort code</label><input class="input mono" id="ba-sort" placeholder="00-00-00" inputmode="numeric"></div>
+            <div class="field"><label class="label" for="ba-acc">Account number</label><input class="input mono" id="ba-acc" placeholder="8 digits" inputmode="numeric"></div>
+          </div>
+          <div class="callout"><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg><div class="callout__body" style="grid-column:2">We'll check these details with the bank before the first payment goes out.</div></div>
+        </div>
+        <div class="dialog__foot"><button class="btn btn--quiet" data-close>Cancel</button><button class="btn btn--primary" data-close="Bank account added">Add account</button></div>
+      </dialog>
+
+      <dialog class="dialog" id="dlg-confirm" aria-labelledby="dlg-confirm-t" style="width:min(440px,calc(100vw - 32px))">
+        <div class="dialog__head"><h2 class="dialog__title" id="dlg-confirm-t">Post 12 entries to October?</h2></div>
+        <div class="dialog__body"><p>The entries total <b class="num" style="color:var(--ink)">£48,210.55</b> and balance. Once posted they appear in reports straight away. You can reverse them until the period locks on 31 October.</p></div>
+        <div class="dialog__foot"><button class="btn btn--quiet" data-close autofocus>Not yet</button><button class="btn btn--primary" data-close="12 entries posted to October">Post entries</button></div>
+      </dialog>
+
+      <dialog class="dialog dialog--danger" id="dlg-danger" aria-labelledby="dlg-danger-t" data-modal-strict>
+        <div class="dialog__head"><h2 class="dialog__title" id="dlg-danger-t">Delete Northwind IE?</h2></div>
+        <div class="dialog__body">
+          <p>This deletes the entity, its 2,318 transactions and its bank feeds. Reports for the group will change. <b style="color:var(--ink)">This can't be undone.</b></p>
+          <div class="field"><label class="label" for="del-confirm">Type <span class="mono" style="background:var(--paper-sunken);padding:1px 5px;border-radius:3px">Northwind IE</span> to confirm</label><input class="input" id="del-confirm" autocomplete="off" data-confirm-input="del-go" data-confirm-value="Northwind IE"></div>
+        </div>
+        <div class="dialog__foot"><button class="btn btn--quiet" data-close autofocus>Keep entity</button><button class="btn btn--danger-solid" id="del-go" disabled data-close="Northwind IE deleted">Delete entity</button></div>
+      </dialog>
+
+      <div class="dd" style="margin-top:18px">
+        <div class="dd__item dd__item--do">
+          <div class="dd__stage"><button class="btn btn--quiet">Keep draft</button><button class="btn btn--danger-solid">Discard changes</button></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</b>Make both buttons describe their result. Nobody should need the title to know what they do.</div>
+        </div>
+        <div class="dd__item dd__item--dont">
+          <div class="dd__stage"><span class="small" style="max-width:24ch;text-align:center">Are you sure you don't want to not save?</span><button class="btn">No</button><button class="btn btn--primary">Yes</button></div>
+          <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Don't</b>Ask double negatives with Yes/No. People will get it wrong, then blame themselves.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="drawer">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Drawer</h2>
+      <p class="sec__intro">Slides in from the right over the page. Use it to inspect or edit one record without losing your place in a list.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Record drawer" data-nocode>
+        <div class="specimen__stage"><button class="btn" data-open="drw-1"><svg class="ic" aria-hidden="true"><use href="#i-panel"/></svg>Open INV-2041</button></div>
+      </div>
+      <dialog class="drawer" id="drw-1" aria-labelledby="drw-1-t">
+        <div class="dialog__head">
+          <div style="flex:1"><p class="eyebrow">Invoice</p><h2 class="dialog__title" id="drw-1-t" style="margin-top:4px">INV-2041</h2></div>
+          <button class="btn btn--quiet btn--icon btn--sm" data-close aria-label="Close"><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button>
+        </div>
+        <div class="dialog__body" style="color:var(--ink)">
+          <div class="cluster"><span class="badge badge--warn badge--dot">Due in 3 days</span><span class="badge">Net 30</span></div>
+          <div class="stat"><span class="stat__label">Amount due</span><span class="stat__value num">£12,480.00</span></div>
+          <dl class="kv">
+            <dt>Supplier</dt><dd>Northwind Traders Ltd</dd>
+            <dt>Issued</dt><dd>25 Sep 2026</dd>
+            <dt>Due</dt><dd>25 Oct 2026</dd>
+            <dt>PO</dt><dd class="mono">PO-8812</dd>
+            <dt>Cost centre</dt><dd>Leeds warehouse</dd>
+          </dl>
+          <hr>
+          <div class="h4">Lines</div>
+          <table class="table table--dense" style="border:1px solid var(--rule);border-radius:var(--r-2)">
+            <thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Total</th></tr></thead>
+            <tbody>
+              <tr><td>Pallet racking, 3-bay</td><td class="num">4</td><td class="num">£9,600.00</td></tr>
+              <tr><td>Installation</td><td class="num">1</td><td class="num">£2,880.00</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="dialog__foot"><button class="btn" data-close>Close</button><button class="btn btn--primary" data-close="Payment scheduled for 24 Oct">Schedule payment</button></div>
+      </dialog>
+    </div>
+  </section>
+
+  <section class="sec" id="palette">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Command palette</h2>
+      <p class="sec__intro">Search everything, from anywhere. This site uses one — press <span class="kbd">Ctrl</span> <span class="kbd">K</span>. Results are pages, records and actions, in that order, with the keyboard hints in the footer.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Opens the real one" data-nocode>
+        <div class="specimen__stage"><button class="btn" data-cmdk-open><svg class="ic" aria-hidden="true"><use href="#i-command"/></svg>Open command palette</button></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

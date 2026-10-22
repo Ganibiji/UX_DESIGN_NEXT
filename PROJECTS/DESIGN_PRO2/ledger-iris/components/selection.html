@@ -1,0 +1,244 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Selection · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/selection" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Selection</li></ol>
+    <h1 class="h1">Selection</h1>
+    <p class="lede">Eight ways to pick from a set. The right one depends on how many options there are, and whether picking one rules out the others.</p>
+  </header>
+
+  <section class="sec" id="choosing">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Which one?</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Options</th><th>Pick one</th><th>Pick many</th></tr></thead>
+        <tbody>
+          <tr><td>2</td><td>Switch (applies now) or two radios</td><td>Checkbox</td></tr>
+          <tr><td>3–6</td><td>Radios, or a segmented control for views</td><td>Checkboxes, or filter chips</td></tr>
+          <tr><td>7–30</td><td>Select</td><td>Multi-select</td></tr>
+          <tr><td>30+</td><td>Combobox (type to filter)</td><td>Multi-select with search</td></tr>
+          <tr><td>A range</td><td colspan="2">Slider, with a number field beside it when precision matters</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="checkbox">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Checkbox</h2>
+      <p class="sec__intro">Independent yes/no choices, confirmed by a Save button. The whole label is the hit target.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Checkbox group with hints">
+        <div class="specimen__stage specimen__stage--col">
+          <fieldset style="border:0;padding:0;margin:0" class="choices">
+            <legend class="label" style="margin-bottom:10px">Notify me when</legend>
+            <label class="check"><input type="checkbox" checked> <span>An invoice is waiting for my approval</span></label>
+            <label class="check"><input type="checkbox"> <span>A payment fails<span class="check__sub">Including card declines and returned direct debits</span></span></label>
+            <label class="check"><input type="checkbox" checked> <span>The period is about to close</span></label>
+            <label class="check"><input type="checkbox" disabled checked> <span>Security alerts — always on</span></label>
+          </fieldset>
+        </div>
+      </div>
+      <div class="specimen" data-label="All states" data-nocode>
+        <div class="specimen__stage">
+          <div class="states">
+            <div><label class="check"><input type="checkbox" aria-label="Off"></label><span class="states__label">off</span></div>
+            <div><label class="check"><input type="checkbox" checked aria-label="On"></label><span class="states__label">:checked</span></div>
+            <div><label class="check"><input type="checkbox" aria-label="Mixed" class="js-mixed"></label><span class="states__label">:indeterminate</span></div>
+            <div><label class="check"><input type="checkbox" disabled aria-label="Disabled"></label><span class="states__label">:disabled</span></div>
+            <div><label class="check"><input type="checkbox" disabled checked aria-label="Disabled on"></label><span class="states__label">disabled + checked</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="radio">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Radio &amp; choice cards</h2>
+      <p class="sec__intro">One from a small, visible set. Always pre-select the safest option, unless choosing is the point.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Plain radios, stacked">
+        <div class="specimen__stage specimen__stage--col">
+          <fieldset style="border:0;padding:0;margin:0" class="choices">
+            <legend class="label" style="margin-bottom:10px">Payment method</legend>
+            <label class="radio"><input type="radio" name="pm" checked> <span>Bank transfer (BACS)<span class="check__sub">Arrives in 3 working days. No fee.</span></span></label>
+            <label class="radio"><input type="radio" name="pm"> <span>Faster Payment<span class="check__sub">Same day. £0.45 per payment.</span></span></label>
+            <label class="radio"><input type="radio" name="pm"> <span>Company card</span></label>
+          </fieldset>
+        </div>
+      </div>
+      <div class="specimen" data-label="Choice cards — when each option needs a sentence">
+        <div class="specimen__stage specimen__stage--col">
+          <div class="cols-3" role="radiogroup" aria-label="Plan">
+            <label class="choice-card radio"><input type="radio" name="plan"><span><b>Team</b><span class="check__sub">Up to 10 people, one entity.</span><span class="num" style="display:block;margin-top:8px;font:400 22px var(--font-serif)">£12 <span class="small faint" style="font-family:var(--font-sans)">/ seat</span></span></span></label>
+            <label class="choice-card radio"><input type="radio" name="plan" checked><span><b>Business</b><span class="check__sub">Unlimited people, five entities.</span><span class="num" style="display:block;margin-top:8px;font:400 22px var(--font-serif)">£24 <span class="small faint" style="font-family:var(--font-sans)">/ seat</span></span></span></label>
+            <label class="choice-card radio"><input type="radio" name="plan"><span><b>Group</b><span class="check__sub">Consolidation across entities.</span><span style="display:block;margin-top:8px;font:400 22px var(--font-serif)">Talk to us</span></span></label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="switch">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Switch</h2>
+      <p class="sec__intro">A switch takes effect immediately, like a light switch. If the change waits for a Save button, use a checkbox.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Settings list">
+        <div class="specimen__stage specimen__stage--col" style="max-width:520px; gap:0">
+          <ul class="list">
+            <li><div class="list__main"><div class="list__title">Auto-match bank lines</div><div class="list__meta">Match by amount and reference, then ask you to confirm.</div></div><label class="switch"><input type="checkbox" role="switch" checked aria-label="Auto-match bank lines"></label></li>
+            <li><div class="list__main"><div class="list__title">Lock posted periods</div><div class="list__meta">Nobody can edit entries after a period closes.</div></div><label class="switch"><input type="checkbox" role="switch" checked aria-label="Lock posted periods"></label></li>
+            <li><div class="list__main"><div class="list__title">Multi-currency</div><div class="list__meta">Needs an admin to turn on.</div></div><label class="switch"><input type="checkbox" role="switch" disabled aria-label="Multi-currency"></label></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="slider">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Slider</h2>
+      <p class="sec__intro">For a rough value where the feel matters more than the figure. Always show the current value as text.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Slider with live value">
+        <div class="specimen__stage specimen__stage--col" style="max-width:420px">
+          <div class="field">
+            <div style="display:flex;justify-content:space-between"><label class="label" for="sl-1">Approval threshold</label><output class="num" for="sl-1" style="font-weight:600"></output></div>
+            <input class="range" type="range" id="sl-1" min="0" max="20000" step="500" value="5000" data-prefix="£">
+            <div style="display:flex;justify-content:space-between" class="hint num"><span>£0</span><span>£20,000</span></div>
+          </div>
+          <div class="field">
+            <div style="display:flex;justify-content:space-between"><label class="label" for="sl-2">Forecast confidence</label><output class="num" for="sl-2" style="font-weight:600"></output></div>
+            <input class="range" type="range" id="sl-2" min="50" max="99" value="80" data-suffix="%">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="select">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Select</h2>
+      <p class="sec__intro">Use the native <code class="inline-code">&lt;select&gt;</code> unless you need something it can't do. It's free accessibility, and on phones it brings up the system picker.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Native select, and a custom one for richer options">
+        <div class="specimen__stage specimen__stage--tall" style="align-items:flex-start">
+          <div class="field" style="width:220px">
+            <label class="label" for="s-cur">Currency</label>
+            <select class="select" id="s-cur"><option>GBP — Pound sterling</option><option>EUR — Euro</option><option>USD — US dollar</option><option>CHF — Swiss franc</option></select>
+          </div>
+          <div class="field anchor" style="width:260px">
+            <span class="label" id="s-owner-l">Account owner</span>
+            <button class="select-btn" aria-haspopup="listbox" aria-expanded="false" aria-controls="s-owner" aria-labelledby="s-owner-l s-owner-v" data-pop data-select><span id="s-owner-v" data-value>Priya Raman</span><svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+            <div class="pop menu" id="s-owner" role="listbox" hidden style="top:calc(100% + 4px); left:0; right:0">
+              <div role="option" tabindex="-1" aria-selected="false" data-label="Tom Okafor"><span class="avatar avatar--sm" data-c="3">TO</span>Tom Okafor<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="true" data-label="Priya Raman"><span class="avatar avatar--sm" data-c="1">PR</span>Priya Raman<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" data-label="Lena Fischer"><span class="avatar avatar--sm" data-c="5">LF</span>Lena Fischer<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" data-label="Unassigned"><span class="avatar avatar--sm">–</span>Unassigned<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="combobox">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Combobox</h2>
+      <p class="sec__intro">When the list is too long to scan. Typing filters; arrows move; Enter picks. If nothing matches, say so and offer a way out.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Try typing “ware” or “zz”">
+        <div class="specimen__stage specimen__stage--tall" style="align-items:flex-start">
+          <div class="field anchor" style="width:320px" data-combo>
+            <label class="label" for="cb-acc">Nominal account</label>
+            <div class="search">
+              <svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>
+              <input class="input" id="cb-acc" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="cb-list" autocomplete="off" placeholder="Code or name">
+            </div>
+            <div class="pop" hidden style="top:calc(100% + 4px); left:0; right:0; max-height:240px; overflow:auto">
+              <div class="menu" id="cb-list" role="listbox">
+                <div role="option" id="cb1" data-label="4000 · Sales"><span class="mono faint">4000</span>Sales</div>
+                <div role="option" id="cb2" data-label="5000 · Cost of sales"><span class="mono faint">5000</span>Cost of sales</div>
+                <div role="option" id="cb3" data-label="6100 · Warehouse rent"><span class="mono faint">6100</span>Warehouse rent</div>
+                <div role="option" id="cb4" data-label="6110 · Warehouse utilities"><span class="mono faint">6110</span>Warehouse utilities</div>
+                <div role="option" id="cb5" data-label="6200 · Travel"><span class="mono faint">6200</span>Travel</div>
+                <div role="option" id="cb6" data-label="6210 · Subsistence"><span class="mono faint">6210</span>Subsistence</div>
+                <div role="option" id="cb7" data-label="7000 · Salaries"><span class="mono faint">7000</span>Salaries</div>
+                <div role="option" id="cb8" data-label="7100 · Pension contributions"><span class="mono faint">7100</span>Pension contributions</div>
+                <div role="option" id="cb9" data-label="8400 · Software subscriptions"><span class="mono faint">8400</span>Software subscriptions</div>
+                <div class="combo-empty small faint" hidden style="padding:10px">No account matches. <a class="link" href="#combobox">Create a new account</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="multi">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Multi-select</h2>
+      <p class="sec__intro">Picked values become tags inside the field, each with its own remove button. The list stays open so people can pick several in a row.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Multi-select with removable tags">
+        <div class="specimen__stage specimen__stage--tall" style="align-items:flex-start">
+          <div class="field anchor" style="width:380px" data-multi>
+            <span class="label" id="ms-l">Cost centres</span>
+            <div class="multi">
+              <span class="multi__tags"><span class="tag" data-tag="London">London<button class="tag__x" aria-label="Remove London" data-untag><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></span><span class="tag" data-tag="Leeds">Leeds<button class="tag__x" aria-label="Remove Leeds" data-untag><svg class="ic" aria-hidden="true"><use href="#i-x"/></svg></button></span></span>
+              <button class="multi__open" aria-haspopup="listbox" aria-expanded="false" aria-controls="ms-list" aria-labelledby="ms-l" data-pop>Add<svg class="ic" aria-hidden="true"><use href="#i-chev-d"/></svg></button>
+            </div>
+            <div class="pop menu" id="ms-list" role="listbox" aria-multiselectable="true" hidden style="top:calc(100% + 4px); left:0; right:0">
+              <div role="option" tabindex="-1" aria-selected="true" data-label="London">London<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="true" data-label="Leeds">Leeds<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" data-label="Glasgow">Glasgow<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" data-label="Bristol">Bristol<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+              <div role="option" tabindex="-1" aria-selected="false" data-label="Head office">Head office<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="segmented">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Segmented control &amp; filter chips</h2>
+      <p class="sec__intro">Segmented controls switch between views of the same data. Chips narrow a list; several can be on at once, and each shows how many results it holds.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Segmented view switcher and filter chips">
+        <div class="specimen__stage specimen__stage--col" style="gap:20px; align-items:flex-start">
+          <div class="seg" role="group" aria-label="View">
+            <button aria-pressed="true"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-table"/></svg>Table</button>
+            <button aria-pressed="false"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-kanban"/></svg>Board</button>
+            <button aria-pressed="false"><svg class="ic ic--sm" aria-hidden="true"><use href="#i-calendar"/></svg>Calendar</button>
+          </div>
+          <div class="cluster" style="--_g:8px" role="group" aria-label="Filter by status">
+            <button class="chip" aria-pressed="true">Overdue <span class="chip__n">14</span></button>
+            <button class="chip" aria-pressed="false">Due this week <span class="chip__n">31</span></button>
+            <button class="chip" aria-pressed="false">Disputed <span class="chip__n">2</span></button>
+            <button class="chip" aria-pressed="false">Paid <span class="chip__n">408</span></button>
+            <button class="chip"><svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>More filters</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script>document.querySelectorAll('.js-mixed').forEach(function (c) { c.indeterminate = true; });</script>
+</body>
+</html>

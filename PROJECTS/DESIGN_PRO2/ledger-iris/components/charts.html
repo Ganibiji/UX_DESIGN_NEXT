@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Charts · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="components/charts" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="actions.html">Components</a></li><li aria-current="page">Charts</li></ol>
+    <h1 class="h1">Charts</h1>
+    <p class="lede">Four chart types cover nearly everything a finance team asks. Each one is drawn in plain SVG, answers to hover, and can be read as a table.</p>
+    <div class="doc-head__meta"><span><b>Script</b> <code class="mono">assets/charts.js</code></span><span><b>Markup</b> <code class="mono">&lt;figure data-chart&gt;</code></span></div>
+  </header>
+
+  <section class="sec" id="choose">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Start with the question</h2>
+      <p class="sec__intro">Choose the chart from what the reader needs to find out. Sometimes the answer is a single number in a stat tile, with no chart at all.</p></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>The reader asks</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td>How do these compare?</td><td>Bars. Vertical for time periods, horizontal for long category names.</td></tr>
+          <tr><td>How has it moved?</td><td>A line. Two lines at most if you're comparing, and both on the same scale.</td></tr>
+          <tr><td>What's it made of?</td><td>A 100% stacked bar. Not a pie: people can't compare angles accurately.</td></tr>
+          <tr><td>How did we get from A to B?</td><td>A waterfall. Profit bridges, budget-to-actual, cash movements.</td></tr>
+          <tr><td>What's the number?</td><td>A <a class="link" href="data-display.html#stat">statistic</a>. Don't draw a chart for one value.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="bars">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Bar chart</h2>
+      <p class="sec__intro">Bars sit flat on the baseline with rounded tops. A 2px gap separates bars in the same group. The y-axis always starts at zero, because bar length is what the reader compares.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Revenue by month, this year against last" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <figure class="figure" data-chart="bar">
+            <figcaption><div class="figure__title">Revenue by month</div><div class="figure__sub">£, 2026 compared with 2025</div></figcaption>
+            <script type="application/json">{"title":"Revenue by month, 2026 vs 2025","prefix":"£","labels":["Apr","May","Jun","Jul","Aug","Sep"],"series":[{"name":"2026","values":[412000,438000,401000,466000,452000,489000]},{"name":"2025","values":[371000,392000,388000,402000,419000,433000],"color":"var(--d2)"}]}</script>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="lines">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Line chart</h2>
+      <p class="sec__intro">2px lines, with markers only on hover. If there are four lines or fewer, each one is labelled at its end so readers don't have to check the legend. Mark notable events on the chart itself.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Cash balance with an annotation" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <figure class="figure" data-chart="line">
+            <figcaption><div class="figure__title">Cash at bank</div><div class="figure__sub">Month-end balance, £</div></figcaption>
+            <script type="application/json">{"title":"Cash at bank, month end","prefix":"£","area":true,"labels":["Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct"],"labelEvery":1,"series":[{"name":"Cash","values":[1620000,1540000,1480000,1390000,1330000,1290000,1250000,1210000,2480000,2420000,2310000,2410000]}],"annotations":[{"at":8,"text":"Series B closes"}]}</script>
+          </figure>
+        </div>
+      </div>
+      <div class="specimen" data-label="Actual against forecast: two lines on one scale" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <figure class="figure" data-chart="line">
+            <figcaption><div class="figure__title">Operating costs</div><div class="figure__sub">£, actual against forecast</div></figcaption>
+            <script type="application/json">{"title":"Operating costs, actual vs forecast","prefix":"£","labels":["Apr","May","Jun","Jul","Aug","Sep","Oct"],"series":[{"name":"Actual","values":[298000,305000,311000,322000,318000,334000,329000]},{"name":"Forecast","values":[300000,302000,306000,310000,314000,318000,322000],"color":"var(--ink-3)","dashed":true}]}</script>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="stacked">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">100% stacked bar</h2>
+      <p class="sec__intro">For parts of a whole, compared across groups. Keep it to six segments at most, and merge anything smaller into "Other". Segments are separated by a 2px gap and labelled where they're wide enough.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Spend mix by site" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <figure class="figure" data-chart="stack">
+            <figcaption><div class="figure__title">Where the money goes</div><div class="figure__sub">Share of Q3 spend by category</div></figcaption>
+            <script type="application/json">{"title":"Q3 spend mix by site","prefix":"£","labels":["Head office","Leeds","Glasgow","Field sales"],"series":[{"name":"People","values":[248000,121000,58000,61000]},{"name":"Premises","values":[64000,98000,31000,2000]},{"name":"Equipment","values":[22000,41000,14000,4000]},{"name":"Travel","values":[18000,6000,4000,16000]},{"name":"Other","values":[46000,16000,6000,4000]}]}</script>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="waterfall">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Waterfall</h2>
+      <p class="sec__intro">Shows how one total becomes another. Totals are drawn in ink, increases in green and decreases in clay. Every bar has its value printed on it, so colour is never the only cue.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Budget to actual, operating profit" data-nocode>
+        <div class="specimen__stage specimen__stage--col">
+          <figure class="figure" data-chart="waterfall">
+            <figcaption><div class="figure__title">Operating profit bridge</div><div class="figure__sub">Q3 budget to Q3 actual, £</div></figcaption>
+            <script type="application/json">{"title":"Operating profit, budget to actual","prefix":"£","valueName":"Change","steps":[{"label":"Budget","value":410000,"total":true},{"label":"Volume","value":86000},{"label":"Price","value":24000},{"label":"Freight","value":-41000},{"label":"Leeds rent","value":-22000},{"label":"FX","value":-9000},{"label":"Actual","value":448000,"total":true}]}</script>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="palette">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Series colours</h2>
+      <p class="sec__intro">Six hues, always assigned in the same order and never repeated. Each colour stays with its entity: if a filter removes a series, the others keep their colours. Any series past the sixth goes into "Other". The order was checked by script so that neighbouring colours stay distinct for people with red-green colour blindness, in both themes.</p></div>
+    <div class="block">
+      <div class="ramp">
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--d1)"><span>1</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Green</span><span class="chip-swatch__token">--d1</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--d2)"><span>2</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Blue</span><span class="chip-swatch__token">--d2</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--d3)"><span>3</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Clay</span><span class="chip-swatch__token">--d3</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--d4)"><span>4</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Plum</span><span class="chip-swatch__token">--d4</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--d5)"><span>5</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Ochre</span><span class="chip-swatch__token">--d5</span><span class="chip-swatch__use">Under 3:1 on paper: always label it directly.</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--d6)"><span>6</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Teal</span><span class="chip-swatch__token">--d6</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="never">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Never</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>Two y-axes.</strong> Readers will compare the lines anyway, and the comparison means nothing. Draw two charts instead.</li>
+        <li><strong>A number on every point.</strong> Label the first value, the last, and anything worth commenting on. Hover shows the rest.</li>
+        <li><strong>Status colours for series.</strong> Red and green mean good and bad. A series called "Glasgow" is neither.</li>
+        <li><strong>Coloured text.</strong> Labels and values stay in ink. The coloured mark beside them shows which series they belong to.</li>
+        <li><strong>3D, gradients, shadows on marks.</strong> They make values harder to read.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script src="../assets/charts.js"></script>
+</body>
+</html>

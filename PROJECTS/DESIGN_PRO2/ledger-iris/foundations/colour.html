@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Colour · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body data-page="foundations/colour" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="colour.html">Foundations</a></li><li aria-current="page">Colour</li></ol>
+    <h1 class="h1">White, lavender, and one indigo</h1>
+    <p class="lede">A clean white workspace, a lavender index and soft pastel accents. One deep indigo carries the primary action and marks what's selected or in focus, so the eye always knows where to go next.</p>
+  </header>
+
+  <section class="sec" id="surfaces">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Surfaces</h2>
+      <p class="sec__intro">White for lists and forms, apricot cream for the record you're reading, lavender for navigation and selection, and a lilac-to-apricot wash behind every page title. Depth comes from these tones first. Shadows are only for things that float.</p></div>
+    <div class="block ramp">
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--paper)"><span>#FFFFFF</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Paper</span><span class="chip-swatch__token">--paper</span><span class="chip-swatch__use">Page background, lists</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--paper-warm)"><span>#FFF8F3</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Warm</span><span class="chip-swatch__token">--paper-warm</span><span class="chip-swatch__use">Detail panes, stages</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--paper-mint)"><span>#F0EEFC</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Lavender</span><span class="chip-swatch__token">--paper-mint</span><span class="chip-swatch__use">Index rail, selected rows</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--paper-sunken)"><span>#F5F4FA</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Sunken</span><span class="chip-swatch__token">--paper-sunken</span><span class="chip-swatch__use">Table heads, code, wells</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--paper-hover)"><span>#F3F1FC</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Hover</span><span class="chip-swatch__token">--paper-hover</span><span class="chip-swatch__use">Row and item hover</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--band); background:var(--band)"><span>Band</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Page band</span><span class="chip-swatch__token">--band</span><span class="chip-swatch__use">Behind page titles</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="ink">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Ink</h2>
+      <p class="sec__intro">Four text tones. The third tone is the lightest you can use for text that matters. The faint tone is for decoration only.</p></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Token</th><th>Sample</th><th>On raised</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>--ink</code></td><td><span style="color:var(--ink); font-weight:500">Accrued expenses</span></td><td class="num">17.0 : 1</td><td>Body text, values, headings</td></tr>
+          <tr><td><code>--ink-2</code></td><td><span style="color:var(--ink-2)">Accrued expenses</span></td><td class="num">8.4 : 1</td><td>Secondary text, descriptions</td></tr>
+          <tr><td><code>--ink-3</code></td><td><span style="color:var(--ink-3)">Accrued expenses</span></td><td class="num">5.5 : 1</td><td>Metadata, hints, placeholders. The lightest tone for text that matters; it still passes AA on lavender (4.8 : 1).</td></tr>
+          <tr><td><code>--ink-faint</code></td><td><span style="color:var(--ink-faint)">Accrued expenses</span></td><td class="num">2.2 : 1</td><td>Separators, disabled glyphs. Never text that someone needs to read.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="accent">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">One indigo for action and state</h2>
+      <p class="sec__intro">The deep indigo fills the one primary button on a screen, outlines the secondary choice, and marks what's selected or in focus. Everything else stays white or pastel, so the indigo always points at the next step.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Indigo acts and marks" data-nocode>
+        <div class="specimen__stage" style="gap:24px">
+          <button class="btn btn--primary">Approve 6 invoices</button>
+          <button class="btn btn--outline">Send back</button>
+          <div class="seg"><button aria-pressed="true">Open</button><button aria-pressed="false">Paid</button></div>
+          <label class="switch"><input type="checkbox" role="switch" checked aria-label="Auto-match"> Auto-match</label>
+          <input class="input is-focus" value="Focused field" aria-label="Focused field" style="width:180px">
+          <a class="link" href="#accent">A link</a>
+        </div>
+      </div>
+      <div class="ramp" style="margin-top:16px">
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--action)"><span>#4B45C6</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Action</span><span class="chip-swatch__token">--action</span><span class="chip-swatch__use">Primary buttons, checked boxes</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--accent)"><span>#4B45C6</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Accent</span><span class="chip-swatch__token">--accent</span><span class="chip-swatch__use">Focus, switches, current page</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--accent-tint)"><span>#ECEBFC</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Accent tint</span><span class="chip-swatch__token">--accent-tint</span><span class="chip-swatch__use">Selected tabs and chips</span></div></div>
+        <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--accent-ink)"><span>#3F3AB0</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Accent ink</span><span class="chip-swatch__token">--accent-ink</span><span class="chip-swatch__use">Links, indigo text</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="categories">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Categories</h2>
+      <p class="sec__intro">Six pastel pairs for tags and avatars: a soft fill with a deep text colour from the same hue. Every pair passes 4.5 : 1, so a category can be read without relying on its colour.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Category badges and avatars" data-nocode>
+        <div class="specimen__stage" style="gap:12px">
+          <span class="badge badge--blue">Travel</span><span class="badge badge--plum">Meals</span><span class="badge badge--green">Equipment</span><span class="badge badge--rose">Events</span><span class="badge badge--peach">Training</span><span class="badge badge--teal">Software</span>
+          <span style="width:12px"></span>
+          <span class="avatar avatar--lg" data-c="2">TO</span><span class="avatar avatar--lg" data-c="3">AR</span><span class="avatar avatar--lg" data-c="5">SI</span><span class="avatar avatar--lg" data-c="1">BC</span><span class="avatar avatar--lg" data-c="6">PR</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="status">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Status</h2>
+      <p class="sec__intro">Four status tones, each with a tint for backgrounds. They're muted so a screen full of overdue invoices doesn't look like an emergency. Status colour always comes with an icon or a word.</p></div>
+    <div class="block ramp">
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--pos)"><span>#1E7A4C</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Positive</span><span class="chip-swatch__token">--pos · --pos-tint</span><span class="chip-swatch__use">Paid, reconciled, done</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--warn)"><span>#9A5B00</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Warning</span><span class="chip-swatch__token">--warn · --warn-tint</span><span class="chip-swatch__use">Due soon, needs review</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--neg)"><span>#B4362A</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Negative</span><span class="chip-swatch__token">--neg · --neg-tint</span><span class="chip-swatch__use">Overdue, failed, destructive</span></div></div>
+      <div class="chip-swatch"><div class="chip-swatch__c" style="--c:var(--note)"><span>#2F5FA6</span></div><div class="chip-swatch__meta"><span class="chip-swatch__name">Note</span><span class="chip-swatch__token">--note · --note-tint</span><span class="chip-swatch__use">Information, scheduled</span></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="dark">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Dark theme</h2>
+      <p class="sec__intro">Dark mode is a deep ink-violet, not pure black. Every token keeps its name and gets a value designed for the dark surface; nothing is inverted automatically. Indigo becomes lighter so it still reads, and text on the primary button turns dark.</p></div>
+    <div class="block">
+      <div class="cols-2">
+        <div data-theme="light" style="padding:22px; border-radius:var(--r-3); border:1px solid #E7E5F0; background:#FFFFFF; color:#1B1A2E; display:grid; gap:12px">
+          <span class="eyebrow" style="color:#69677F">Light</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap"><span style="background:#4B45C6;color:#FFFFFF;padding:8px 15px;border-radius:10px;font-weight:600">Approve</span><span style="background:#FFFFFF;border:1.5px solid #4B45C6;color:#3F3AB0;padding:7px 15px;border-radius:10px;font-weight:600">Send back</span><span style="background:#F0EEFC;color:#3F3AB0;padding:7px 12px;border-radius:10px;font-weight:600">Selected</span></div>
+        </div>
+        <div style="padding:22px; border-radius:var(--r-3); border:1px solid #29273D; background:#13121F; color:#EEEDF7; display:grid; gap:12px">
+          <span class="eyebrow" style="color:#9896B0">Dark</span>
+          <div style="display:flex; gap:8px; flex-wrap:wrap"><span style="background:#A39DFF;color:#15132B;padding:8px 15px;border-radius:10px;font-weight:600">Approve</span><span style="background:#1A1929;border:1.5px solid #A39DFF;color:#B5B0FF;padding:7px 15px;border-radius:10px;font-weight:600">Send back</span><span style="background:#1A1830;color:#B5B0FF;padding:7px 12px;border-radius:10px;font-weight:600">Selected</span></div>
+        </div>
+      </div>
+      <p class="small faint" style="margin-top:12px">Use the theme button in the top bar to switch this whole site between system, light and dark.</p>
+    </div>
+  </section>
+
+  <section class="sec" id="dont">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Guidance</h2></div>
+    <div class="block dd">
+      <div class="dd__item dd__item--do">
+        <div class="dd__stage"><span class="status status--neg">Overdue</span><span class="badge badge--neg">3 days late</span></div>
+        <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Do</b>Pair status colour with a word or an icon.</div>
+      </div>
+      <div class="dd__item dd__item--dont">
+        <div class="dd__stage"><span style="color:var(--neg); font-weight:600" class="num">£3,180.00</span></div>
+        <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Don't</b>Rely on red text alone to mark a negative or overdue amount. Use a minus sign, a label or a column.</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

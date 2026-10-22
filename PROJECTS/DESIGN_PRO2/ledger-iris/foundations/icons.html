@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Icons · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); border-top: 1px solid var(--rule); border-left: 1px solid var(--rule); }
+  .icon-cell { display: grid; justify-items: center; gap: 10px; padding: 20px 6px 12px; border: 0; border-right: 1px solid var(--rule); border-bottom: 1px solid var(--rule); background: var(--paper-raised); color: var(--ink); font: 400 11px var(--font-mono); }
+  .icon-cell span { color: var(--ink-3); }
+  .icon-cell:hover { background: var(--paper-hover); }
+  .icon-cell:hover span { color: var(--ink); }
+  .icon-cell .ic { width: 22px; height: 22px; }
+  .keyline { position: relative; width: 192px; height: 192px; background: var(--paper-raised); border: 1px solid var(--rule); background-image: linear-gradient(var(--rule) 1px, transparent 1px), linear-gradient(90deg, var(--rule) 1px, transparent 1px); background-size: 8px 8px; }
+  .keyline svg { position: absolute; inset: 0; width: 100%; height: 100%; color: var(--ink); }
+</style>
+</head>
+<body data-page="foundations/icons" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="colour.html">Foundations</a></li><li aria-current="page">Icons</li></ol>
+    <h1 class="h1">Icons</h1>
+    <p class="lede">Drawn for this system: a 24px grid, 1.6px stroke, round ends, no fills. They're meant to look like they were drawn with the same pen as the type.</p>
+  </header>
+
+  <section class="sec" id="construction">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Construction</h2>
+      <p class="sec__intro">Keep a 2px margin inside the 24px box. Keep corners at 1.5px radius and avoid tiny details that disappear at 16px. If an icon needs a caption to make sense, it probably shouldn't be an icon.</p></div>
+    <div class="block anatomy">
+      <div class="anatomy__fig" style="padding:28px">
+        <div class="keyline" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" fill="none" stroke="var(--accent)" stroke-width=".12" stroke-dasharray=".4 .3"/><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h12v17l-2-1.3-2 1.3-2-1.3-2 1.3-2-1.3-2 1.3Z"/><path d="M9 8h6M9 11.5h6M9 15h3.5"/></g></svg>
+        </div>
+      </div>
+      <ol>
+        <li><span><b>24 × 24 box</b>, drawn at 1×. Shown at 18px by default, 15px small, 22px large.</span></li>
+        <li><span><b>2px live-area margin.</b> The dashed indigo line.</span></li>
+        <li><span><b>1.6px stroke</b>, round caps and joins. Scaling is fine; changing the stroke width isn't.</span></li>
+        <li><span><b>currentColor</b>, so icons always take on the colour of their text.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec" id="set">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">The set</h2>
+      <p class="sec__intro">Click an icon to copy its markup.</p></div>
+    <div class="block">
+      <div class="search" style="max-width:300px; margin-bottom:14px"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="input" type="search" id="icon-q" placeholder="Filter icons" aria-label="Filter icons"></div>
+      <div class="icon-grid" id="icon-grid"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="usage">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Usage</h2></div>
+    <div class="block">
+      <div class="code"><pre><span class="c">&lt;!-- Decorative: beside a text label --&gt;</span>
+&lt;<span class="t">svg</span> <span class="k">class</span>=<span class="s">"ic"</span> <span class="k">aria-hidden</span>=<span class="s">"true"</span>&gt;&lt;<span class="t">use</span> <span class="k">href</span>=<span class="s">"#i-download"</span>/&gt;&lt;/<span class="t">svg</span>&gt; Export
+
+<span class="c">&lt;!-- Alone: the button carries the name --&gt;</span>
+&lt;<span class="t">button</span> <span class="k">class</span>=<span class="s">"btn btn--icon"</span> <span class="k">aria-label</span>=<span class="s">"Download"</span>&gt;
+  &lt;<span class="t">svg</span> <span class="k">class</span>=<span class="s">"ic"</span> <span class="k">aria-hidden</span>=<span class="s">"true"</span>&gt;&lt;<span class="t">use</span> <span class="k">href</span>=<span class="s">"#i-download"</span>/&gt;&lt;/<span class="t">svg</span>&gt;
+&lt;/<span class="t">button</span>&gt;</pre></div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+<script>
+  (function () {
+    var grid = document.getElementById('icon-grid'), q = document.getElementById('icon-q');
+    var names = Object.keys(window.LEDGER_ICONS);
+    grid.innerHTML = names.map(function (n) {
+      return '<button class="icon-cell" data-name="' + n + '" data-copy-text=\'<svg class="ic" aria-hidden="true"><use href="#i-' + n + '"/></svg>\'><svg class="ic" aria-hidden="true"><use href="#i-' + n + '"/></svg><span>' + n + '</span></button>';
+    }).join('');
+    q.addEventListener('input', function () {
+      var v = q.value.trim().toLowerCase();
+      grid.querySelectorAll('.icon-cell').forEach(function (c) { c.hidden = c.getAttribute('data-name').indexOf(v) < 0; });
+    });
+  })();
+</script>
+</body>
+</html>

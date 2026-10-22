@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inventory · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .sku { display: flex; gap: 10px; align-items: center; }
+  .sku__thumb { width: 30px; height: 30px; border-radius: 4px; background: var(--paper-sunken); border: 1px solid var(--rule); display: grid; place-items: center; color: var(--ink-3); flex: none; }
+  .sku__thumb .ic { width: 15px; height: 15px; }
+  .stockbar { display: flex; align-items: center; gap: 8px; min-width: 150px; }
+  .stockbar .cellbar__track { position: relative; }
+  .stockbar .cellbar__track::after { content: ""; position: absolute; top: -3px; bottom: -3px; left: var(--reorder); width: 1.5px; background: var(--ink); }
+</style>
+</head>
+<body data-page="apps/inventory" data-root="../">
+<div class="site">
+<main class="page page--wide" id="main">
+<div class="page__main">
+
+  <header class="doc-head" style="padding-bottom:24px">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="finance.html">Example apps</a></li><li aria-current="page">Inventory</li></ol>
+    <h1 class="h1">Stock across sites</h1>
+    <p class="lede">A dense, sortable table for a stock controller. The tick on each stock bar marks the reorder point, so items close to running out stand out without needing more colour.</p>
+  </header>
+
+  <div class="window" style="margin-top:28px">
+    <div class="window__chrome"><i></i><i></i><i></i><span>northwind.ledger.app/inventory</span></div>
+    <div class="app">
+      <nav class="app__nav" aria-label="Inventory">
+        <div class="app__brand"><i>N</i>Northwind</div>
+        <a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-box"/></svg>Stock</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-truck"/></svg>Transfers<span class="count">2</span></a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-cart"/></svg>Purchase orders</a>
+        <a href="#"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg>Sites</a>
+        <div class="app__navlabel">Sites</div>
+        <a href="#">Leeds DC</a><a href="#">Glasgow depot</a><a href="#">Bristol</a>
+        <div class="app__navfoot"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-gear"/></svg>Settings</a></div>
+      </nav>
+      <div class="app__main">
+        <div class="app__top">
+          <nav aria-label="Breadcrumb"><ol class="crumbs"><li><a href="#">Stock</a></li><li aria-current="page">All sites</li></ol></nav>
+          <span style="flex:1"></span>
+          <button class="btn btn--sm"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg>Import count</button>
+          <button class="btn btn--primary btn--sm" data-toast="Purchase order PO-8820 drafted for 3 items">Reorder low stock</button>
+        </div>
+        <div class="app__body">
+          <div class="callout callout--warn"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg><div class="callout__title">3 items are below their reorder point</div><div class="callout__body">Shrink wrap, the 1.2m pallets and the hi-vis vests. At the current rate the vests run out on Monday.</div><div class="callout__actions"><a class="link" href="#">Draft a purchase order</a></div></div>
+
+          <div class="panel">
+            <div class="table-bar" id="inv-bar2">
+              <div class="search" data-when="idle" style="width:260px"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input class="input input--sm" type="search" placeholder="SKU, name or site" aria-label="Filter stock" data-filter-table="stock" data-count="stock-n"></div>
+              <span class="small faint" data-when="idle"><span id="stock-n" class="num">9</span> items</span>
+              <span data-when="selecting" data-selected-count hidden style="font-weight:600"></span>
+              <span class="table-bar__spacer"></span>
+              <div class="anchor" data-when="idle">
+                <button class="btn btn--sm btn--quiet" aria-haspopup="menu" aria-expanded="false" aria-controls="cols-m" data-pop><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg>Columns</button>
+                <div class="pop menu" id="cols-m" role="menu" hidden style="top:calc(100% + 6px); right:0; width:200px">
+                  <button role="menuitemcheckbox" aria-checked="true">Site<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+                  <button role="menuitemcheckbox" aria-checked="true">Stock level<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+                  <button role="menuitemcheckbox" aria-checked="false">Supplier<svg class="ic menu__tick" aria-hidden="true"><use href="#i-check"/></svg></button>
+                </div>
+              </div>
+              <button class="btn btn--sm" data-when="selecting" hidden data-toast="Transfer drafted">Transfer</button>
+              <button class="btn btn--sm" data-when="selecting" hidden data-toast="Added to purchase order">Reorder</button>
+            </div>
+            <div class="table-wrap" style="border:0; border-radius:0 0 var(--r-3) var(--r-3)">
+              <table class="table table--dense" id="stock" data-sortable>
+                <thead><tr>
+                  <th class="shrink"><label class="check"><input type="checkbox" aria-label="Select all" data-select-all="inv-bar2"></label></th>
+                  <th><button class="sort">Item<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                  <th><button class="sort">Site<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                  <th class="num"><button class="sort">On hand<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                  <th>Stock vs reorder point</th>
+                  <th class="num"><button class="sort">Unit cost (£)<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                  <th class="num" aria-sort="descending"><button class="sort">Value (£)<svg class="ic" aria-hidden="true"><use href="#i-caret"/></svg></button></th>
+                </tr></thead>
+                <tbody>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select racking frames"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-columns"/></svg></span><div><div>Racking upright, 3m</div><div class="mono faint" style="font-size:11px">RK-UP-300</div></div></div></td><td>Leeds DC</td><td class="num" data-v="148">148</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:20%"><div class="cellbar__fill" style="width:74%"></div></div></div></td><td class="num" data-v="210">210.00</td><td class="num" data-v="31080">31,080.00</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select beam pairs"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-minus"/></svg></span><div><div>Beam pair, 2.7m</div><div class="mono faint" style="font-size:11px">RK-BM-270</div></div></div></td><td>Leeds DC</td><td class="num" data-v="212">212</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:25%"><div class="cellbar__fill" style="width:62%"></div></div></div></td><td class="num" data-v="95">95.00</td><td class="num" data-v="20140">20,140.00</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select pallet jacks"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-truck"/></svg></span><div><div>Pallet truck, 2.5t</div><div class="mono faint" style="font-size:11px">MH-PT-25</div></div></div></td><td>Glasgow</td><td class="num" data-v="14">14</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:30%"><div class="cellbar__fill" style="width:70%"></div></div></div></td><td class="num" data-v="389">389.00</td><td class="num" data-v="5446">5,446.00</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select pallets"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg></span><div><div>Pallet, 1.2m wood</div><div class="mono faint" style="font-size:11px">PL-WD-120</div></div></div></td><td>Leeds DC</td><td class="num" data-v="380">380</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:40%"><div class="cellbar__fill" style="width:32%;background:var(--neg)"></div></div><span class="small" style="color:var(--neg)">Low</span></div></td><td class="num" data-v="11.5">11.50</td><td class="num" data-v="4370">4,370.00</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select labels"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-tag"/></svg></span><div><div>Thermal labels, roll</div><div class="mono faint" style="font-size:11px">CN-LB-100</div></div></div></td><td>Bristol</td><td class="num" data-v="640">640</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:15%"><div class="cellbar__fill" style="width:88%"></div></div></div></td><td class="num" data-v="4.2">4.20</td><td class="num" data-v="2688">2,688.00</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select shrink wrap"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg></span><div><div>Shrink wrap, 500mm</div><div class="mono faint" style="font-size:11px">CN-SW-500</div></div></div></td><td>Glasgow</td><td class="num" data-v="96">96</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:35%"><div class="cellbar__fill" style="width:24%;background:var(--neg)"></div></div><span class="small" style="color:var(--neg)">Low</span></div></td><td class="num" data-v="18.9">18.90</td><td class="num" data-v="1814.4">1,814.40</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select tape"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-circle"/></svg></span><div><div>Packing tape, brown</div><div class="mono faint" style="font-size:11px">CN-TP-048</div></div></div></td><td>Bristol</td><td class="num" data-v="720">720</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:20%"><div class="cellbar__fill" style="width:66%"></div></div></div></td><td class="num" data-v="1.85">1.85</td><td class="num" data-v="1332">1,332.00</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select hi-vis vests"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg></span><div><div>Hi-vis vest, L</div><div class="mono faint" style="font-size:11px">PP-HV-L</div></div></div></td><td>Leeds DC</td><td class="num" data-v="22">22</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:30%"><div class="cellbar__fill" style="width:9%;background:var(--neg)"></div></div><span class="small" style="color:var(--neg)">Low</span></div></td><td class="num" data-v="6.4">6.40</td><td class="num" data-v="140.8">140.80</td></tr>
+                  <tr><td><label class="check"><input type="checkbox" aria-label="Select gloves"></label></td><td><div class="sku"><span class="sku__thumb"><svg class="ic" aria-hidden="true"><use href="#i-heart"/></svg></span><div><div>Work gloves, pair</div><div class="mono faint" style="font-size:11px">PP-GL-M</div></div></div></td><td>Glasgow</td><td class="num" data-v="58">58</td><td><div class="stockbar"><div class="cellbar__track" style="--reorder:25%"><div class="cellbar__fill" style="width:48%"></div></div></div></td><td class="num" data-v="2.1">2.10</td><td class="num" data-v="121.8">121.80</td></tr>
+                </tbody>
+                <tfoot><tr><td></td><td colspan="5">Total stock value</td><td class="num">67,133.00</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

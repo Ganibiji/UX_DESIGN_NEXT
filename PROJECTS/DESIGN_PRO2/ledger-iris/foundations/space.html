@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Space &amp; layout · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .space-row { display: grid; grid-template-columns: 70px 60px 1fr; align-items: center; gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--rule); font-size: var(--t-sm); }
+  .space-row:last-child { border-bottom: 0; }
+  .space-row i { display: block; height: 14px; background: var(--accent); opacity: .85; border-radius: 1px; }
+  .cols-demo { display: grid; grid-template-columns: repeat(12, 1fr); gap: 8px; }
+  .cols-demo span { height: 70px; background: color-mix(in srgb, var(--accent) 14%, transparent); border: 1px dashed color-mix(in srgb, var(--accent) 45%, transparent); border-radius: 2px; }
+  .layout-demo { display: grid; gap: 8px; font: 500 11px var(--font-mono); color: var(--ink-3); }
+  .layout-demo div { background: var(--paper-raised); border: 1px solid var(--rule); border-radius: 4px; display: grid; place-items: center; min-height: 54px; }
+</style>
+</head>
+<body data-page="foundations/space" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="colour.html">Foundations</a></li><li aria-current="page">Space &amp; layout</li></ol>
+    <h1 class="h1">Space &amp; layout</h1>
+    <p class="lede">Everything is spaced in multiples of four. The rule that matters more: things that belong together sit closer to each other than to anything else.</p>
+  </header>
+
+  <section class="sec" id="scale">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Spacing scale</h2>
+      <p class="sec__intro">Nine steps. Inside components you'll mostly see 4, 8 and 12. Between components, 16 and 24. Between sections, 48 and up.</p></div>
+    <div class="block">
+      <div class="space-row"><code class="mono">--s-1</code><span class="num faint">4px</span><i style="width:4px"></i></div>
+      <div class="space-row"><code class="mono">--s-2</code><span class="num faint">8px</span><i style="width:8px"></i></div>
+      <div class="space-row"><code class="mono">--s-3</code><span class="num faint">12px</span><i style="width:12px"></i></div>
+      <div class="space-row"><code class="mono">--s-4</code><span class="num faint">16px</span><i style="width:16px"></i></div>
+      <div class="space-row"><code class="mono">--s-5</code><span class="num faint">24px</span><i style="width:24px"></i></div>
+      <div class="space-row"><code class="mono">--s-6</code><span class="num faint">32px</span><i style="width:32px"></i></div>
+      <div class="space-row"><code class="mono">--s-7</code><span class="num faint">48px</span><i style="width:48px"></i></div>
+      <div class="space-row"><code class="mono">--s-8</code><span class="num faint">64px</span><i style="width:64px"></i></div>
+      <div class="space-row"><code class="mono">--s-9</code><span class="num faint">96px</span><i style="width:96px"></i></div>
+    </div>
+  </section>
+
+  <section class="sec" id="proximity">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Proximity does the grouping</h2>
+      <p class="sec__intro">Before you add a border or a box, try adding space. A label sits 6px from its field, and fields sit 16px apart. Groups of fields sit 32px apart and get a heading.</p></div>
+    <div class="block dd">
+      <div class="dd__item dd__item--do">
+        <div class="dd__stage" style="display:grid; justify-content:stretch; gap:16px">
+          <div class="field"><span class="label">Sort code</span><span class="input" style="display:flex;align-items:center">20-00-00</span></div>
+          <div class="field"><span class="label">Account number</span><span class="input" style="display:flex;align-items:center">55779911</span></div>
+        </div>
+        <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-check"/></svg>Tight inside, loose between</b>Each label is clearly attached to its own field.</div>
+      </div>
+      <div class="dd__item dd__item--dont">
+        <div class="dd__stage" style="display:grid; justify-content:stretch; gap:6px">
+          <span class="label">Sort code</span><span class="input" style="display:flex;align-items:center; margin-bottom:6px">20-00-00</span>
+          <span class="label">Account number</span><span class="input" style="display:flex;align-items:center">55779911</span>
+        </div>
+        <div class="dd__note"><b><svg class="ic ic--sm" aria-hidden="true"><use href="#i-x"/></svg>Even spacing</b>"Account number" floats between two fields and could belong to either.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="grid">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Grid</h2>
+      <p class="sec__intro">Twelve columns with 24px gutters on desktop. On tablets it drops to eight columns, and on phones to four columns with 16px margins. Most app screens only need two layouts, shown below.</p></div>
+    <div class="block stack" style="--_g:22px">
+      <div class="cols-demo" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+      <div class="cols-2">
+        <div>
+          <p class="h4" style="margin-bottom:8px">Sidebar + content</p>
+          <div class="layout-demo" style="grid-template-columns:1fr 3fr"><div style="min-height:150px">nav 216px</div><div>content · fluid</div></div>
+          <p class="small faint" style="margin-top:8px">Most screens. The nav collapses into a menu below 900px.</p>
+        </div>
+        <div>
+          <p class="h4" style="margin-bottom:8px">List + detail</p>
+          <div class="layout-demo" style="grid-template-columns:2fr 3fr"><div style="min-height:150px">list 360px</div><div>record · fluid</div></div>
+          <p class="small faint" style="margin-top:8px">Inboxes and approvals. On phones the panes stack and the detail opens as its own page.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="breakpoints">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Breakpoints</h2></div>
+    <div class="block">
+      <table class="spec">
+        <thead><tr><th>Name</th><th>From</th><th>What changes</th></tr></thead>
+        <tbody>
+          <tr><td>Phone</td><td class="num">0</td><td>One column. Tables scroll sideways inside their frame, never the whole page. 16px margins.</td></tr>
+          <tr><td>Tablet</td><td class="num">560px</td><td>Top-bar links come back. Card grids go two-up. Forms stay one column.</td></tr>
+          <tr><td>Laptop</td><td class="num">900px</td><td>Sidebar appears. Two-column forms. List and detail sit side by side.</td></tr>
+          <tr><td>Desktop</td><td class="num">1180px</td><td>"On this page" index, wider tables, stat rows in four columns.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="sec" id="shape">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Corners</h2>
+      <p class="sec__intro">Small radii. Ledger is meant to look drawn with a pen, not inflated. Larger things get slightly rounder corners so the curve looks the same at every size.</p></div>
+    <div class="block cluster" style="--_g:20px">
+      <div style="display:grid; gap:6px; justify-items:center"><div style="width:72px;height:72px;border:1.5px solid var(--ink);border-radius:3px"></div><span class="small faint mono">--r-1 · 3px</span></div>
+      <div style="display:grid; gap:6px; justify-items:center"><div style="width:72px;height:72px;border:1.5px solid var(--ink);border-radius:5px"></div><span class="small faint mono">--r-2 · 5px</span></div>
+      <div style="display:grid; gap:6px; justify-items:center"><div style="width:72px;height:72px;border:1.5px solid var(--ink);border-radius:8px"></div><span class="small faint mono">--r-3 · 8px</span></div>
+      <div style="display:grid; gap:6px; justify-items:center"><div style="width:72px;height:36px;margin:18px 0;border:1.5px solid var(--ink);border-radius:999px"></div><span class="small faint mono">--r-pill</span></div>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

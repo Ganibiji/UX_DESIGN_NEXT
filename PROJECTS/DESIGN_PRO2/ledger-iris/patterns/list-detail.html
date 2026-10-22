@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>List &amp; detail · Ledger</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ledger.css">
+<link rel="stylesheet" href="../assets/site.css">
+<style>
+  .md { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); min-height: 560px; border: 1px solid var(--rule); border-radius: var(--r-3); overflow: hidden; background: var(--paper-raised); box-shadow: var(--lift-2); }
+  .md__list { border-right: 1px solid var(--rule); display: flex; flex-direction: column; min-width: 0; }
+  .md__bar { display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-bottom: 1px solid var(--rule); }
+  .md__bar .search { flex: 1; min-width: 120px; }
+  .md__list .list { overflow: auto; flex: 1; }
+  .md__list .list > li { display: grid; grid-template-columns: auto minmax(0, 1fr) auto auto; gap: 4px 16px; padding: 18px 20px; outline-offset: -2px; }
+  .md__list .list > li .avatar { grid-row: span 2; align-self: center; }
+  .md__list .list__title { font-weight: 600; font-size: var(--t-md); }
+  .md__list .list__meta { font-size: var(--t-sm); }
+  .md__list .badge { grid-row: 2; grid-column: 3; justify-self: start; }
+  .md__list .num { grid-row: 1; grid-column: 4; justify-self: end; font: 600 var(--t-md)/1.3 var(--font-sans); }
+  .seg button { white-space: nowrap; }
+  /* This page needs the full width for the two panes, so it drops the contents list */
+  .page:has(.md) { grid-template-columns: minmax(0, 1fr); }
+  .page:has(.md) .toc { display: none; }
+  .page:has(.md) .page__main { max-width: 1240px; }
+  .md__list .status { grid-row: 2; grid-column: 4; justify-self: end; }
+  .md__list .list > li .list__title, .md__list .list > li .list__meta { grid-column: 2; }
+  .md__list .list > li .list__title { grid-column: 2 / 4; }
+  .md__foot { padding: 18px 26px; border-top: 1px solid var(--rule); font-size: var(--t-sm); color: var(--ink-2); }
+  .md__detail { padding: 26px 26px 22px; display: grid; gap: 22px; align-content: start; background: var(--paper-warm); transition: opacity var(--dur-2); }
+  .md__detail.is-swapping { opacity: .35; transition: none; }
+  .md__head { display: flex; gap: 12px; align-items: flex-start; }
+  .md__head .eyebrow { flex: 1; padding-top: 10px; font: 600 12px/1.2 var(--font-sans); letter-spacing: .06em; color: var(--ink-2); }
+  .md__title { display: flex; gap: 16px; align-items: flex-end; flex-wrap: wrap; margin-top: -8px; }
+  .md__title > div { flex: 1; min-width: 200px; }
+  .md__title .h2 { font-size: 34px; }
+  .md__title .amount { font: 400 38px/1 var(--font-serif); letter-spacing: -.01em; font-variant-numeric: tabular-nums lining-nums; }
+  .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 0; padding: 20px 0; border-block: 1px solid var(--rule); }
+  .fact { display: grid; grid-template-columns: 26px 1fr; gap: 2px 12px; padding: 0 16px; align-items: start; }
+  .fact:nth-child(3n+1) { padding-left: 0; }
+  .fact:nth-child(3n+2), .fact:nth-child(3n+3) { border-left: 1px solid var(--rule); }
+  .fact .ic { width: 22px; height: 22px; grid-row: span 2; color: var(--ink-2); margin-top: 2px; }
+  .fact dt { font-size: var(--t-sm); color: var(--ink-2); }
+  .fact dd { margin: 0; font-weight: 500; }
+  .md__detail .pill[data-s="claimed"], .md__detail .pill[data-s="approved"] { background: var(--pos-tint); color: var(--pos); }
+  .md__detail .pill[data-s="pending"] { background: var(--warn-tint); color: var(--warn); }
+  .md__detail .pill .ic--pending { display: none; }
+  .md__detail .pill[data-s="pending"] .ic--pending { display: block; }
+  .md__detail .pill[data-s="pending"] .ic--done { display: none; }
+  .md__actions { padding-bottom: 22px; border-bottom: 1px solid var(--rule); }
+  .md__actions .btn { height: var(--h-lg); padding: 0 22px; }
+  .md__receipt h4 { font-size: var(--t-md); margin-bottom: 10px; }
+  @media (max-width: 1100px) { .md { grid-template-columns: 1fr; } .md__list { border-right: 0; border-bottom: 1px solid var(--rule); } }
+  @media (max-width: 600px) { .facts { grid-template-columns: 1fr; } .fact { padding: 0 !important; border: 0 !important; } .md__list .list > li { grid-template-columns: auto minmax(0, 1fr) auto; } .md__list .badge { display: none; } .md__list .num, .md__list .status { grid-column: 3; } .md__detail { padding: 20px 16px; } }
+</style>
+</head>
+<body data-page="patterns/list-detail" data-root="../">
+<div class="site">
+<main class="page" id="main">
+<div class="page__main">
+
+  <header class="doc-head">
+    <ol class="crumbs"><li><a href="../index.html">Ledger</a></li><li><a href="forms.html">Patterns</a></li><li aria-current="page">List &amp; detail</li></ol>
+    <h1 class="h1">List &amp; detail</h1>
+    <p class="lede">Most back-office work is "go through the pile". The list stays put, the record opens beside it, and the arrow keys move to the next one without reaching for the mouse.</p>
+  </header>
+
+  <section class="sec" id="master">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Expense inbox</h2>
+      <p class="sec__intro">Click a claim, or focus the list and use ↑ ↓. The selected row has an indigo rule on its left edge, so selection doesn't depend on the tint alone. Each claim shows its category and status, and the record opens beside the list.</p></div>
+    <div class="block">
+      <div class="md">
+          <div class="md__list">
+            <div class="md__bar">
+              <div class="seg" role="group" aria-label="Filter"><button aria-pressed="true">To review <span class="count">5</span></button><button aria-pressed="false">Done</button></div>
+              <label class="search"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><span class="vh">Search claims</span><input class="input" type="search" placeholder="Search claims…"></label>
+              <button class="btn btn--icon" aria-label="Filters"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg></button>
+            </div>
+            <ul class="list list--interactive" role="listbox" aria-label="Expense claims" data-master="claim">
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Tom Okafor","title":"Leeds site visit","amount":"£214.60","day":"14 Oct 2026","when":"14 Oct 2026, 16:05","cc":"Leeds warehouse","items":"3 receipts","policy":"Within policy","status":"Pending","rc":"Receipts (3)","file":"Leeds_hotel.pdf","size":"312 KB"}'><span class="avatar avatar--md" data-c="2">TO</span><div class="list__title">Leeds site visit</div><div class="list__meta">Tom Okafor · 14 Oct</div><span class="badge badge--blue">Travel</span><span class="num">£214.60</span><span class="status status--warn">Pending</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Ana Ruiz","title":"Client dinner, Madrid","amount":"£386.00","day":"11 Oct 2026","when":"11 Oct 2026, 22:18","cc":"Field sales","items":"1 receipt","policy":"£86 over the meal limit","status":"Pending","rc":"Receipt (1)","file":"Dinner_Madrid.pdf","size":"188 KB"}'><span class="avatar avatar--md" data-c="3">AR</span><div class="list__title">Client dinner, Madrid</div><div class="list__meta">Ana Ruiz · 11 Oct</div><span class="badge badge--plum">Meals</span><span class="num">£386.00</span><span class="status status--warn">Pending</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Sam Ito","title":"Monitor and dock","amount":"£529.98","day":"9 Oct 2026","when":"9 Oct 2026, 11:30","cc":"Head office","items":"2 receipts","policy":"Needs IT sign-off","status":"Pending","rc":"Receipts (2)","file":"Monitor_invoice.pdf","size":"96 KB"}'><span class="avatar avatar--md" data-c="5">SI</span><div class="list__title">Monitor and dock</div><div class="list__meta">Sam Ito · 9 Oct</div><span class="badge badge--green">Equipment</span><span class="num">£529.98</span><span class="status status--warn">Pending</span></li>
+              <li role="option" tabindex="0" aria-selected="true" data-rec='{"who":"Ben Carr","title":"Train to Glasgow","amount":"£148.40","day":"7 Oct 2026","when":"7 Oct 2026, 09:42","cc":"Glasgow depot","items":"1 receipt","policy":"Within policy","status":"Claimed","rc":"Receipt (1)","file":"Train_Glasgow.pdf","size":"245 KB"}'><span class="avatar avatar--md" data-c="1">BC</span><div class="list__title">Train to Glasgow</div><div class="list__meta">Ben Carr · 7 Oct</div><span class="badge badge--blue">Travel</span><span class="num">£148.40</span><span class="status status--pos">Claimed</span></li>
+              <li role="option" tabindex="-1" aria-selected="false" data-rec='{"who":"Priya Raman","title":"Conference ticket","amount":"£695.00","day":"2 Oct 2026","when":"2 Oct 2026, 14:10","cc":"Head office","items":"1 receipt","policy":"Pre-approved by Lena","status":"Pending","rc":"Receipt (1)","file":"Conference_ticket.pdf","size":"410 KB"}'><span class="avatar avatar--md" data-c="6">PR</span><div class="list__title">Conference ticket</div><div class="list__meta">Priya Raman · 2 Oct</div><span class="badge badge--rose">Events</span><span class="num">£695.00</span><span class="status status--warn">Pending</span></li>
+            </ul>
+            <div class="md__foot">Showing 5 of 5 claims</div>
+          </div>
+          <article class="md__detail" id="claim" aria-live="polite">
+            <div class="md__head">
+              <p class="eyebrow">Expense claim</p>
+              <span class="pill" data-tone="status" data-s="claimed"><svg class="ic ic--done" aria-hidden="true"><use href="#i-ok"/></svg><svg class="ic ic--pending" aria-hidden="true"><use href="#i-clock"/></svg><span data-f="status">Claimed</span></span>
+              <button class="btn btn--icon" aria-label="More actions"><svg class="ic" aria-hidden="true"><use href="#i-more-v"/></svg></button>
+            </div>
+            <div class="md__title">
+              <div>
+                <h3 class="h2" data-f="title">Train to Glasgow</h3>
+                <p class="muted" style="margin-top:6px"><span data-f="who">Ben Carr</span> · <span data-f="day">7 Oct 2026</span></p>
+              </div>
+              <span class="amount" data-f="amount">£148.40</span>
+            </div>
+            <dl class="facts">
+              <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-pin"/></svg><dt>Cost centre</dt><dd data-f="cc">Glasgow depot</dd></div>
+              <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-clip"/></svg><dt>Evidence</dt><dd data-f="items">1 receipt</dd></div>
+              <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg><dt>Policy check</dt><dd data-f="policy">Within policy</dd></div>
+              <div class="fact"><svg class="ic" aria-hidden="true"><use href="#i-calendar"/></svg><dt>Submitted on</dt><dd data-f="when">7 Oct 2026, 09:42</dd></div>
+            </dl>
+            <div class="field"><label class="label" for="md-note">Note to claimant <span class="opt">optional</span></label><textarea class="textarea" id="md-note" style="min-height:82px" placeholder="Add a note…"></textarea></div>
+            <div class="btn-row md__actions"><button class="btn btn--primary" data-toast="Claim approved. Paid in the next payroll." data-toast-kind="pos"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approve</button><button class="btn btn--outline" data-toast="Sent back with your note"><svg class="ic" aria-hidden="true"><use href="#i-send"/></svg>Send back</button><span class="small faint" style="margin-left:auto">↑ ↓ to move through the list</span></div>
+            <div class="md__receipt">
+              <h4 class="h4" data-f="rc">Receipt (1)</h4>
+              <div class="file"><span class="file__type file__type--pdf"><svg class="ic" aria-hidden="true"><use href="#i-file"/></svg></span><span class="file__name" data-f="file">Train_Glasgow.pdf</span><span style="grid-row:span 2; display:flex; gap:6px"><button class="btn">View <svg class="ic" aria-hidden="true"><use href="#i-external"/></svg></button><button class="btn btn--quiet btn--icon" aria-label="More file actions"><svg class="ic" aria-hidden="true"><use href="#i-more-v"/></svg></button></span><span class="file__meta" data-f="size">245 KB</span></div>
+            </div>
+          </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="board">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Board view</h2>
+      <p class="sec__intro">The same records shown as cards in columns by stage. This works when the order of stages matters more than any single field. Drag a card to another column. Dragging is a shortcut, not the only way: in a real product each card also needs a keyboard-reachable "Move to" action.</p></div>
+    <div class="block">
+      <div class="specimen" data-label="Drag cards between columns" data-nocode>
+        <div class="specimen__stage specimen__stage--paper" style="display:block">
+          <div class="board">
+            <div class="lane"><div class="lane__head"><span class="status status--note"></span>Submitted<span class="faint" data-lane-count>2</span></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Conference ticket</span><div class="ticket__foot"><span class="num">£695.00</span><span class="avatar avatar--sm" data-c="1">PR</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Train to Glasgow</span><div class="ticket__foot"><span class="num">£148.40</span><span class="avatar avatar--sm" data-c="1">BC</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head"><span class="status status--warn"></span>In review<span class="faint" data-lane-count>2</span></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Client dinner, Madrid</span><span class="badge badge--warn" style="width:max-content">Over limit</span><div class="ticket__foot"><span class="num">£386.00</span><span class="avatar avatar--sm" data-c="6">AR</span></div></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Monitor and dock</span><div class="ticket__foot"><span class="num">£529.98</span><span class="avatar avatar--sm" data-c="5">SI</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head"><span class="status status--pos"></span>Approved<span class="faint" data-lane-count>1</span></div>
+              <div class="ticket" draggable="true"><span class="ticket__title">Leeds site visit</span><div class="ticket__foot"><span class="num">£214.60</span><span class="avatar avatar--sm" data-c="2">TO</span></div></div>
+            </div>
+            <div class="lane"><div class="lane__head"><span class="status"></span>Paid<span class="faint" data-lane-count>0</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="rules">
+    <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Rules</h2></div>
+    <div class="block prose">
+      <ul>
+        <li><strong>Keep the list where it is.</strong> Acting on a record must not scroll the list or reset its filters.</li>
+        <li><strong>After an action, move to the next item.</strong> Show a short toast with Undo, and don't make people close the record first.</li>
+        <li><strong>Deep-link every record.</strong> The URL changes when the selection does, so people can share "this one".</li>
+        <li><strong>On phones, show one pane at a time.</strong> The detail opens as its own page with a back link to the list.</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</main>
+</div>
+<script src="../assets/icons.js"></script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

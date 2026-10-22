@@ -36,11 +36,12 @@ Components get their look from classes and their state from ARIA attributes (`ar
 
 ## Design decisions
 
-- **Ink for action, green for state.** The primary button is black. Green only marks selection, focus and the current page.
-- **Warm paper, not white.** It's easier on the eyes over a full working day. Dark mode is warm too, with its own values for every token.
-- **Newsreader + Instrument Sans + IBM Plex Mono.** The serif is for headings and large figures, the sans for the interface, and the mono for codes people copy.
+- **One green for action and state.** The primary button is solid green, the secondary choice is a green outline, and green marks selection, focus and the current page.
+- **White, mint and pastel.** Lists and forms sit on white, the record you're reading on warm cream, and navigation on a mint rail. Every page title sits on a pale blue-to-peach band. Dark mode is a deep forest green with its own value for every token.
+- **Pastel categories.** Six tint and text pairs (blue, plum, green, rose, peach, teal) for tags and avatars, each passing 4.5:1.
+- **Newsreader + Inter + IBM Plex Mono.** The serif is for headings and large figures, the sans for the interface, and the mono for codes people copy.
 - **Numbers first.** Tabular figures, right-aligned columns, real minus signs.
 - **Chart palette checked by script.** The six series colours keep neighbouring colours distinct for red-green colour-blind readers in both themes.
-- **Contrast checked.** The lightest text tone (`--ink-3`) passes 4.5:1 on paper and raised surfaces.
+- **Contrast checked.** The lightest text tone (`--ink-3`) passes 4.5:1 on white, cream and mint, and input borders pass 3:1.
 
 Theme and checklist progress are saved in `localStorage` in your browser only.

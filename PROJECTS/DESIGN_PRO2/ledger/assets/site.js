@@ -29,8 +29,8 @@
       ['writing', 'Writing', 'Voice, labels, errors']
     ]},
     { title: 'Foundations', items: [
-      ['foundations/colour', 'Colour', 'Paper, ink, one green'],
-      ['foundations/type', 'Type', 'Newsreader + Instrument Sans'],
+      ['foundations/colour', 'Colour', 'White, mint, one green'],
+      ['foundations/type', 'Type', 'Newsreader + Inter'],
       ['foundations/space', 'Space & layout', '4px base, 12 columns'],
       ['foundations/depth-motion', 'Depth & motion', 'Two shadows, three speeds'],
       ['foundations/icons', 'Icons', '93 drawn on a 24 grid'],
@@ -62,6 +62,18 @@
       ['apps/people', 'People', 'Directory & time off']
     ]}
   ];
+  /* One icon per page, shown beside its name in the index */
+  var NAV_ICON = {
+    'index': 'home', 'writing': 'pencil',
+    'foundations/colour': 'palette', 'foundations/type': 'type', 'foundations/space': 'ruler',
+    'foundations/depth-motion': 'layers', 'foundations/icons': 'sparkle', 'foundations/accessibility': 'access',
+    'components/actions': 'bolt', 'components/text-inputs': 'pencil', 'components/selection': 'check',
+    'components/pickers': 'calendar', 'components/navigation': 'list', 'components/overlays': 'panel',
+    'components/feedback': 'message', 'components/data-display': 'grid', 'components/tables': 'table',
+    'components/charts': 'chart', 'components/editors': 'code',
+    'patterns/forms': 'file', 'patterns/list-detail': 'columns', 'patterns/approvals': 'ok', 'patterns/sign-in': 'lock',
+    'apps/finance': 'wallet', 'apps/crm': 'briefcase', 'apps/inventory': 'box', 'apps/people': 'users'
+  };
   var FLAT = [];
   NAV.forEach(function (g) { g.items.forEach(function (it) { FLAT.push({ id: it[0], title: it[1], desc: it[2], group: g.title }); }); });
   var href = function (id) { return ROOT + id + '.html'; };
@@ -82,6 +94,7 @@
         '<a class="btn btn--quiet btn--sm hide-sm" href="' + href('foundations/colour') + '">Foundations</a>' +
         '<a class="btn btn--quiet btn--sm hide-sm" href="' + href('components/actions') + '">Components</a>' +
         '<button class="btn btn--quiet btn--icon" data-theme-toggle aria-label="Theme"></button>' +
+        '<span class="avatar masthead__me" data-c="1" title="Signed in as Maya Brooks">MB</span>' +
       '</div>';
 
     var nav = document.createElement('nav');
@@ -91,12 +104,16 @@
       return '<div class="index__group"><div class="index__title">' + g.title + '</div><ul>' +
         g.items.map(function (it) {
           var cur = it[0] === PAGE ? ' aria-current="page"' : '';
-          return '<li><a href="' + href(it[0]) + '"' + cur + '>' + it[1] + '</a></li>';
+          return '<li><a href="' + href(it[0]) + '"' + cur + '>' + icon(NAV_ICON[it[0]] || 'circle') + '<span>' + it[1] + '</span></a></li>';
         }).join('') + '</ul></div>';
     }).join('');
 
     site.insertBefore(nav, site.firstChild);
     site.insertBefore(mast, site.firstChild);
+
+    /* The page title sits in a full-width pastel band above the content and its contents list */
+    var band = $('.page .doc-head'), pg = $('.page');
+    if (band && pg) pg.insertBefore(band, pg.firstChild);
 
     $('[data-nav-toggle]').addEventListener('click', function () {
       var open = site.classList.toggle('is-nav-open');
@@ -799,7 +816,11 @@
       var li = e.target.closest('li[data-rec]'); if (!li) return;
       $$('li', list).forEach(function (x) { x.setAttribute('aria-selected', x === li); x.tabIndex = x === li ? 0 : -1; });
       var rec = JSON.parse(li.getAttribute('data-rec'));
-      Object.keys(rec).forEach(function (k) { $$('[data-f="' + k + '"]', detail).forEach(function (el) { el.textContent = rec[k]; }); });
+      Object.keys(rec).forEach(function (k) {
+        $$('[data-f="' + k + '"]', detail).forEach(function (el) { el.textContent = rec[k]; });
+        /* data-tone="key" mirrors a value into data-s so CSS can colour it (e.g. a status pill) */
+        $$('[data-tone="' + k + '"]', detail).forEach(function (el) { el.setAttribute('data-s', String(rec[k]).toLowerCase()); });
+      });
       detail.classList.add('is-swapping'); setTimeout(function () { detail.classList.remove('is-swapping'); }, 160);
     });
     list.addEventListener('keydown', function (e) {

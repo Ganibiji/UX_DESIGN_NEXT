@@ -1,55 +1,71 @@
 /* Ledger — design tokens
    ---------------------------------------------------------------
-   Warm paper, black ink, one green for intent. Everything else is
-   built from these values; components never use raw hex.
+   Clean white workspace, a mint index, soft pastel accents and one
+   deep green for action and selection. Everything else is built
+   from these values; components never use raw hex.
 
    Naming: --paper-* surfaces, --ink-* text, --rule-* lines,
-   --accent-* the single brand colour, --pos/--warn/--neg/--note
-   for status. Dark theme swaps values, not names.
+   --accent-* the brand green, --pos/--warn/--neg/--note for status,
+   --cat-* pastel category pairs. Dark theme swaps values, not names.
    --------------------------------------------------------------- */
 
 :root {
   /* Surfaces */
-  --paper:        #F5F2EA;   /* page canvas */
-  --paper-raised: #FFFDF7;   /* cards, inputs, menus */
-  --paper-sunken: #ECE7DB;   /* wells, code, table headers */
-  --paper-hover:  #EDE8DC;
-  --paper-press:  #E3DDCE;
+  --paper:        #FFFFFF;   /* page canvas */
+  --paper-raised: #FFFFFF;   /* cards, inputs, menus */
+  --paper-warm:   #FFFBF4;   /* detail panes, reading surfaces */
+  --paper-sunken: #F3F6F4;   /* wells, code, table headers */
+  --paper-hover:  #F1F6F3;
+  --paper-press:  #E4EEE8;
+  --paper-mint:   #EAF5F0;   /* index rail, selected rows */
 
   /* Ink */
-  --ink:        #1C1A15;
-  --ink-2:      #55514A;
-  --ink-3:      #726C60;     /* 4.7:1 on paper, 5.1:1 on raised — the floor for meaningful text */
-  --ink-faint:  #ADA696;     /* decoration only, never text that matters */
-  --ink-invert: #FBF9F3;
+  --ink:        #17211C;
+  --ink-2:      #4C5751;
+  --ink-3:      #66716B;     /* 4.9:1 on white — the floor for meaningful text */
+  --ink-faint:  #A9B3AD;     /* decoration only, never text that matters */
+  --ink-invert: #FFFFFF;
 
   /* Lines */
-  --rule:        #DDD6C7;
-  --rule-strong: #C4BBA8;
-  --rule-ink:    #8C8577;    /* input borders: 3:1 against paper */
+  --rule:        #E4EAE6;
+  --rule-strong: #D3DCD6;
+  --rule-ink:    #808C86;    /* input borders: 3.5:1 on white, 3.4:1 on warm */
 
   /* Accent — Ledger green */
-  --accent:       #1F5F4A;
-  --accent-hover: #184D3C;
-  --accent-press: #123C2F;
-  --accent-tint:  #E2EDE6;
-  --accent-ink:   #1A5240;   /* accent used as text */
+  --accent:       #1E6B4E;
+  --accent-hover: #185A41;
+  --accent-press: #124733;
+  --accent-tint:  #E3F2EA;
+  --accent-ink:   #1A5E44;   /* accent used as text */
 
-  /* Primary action is ink, not accent. Accent marks selection and focus. */
-  --action:       #1C1A15;
-  --action-hover: #34312A;
-  --action-press: #000000;
-  --on-action:    #FBF9F3;
+  /* Primary action is the brand green */
+  --action:       #1E6B4E;
+  --action-hover: #185A41;
+  --action-press: #124733;
+  --on-action:    #FFFFFF;
 
   /* Status */
-  --pos:       #2C6E3F;  --pos-tint:  #E3EFDF;
-  --warn:      #8F5A0B;  --warn-tint: #F7EBD3;
-  --neg:       #A8321F;  --neg-tint:  #F6E1DA;
-  --note:      #2C557E;  --note-tint: #E1E9F1;
+  --pos:       #1E7A4C;  --pos-tint:  #E1F3E8;
+  --warn:      #9A5B00;  --warn-tint: #FFF1DA;
+  --neg:       #B4362A;  --neg-tint:  #FDE7E3;
+  --note:      #2F5FA6;  --note-tint: #E5EEFB;
+
+  /* Categories — pastel fill with a deep text colour, for tags and avatars */
+  --cat-blue:   #2F5FA6;  --cat-blue-tint:   #E6EEFB;
+  --cat-plum:   #7A3E9D;  --cat-plum-tint:   #F2E8FA;
+  --cat-green:  #1E6B4E;  --cat-green-tint:  #E3F2EA;
+  --cat-rose:   #A8345C;  --cat-rose-tint:   #FCE6EE;
+  --cat-peach:  #A5531E;  --cat-peach-tint:  #FDEBDD;
+  --cat-teal:   #11716F;  --cat-teal-tint:   #DFF3F1;
+
+  /* Page band — the pastel wash behind every page title */
+  --band: linear-gradient(100deg, #DDEBF7 0%, #E8F1F4 48%, #F6EEE2 78%, #FCE9D6 100%);
+  --band-shine: rgba(255, 255, 255, .55);   /* light diagonal stripe */
+  --band-shape: rgba(249, 221, 191, .7);    /* peach wedge on the right */
 
   /* Data — six categorical hues in a fixed order. Validated for
      deuteranopia/protanopia separation (adjacent ΔE ≥ 14) on both surfaces.
-     Slot 5 (ochre) sits under 3:1 on paper: always label it directly. */
+     Slot 5 (ochre) sits under 3:1 on white: always label it directly. */
   --d1: #00704E;  /* green */
   --d2: #376DAF;  /* blue  */
   --d3: #CB713F;  /* clay  */
@@ -58,11 +74,11 @@
   --d6: #03999F;  /* teal  */
 
   /* Focus */
-  --focus: #1F5F4A;
+  --focus: #1E6B4E;
   --focus-ring: 0 0 0 2px var(--paper-raised), 0 0 0 4px var(--focus);
 
   /* Type */
-  --font-sans:    "Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-sans:    "Inter", "Segoe UI", "Helvetica Neue", Arial, sans-serif;
   --font-serif:   "Newsreader", "Iowan Old Style", Georgia, serif;
   --font-mono:    "IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
 
@@ -73,7 +89,7 @@
   --t-lg:   19px;
   --t-xl:   24px;
   --t-2xl:  32px;
-  --t-3xl:  44px;
+  --t-3xl:  46px;
   --t-4xl:  60px;
 
   /* Space — 4px base, but the scale skips where we never use a step */
@@ -87,22 +103,22 @@
   --s-8: 64px;
   --s-9: 96px;
 
-  /* Shape — small radii; the system is drawn, not inflated */
-  --r-1: 3px;   /* chips, checkboxes */
-  --r-2: 5px;   /* controls */
-  --r-3: 8px;   /* panels, menus */
+  /* Shape — soft, rounded controls and panels */
+  --r-1: 6px;   /* chips, checkboxes */
+  --r-2: 10px;  /* controls */
+  --r-3: 14px;  /* panels, menus */
   --r-pill: 999px;
 
   /* Sizes */
-  --h-sm: 28px;
-  --h-md: 34px;
-  --h-lg: 42px;
+  --h-sm: 30px;
+  --h-md: 38px;
+  --h-lg: 46px;
 
-  /* Depth — two levels and a lift. Shadows are warm, not grey. */
-  --lift-1: 0 1px 0 rgba(60, 48, 24, .06), 0 1px 2px rgba(60, 48, 24, .06);
-  --lift-2: 0 1px 2px rgba(60, 48, 24, .08), 0 6px 16px -4px rgba(60, 48, 24, .14);
-  --lift-3: 0 2px 6px rgba(40, 30, 10, .10), 0 24px 48px -12px rgba(40, 30, 10, .28);
-  --scrim:  rgba(28, 26, 21, .42);
+  /* Depth — soft and green-tinted; never a hard grey drop */
+  --lift-1: 0 1px 2px rgba(23, 60, 44, .05);
+  --lift-2: 0 2px 4px rgba(23, 60, 44, .05), 0 10px 24px -8px rgba(23, 60, 44, .14);
+  --lift-3: 0 4px 10px rgba(23, 60, 44, .08), 0 28px 56px -16px rgba(23, 60, 44, .26);
+  --scrim:  rgba(16, 34, 26, .40);
 
   /* Motion */
   --ease-out:  cubic-bezier(.2, .7, .2, 1);
@@ -114,37 +130,48 @@
   color-scheme: light;
 }
 
-/* ---------- Dark: lamp-lit desk, not pure black ---------- */
+/* ---------- Dark: deep forest, not pure black ---------- */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --paper:        #191814;
-    --paper-raised: #211F1A;
-    --paper-sunken: #14130F;
-    --paper-hover:  #2A2822;
-    --paper-press:  #33302A;
-    --ink:        #EDE8DC;
-    --ink-2:      #B9B2A3;
-    --ink-3:      #948D7F;
-    --ink-faint:  #625D53;
-    --ink-invert: #1C1A15;
-    --rule:        #322F28;
-    --rule-strong: #46423A;
-    --rule-ink:    #6F695E;
-    --accent:       #6FB596;
-    --accent-hover: #86C4A8;
-    --accent-press: #A0D3BB;
-    --accent-tint:  #1E3229;
-    --accent-ink:   #8CC8AC;
-    --action:       #EDE8DC;
-    --action-hover: #FFFFFF;
-    --action-press: #D6D0C3;
-    --on-action:    #1C1A15;
-    --pos:  #7CC08C;  --pos-tint:  #1F2E21;
-    --warn: #E0AE5A;  --warn-tint: #332818;
-    --neg:  #EE8A74;  --neg-tint:  #3A201A;
-    --note: #8DB3DA;  --note-tint: #1C2733;
+    --paper:        #111816;
+    --paper-raised: #17201C;
+    --paper-warm:   #1B211C;
+    --paper-sunken: #0D1311;
+    --paper-hover:  #1F2A25;
+    --paper-press:  #26332D;
+    --paper-mint:   #14231D;
+    --ink:        #E9F0EC;
+    --ink-2:      #B3BFB8;
+    --ink-3:      #8E9A93;
+    --ink-faint:  #58645E;
+    --ink-invert: #111816;
+    --rule:        #25302B;
+    --rule-strong: #34413A;
+    --rule-ink:    #66746C;
+    --accent:       #5DBB91;
+    --accent-hover: #76C9A3;
+    --accent-press: #93D6B7;
+    --accent-tint:  #183328;
+    --accent-ink:   #7FCDA8;
+    --action:       #5DBB91;
+    --action-hover: #76C9A3;
+    --action-press: #93D6B7;
+    --on-action:    #0C1A14;
+    --pos:  #6FCB95;  --pos-tint:  #163024;
+    --warn: #E9B25E;  --warn-tint: #332611;
+    --neg:  #F08A7B;  --neg-tint:  #3A1E1A;
+    --note: #8DB3E8;  --note-tint: #19263A;
+    --cat-blue:  #9DBDF0; --cat-blue-tint:  #1C2A40;
+    --cat-plum:  #CFA6E8; --cat-plum-tint:  #2E2038;
+    --cat-green: #7FCDA8; --cat-green-tint: #183328;
+    --cat-rose:  #F0A2BD; --cat-rose-tint:  #3A1C28;
+    --cat-peach: #F2B48A; --cat-peach-tint: #3A2618;
+    --cat-teal:  #7AD3CD; --cat-teal-tint:  #143331;
+    --band: linear-gradient(100deg, #15263A 0%, #142A2A 48%, #2A2418 78%, #33241A 100%);
+    --band-shine: rgba(255, 255, 255, .05);
+    --band-shape: rgba(120, 80, 50, .22);
     --d1: #3F9A6F; --d2: #5788C7; --d3: #D37947; --d4: #9B5896; --d5: #AF8E2A; --d6: #0D9298;
-    --focus: #8CC8AC;
+    --focus: #7FCDA8;
     --lift-1: 0 1px 0 rgba(0,0,0,.3);
     --lift-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -6px rgba(0,0,0,.5);
     --lift-3: 0 2px 6px rgba(0,0,0,.4), 0 28px 56px -12px rgba(0,0,0,.7);
@@ -153,34 +180,45 @@
   }
 }
 :root[data-theme="dark"] {
-  --paper:        #191814;
-  --paper-raised: #211F1A;
-  --paper-sunken: #14130F;
-  --paper-hover:  #2A2822;
-  --paper-press:  #33302A;
-  --ink:        #EDE8DC;
-  --ink-2:      #B9B2A3;
-  --ink-3:      #948D7F;
-  --ink-faint:  #625D53;
-  --ink-invert: #1C1A15;
-  --rule:        #322F28;
-  --rule-strong: #46423A;
-  --rule-ink:    #6F695E;
-  --accent:       #6FB596;
-  --accent-hover: #86C4A8;
-  --accent-press: #A0D3BB;
-  --accent-tint:  #1E3229;
-  --accent-ink:   #8CC8AC;
-  --action:       #EDE8DC;
-  --action-hover: #FFFFFF;
-  --action-press: #D6D0C3;
-  --on-action:    #1C1A15;
-  --pos:  #7CC08C;  --pos-tint:  #1F2E21;
-  --warn: #E0AE5A;  --warn-tint: #332818;
-  --neg:  #EE8A74;  --neg-tint:  #3A201A;
-  --note: #8DB3DA;  --note-tint: #1C2733;
+  --paper:        #111816;
+  --paper-raised: #17201C;
+  --paper-warm:   #1B211C;
+  --paper-sunken: #0D1311;
+  --paper-hover:  #1F2A25;
+  --paper-press:  #26332D;
+  --paper-mint:   #14231D;
+  --ink:        #E9F0EC;
+  --ink-2:      #B3BFB8;
+  --ink-3:      #8E9A93;
+  --ink-faint:  #58645E;
+  --ink-invert: #111816;
+  --rule:        #25302B;
+  --rule-strong: #34413A;
+  --rule-ink:    #66746C;
+  --accent:       #5DBB91;
+  --accent-hover: #76C9A3;
+  --accent-press: #93D6B7;
+  --accent-tint:  #183328;
+  --accent-ink:   #7FCDA8;
+  --action:       #5DBB91;
+  --action-hover: #76C9A3;
+  --action-press: #93D6B7;
+  --on-action:    #0C1A14;
+  --pos:  #6FCB95;  --pos-tint:  #163024;
+  --warn: #E9B25E;  --warn-tint: #332611;
+  --neg:  #F08A7B;  --neg-tint:  #3A1E1A;
+  --note: #8DB3E8;  --note-tint: #19263A;
+  --cat-blue:  #9DBDF0; --cat-blue-tint:  #1C2A40;
+  --cat-plum:  #CFA6E8; --cat-plum-tint:  #2E2038;
+  --cat-green: #7FCDA8; --cat-green-tint: #183328;
+  --cat-rose:  #F0A2BD; --cat-rose-tint:  #3A1C28;
+  --cat-peach: #F2B48A; --cat-peach-tint: #3A2618;
+  --cat-teal:  #7AD3CD; --cat-teal-tint:  #143331;
+  --band: linear-gradient(100deg, #15263A 0%, #142A2A 48%, #2A2418 78%, #33241A 100%);
+  --band-shine: rgba(255, 255, 255, .05);
+  --band-shape: rgba(120, 80, 50, .22);
   --d1: #3F9A6F; --d2: #5788C7; --d3: #D37947; --d4: #9B5896; --d5: #AF8E2A; --d6: #0D9298;
-  --focus: #8CC8AC;
+  --focus: #7FCDA8;
   --lift-1: 0 1px 0 rgba(0,0,0,.3);
   --lift-2: 0 1px 2px rgba(0,0,0,.4), 0 8px 20px -6px rgba(0,0,0,.5);
   --lift-3: 0 2px 6px rgba(0,0,0,.4), 0 28px 56px -12px rgba(0,0,0,.7);

@@ -6,7 +6,7 @@
 <title>Buttons &amp; links · Ledger</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../assets/tokens.css">
 <link rel="stylesheet" href="../assets/ledger.css">
 <link rel="stylesheet" href="../assets/site.css">
@@ -25,11 +25,12 @@
 
   <section class="sec" id="hierarchy">
     <div class="sec__head"><span class="sec__n"></span><h2 class="sec__title">Hierarchy</h2>
-      <p class="sec__intro">Four weights. Most screens need a default and a primary; quiet buttons carry the long tail of secondary actions in toolbars and table rows.</p></div>
+      <p class="sec__intro">Five weights. Most screens need a primary and an outline or default; quiet buttons carry the long tail of secondary actions in toolbars and table rows.</p></div>
     <div class="block">
-      <div class="specimen" data-label="Default, primary, quiet, danger">
+      <div class="specimen" data-label="Primary, outline, default, quiet, danger">
         <div class="specimen__stage">
           <button class="btn btn--primary">Post journal</button>
+          <button class="btn btn--outline">Send back</button>
           <button class="btn">Save draft</button>
           <button class="btn btn--quiet">Cancel</button>
           <button class="btn btn--danger">Delete entry</button>
@@ -39,10 +40,11 @@
         <table class="spec">
           <thead><tr><th>Variant</th><th>Class</th><th>Use it for</th></tr></thead>
           <tbody>
-            <tr><td>Primary</td><td><code>.btn--primary</code></td><td>The one action that moves the task forward. Ink black, never more than one per view.</td></tr>
+            <tr><td>Primary</td><td><code>.btn--primary</code></td><td>The one action that moves the task forward. Solid green, never more than one per view.</td></tr>
+            <tr><td>Outline</td><td><code>.btn--outline</code></td><td>The alternative to the primary in the same decision: Send back next to Approve.</td></tr>
             <tr><td>Default</td><td><code>.btn</code></td><td>Everything else that matters: Export, Save draft, Add line.</td></tr>
             <tr><td>Quiet</td><td><code>.btn--quiet</code></td><td>Cancel, toolbar actions, row actions. No border until hover.</td></tr>
-            <tr><td>Accent</td><td><code>.btn--accent</code></td><td>Rare. Marketing moments and empty states where ink would feel cold.</td></tr>
+            <tr><td>Accent</td><td><code>.btn--accent</code></td><td>Rare. The same green fill as primary, for empty states and onboarding that sit outside a task.</td></tr>
             <tr><td>Danger</td><td><code>.btn--danger</code></td><td>Destructive actions in context. Use <code>.btn--danger-solid</code> only inside a confirmation dialog.</td></tr>
           </tbody>
         </table>

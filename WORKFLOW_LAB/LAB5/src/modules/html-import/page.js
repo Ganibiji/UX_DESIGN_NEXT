@@ -1,12 +1,13 @@
 /* =========================================================================
    HTML IMPORT · PAGE
-   #/import: choose or drop an HTML file (or try the sample), set the
-   conversion options, read what was mapped and removed, then preview it
-   in the side panel and download it. Replaces the loading route that
-   manifest.js registered.
+   #/import, step 4 of the Design builder. Import a page three ways
+   (choose or drop a file, paste HTML, try the sample), set the import
+   options, read what was mapped and removed, then open the preview
+   showcase and download it. Replaces the loading route that manifest.js
+   registered.
 
-   Provides: HI_MAX_BYTES, hiConvert, hiReadFile, hiLoad, hiResultHTML,
-   hiStyleguideHTML, #/import
+   Provides: HI_MAX_BYTES, hiConvert, hiSetOption, hiReadFile, hiLoad,
+   hiPasteDialog, hiResultHTML, hiStyleguideHTML, #/import
    ========================================================================= */
 'use strict';
 
@@ -16,6 +17,50 @@ const HI_MAX_BYTES = 5 * 1024 * 1024;
 /** Converts HI.source with the current options. */
 function hiConvert() {
   HI.result = HI.source ? convertHtml(HI.source, HI.options) : null;
+}
+
+/** Changes an import option from the page or the preview's Options menu: re-converts and redraws both. */
+function hiSetOption(name, on) {
+  HI.options[name] = on;
+  const toggle = $('#page [name="' + name + '"]');
+  if (toggle) toggle.checked = on;
+  if (!HI.source) return;
+  hiConvert();
+  const result = $('#hiResult .card-body');
+  if (result) result.innerHTML = hiResultHTML();
+  refreshImportPanel();
+}
+
+/** Paste HTML: a dialog with a text box; Convert takes the text like a file. */
+function hiPasteDialog() {
+  const body = el(
+    '<div><label class="lbl" for="hiPaste">HTML</label>' +
+      '<textarea class="textarea" id="hiPaste" rows="14" spellcheck="false" style="font-family:var(--mono);font-size:12.5px" ' +
+      'placeholder="&lt;!DOCTYPE html&gt;&#10;&lt;html&gt;…&lt;/html&gt;"></textarea>' +
+      '<p class="muted mt-8" style="font-size:12.5px">A whole page or just a fragment. Scripts are removed during conversion.</p></div>'
+  );
+  openModal({
+    type: 'edit',
+    icon: 'file',
+    title: 'Paste HTML',
+    size: 'lg',
+    body,
+    actions: [
+      { label: 'Cancel' },
+      {
+        label: 'Convert',
+        variant: 'primary',
+        onClick: () => {
+          const text = $('#hiPaste', body).value;
+          if (!/<[a-z!]/i.test(text)) {
+            toast('error', 'No HTML found', 'Paste markup such as <div>…</div> or a whole page.');
+            return false;
+          }
+          setTimeout(() => hiLoad('pasted-page.html', text), 0); // after the dialog has closed
+        }
+      }
+    ]
+  });
 }
 
 /** Reads a File, checks it, converts it and redraws. */
@@ -98,21 +143,26 @@ ROUTES.import = () => ({
   nav: 'import',
   crumbs: [['Design', 'design'], ['Import HTML']],
   sub:
-    'Convert an HTML page to your design system, preview it in the side panel and download it. ' +
+    'Convert an HTML page to your design system, then preview it with the Design lab settings beside it and download it. ' +
     'Scripts and the page’s own styles are removed; buttons, fields, tables, cards, badges and alerts take your styleguide.',
   actions: HI.result
-    ? btn('Preview', 'eye', '', 'type="button" data-hi-preview') + btn('Download', 'save', 'primary', 'type="button" data-hi-save')
+    ? btn('Preview with settings', 'eye', '', 'type="button" data-hi-preview') +
+      btn('Download', 'save', 'primary', 'type="button" data-hi-save')
     : '',
   body:
+    dnTabs('import') +
     '<div class="hi-layout"><div class="stack">' +
     card(
-      HI.result ? 'Converted page' : 'Choose an HTML file',
+      HI.result ? 'Converted page' : 'Import an HTML page',
       HI.result
         ? hiResultHTML()
         : '<label class="hi-drop" data-hi-drop><input type="file" accept=".html,.htm,.xhtml,text/html" data-hi-input hidden>' +
             '<span class="hi-drop-ico">' + icon('inbox', 24) + '</span><b>Drop an HTML file here, or click to choose</b>' +
             '<small>.html or .htm, up to 5 MB. Scripts never run: they are removed, and the preview is sandboxed.</small></label>' +
-            '<div class="row mt-16" style="gap:8px">' + btn('Try a sample page', 'file', '', 'type="button" data-hi-sample') + '</div>',
+            '<div class="row mt-16" style="gap:8px;flex-wrap:wrap">' +
+            btn('Paste HTML', 'edit', '', 'type="button" data-hi-paste') +
+            btn('Try a sample page', 'file', '', 'type="button" data-hi-sample') +
+            '</div>',
       {
         id: 'hiResult',
         sub: HI.result ? 'Open the preview to compare it with the original' : 'The page is converted in your browser; nothing is uploaded'
@@ -148,6 +198,7 @@ ROUTES.import = () => ({
     }
     page.addEventListener('click', e => {
       if (e.target.closest('[data-hi-sample]')) hiLoad(HI_SAMPLE_NAME, HI_SAMPLE);
+      else if (e.target.closest('[data-hi-paste]')) hiPasteDialog();
       else if (e.target.closest('[data-hi-preview]')) openImportPanel();
       else if (e.target.closest('[data-hi-save]')) hiDownload();
       else if (e.target.closest('[data-hi-clear]')) {
@@ -159,12 +210,7 @@ ROUTES.import = () => ({
     // Options re-convert at once and refresh an open preview.
     page.addEventListener('change', e => {
       const t = e.target.closest('[name="keepInlineStyles"],[name="keepClasses"]');
-      if (!t) return;
-      HI.options[t.name] = t.checked;
-      if (!HI.source) return;
-      hiConvert();
-      $('#hiResult .card-body', page).innerHTML = hiResultHTML();
-      refreshImportPanel();
+      if (t) hiSetOption(t.name, t.checked);
     });
   }
 });

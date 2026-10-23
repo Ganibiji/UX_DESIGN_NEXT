@@ -1,17 +1,23 @@
 /* =========================================================================
-   HTML IMPORT · PREVIEW SIDE PANEL
-   A docked, resizable panel on the right that shows the converted page
-   (or the original) in a sandboxed frame. Toolbar: converted / original,
-   light / dark / high contrast, desktop / tablet / mobile width.
-   Footer: open in a new tab, download. Esc or the close button hides it.
+   HTML IMPORT · PREVIEW PANEL (SHOWCASE)
+   The converted page fills the left of the screen; the Design lab
+   settings stay open on the right, so every change to theme, design
+   language, brand, density, size, fonts, radius or motion shows on the
+   imported page at once. Download saves it with the settings applied.
+
+   Toolbar: converted / original, light / dark / high contrast (preview
+   only), desktop / tablet / mobile, import options, design settings.
+   Footer: what the page is styled with, open in a new tab, download.
+   Esc or the close button returns to the Import page.
 
    The frame has an empty sandbox: nothing in the page can run, submit
    forms or open windows, even in the original view.
 
-   Provides: HI, HI_PANEL_KEY, HI_WIDTHS, HI_THEMES, hiTheme,
-   themeKeyOfApp, hiCurrentDocument, hiOriginalDocument, segment, hiPanel,
-   hiDrawnKey, hiStyleKey, setPanelWidth, openImportPanel,
-   closeImportPanel, refreshImportPanel, hiDownload, hiOpenInTab
+   Provides: HI, HI_WIDTHS, HI_THEMES, hiTheme, themeKeyOfApp,
+   hiCurrentDocument, hiOriginalDocument, segment, hiPanel, hiDrawnKey,
+   hiStyleKey, hiSettingsOpen, hiSyncSettingsButton, hiOptionsMenu,
+   openImportPanel, closeImportPanel, refreshImportPanel, hiDownload,
+   hiOpenInTab
    ========================================================================= */
 'use strict';
 
@@ -23,21 +29,22 @@ const HI = {
   options: Object.assign({}, HI_DEFAULT_OPTIONS),
   result: null, // convertHtml() output
   view: 'converted', // 'converted' | 'original'
-  theme: null, // 'light' | 'dark' | 'hc'; null follows the app theme
-  width: 'desktop'
+  theme: null, // 'light' | 'dark' | 'hc' for the preview only; null follows the app theme
+  width: 'desktop',
+  openedSettings: false // the preview opened the Design lab panel, so it closes it again
 };
 
-/** Saved panel width (px). */
-const HI_PANEL_KEY = 'kagami-import-panel';
 const HI_WIDTHS = [['desktop', 'Desktop', null], ['tablet', 'Tablet', 768], ['mobile', 'Mobile', 390]];
 const HI_THEMES = [['light', 'Light'], ['dark', 'Dark'], ['hc', 'High contrast']];
 
-/** Theme the converted page is shown and downloaded in. */
-const hiTheme = () => HI.theme || themeKeyOfApp();
+/** The app's theme. */
 function themeKeyOfApp() {
   const t = document.documentElement.getAttribute('data-theme');
   return t === 'dark' || t === 'hc' ? t : 'light';
 }
+
+/** Theme the converted page is shown and downloaded in. */
+const hiTheme = () => HI.theme || themeKeyOfApp();
 
 /** The converted page as a full document. */
 const hiCurrentDocument = () => hiBuildDocument(HI.result, hiTheme());
@@ -52,27 +59,37 @@ function hiOriginalDocument() {
   return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
 }
 
+/** A segmented control: one pressed button per group. */
 const segment = (key, list, current) =>
   '<div class="hi-seg" role="group">' +
   list.map(([v, label]) => '<button type="button" data-hi-' + key + '="' + v + '" aria-pressed="' + (v === current) + '">' + esc(label) + '</button>').join('') +
   '</div>';
+
+/** True while the Design lab settings panel is open. */
+const hiSettingsOpen = () => !$('#labDock').hidden;
+
+/** What the converted page depends on: the theme it shows and the resolved tokens. */
+let hiDrawnKey = '';
+const hiStyleKey = () => hiTheme() + JSON.stringify(dnThemeTokens());
 
 /** Creates the panel once and wires its controls. */
 function hiPanel() {
   let panel = $('#hiPanel');
   if (panel) return panel;
   panel = el(
-    '<aside class="hi-panel" id="hiPanel" aria-label="Import preview" hidden>' +
-      '<div class="hi-resize" title="Drag to resize" aria-hidden="true"></div>' +
+    '<section class="hi-panel" id="hiPanel" aria-label="Import preview" hidden>' +
       '<div class="hi-head"><span class="doc-ico">' + icon('eye', 18) + '</span>' +
       '<div style="flex:1;min-width:0"><h3>Preview</h3><small data-hi-name></small></div>' +
       '<button class="btn btn-ghost btn-sm btn-icon" type="button" data-hi-close aria-label="Close preview">' + icon('x', 16) + '</button></div>' +
-      '<div class="hi-bar" data-hi-bar></div>' +
+      '<div class="hi-bar"><div class="hi-bar-l" data-hi-bar></div><div class="hi-bar-r">' +
+      btn('Options', 'filter', 'sm', 'type="button" data-hi-options aria-haspopup="menu"') +
+      btn('Design settings', 'sliders', 'sm', 'type="button" data-hi-settings aria-pressed="false"') +
+      '</div></div>' +
       '<div class="hi-stage"><iframe class="hi-frame" sandbox="" title="Imported page preview"></iframe></div>' +
       '<div class="hi-foot"><small data-hi-note></small><span class="spacer"></span>' +
       btn('Open in new tab', 'export', 'sm', 'type="button" data-hi-tab') +
       btn('Download', 'save', 'primary sm', 'type="button" data-hi-download') +
-      '</div></aside>'
+      '</div></section>'
   );
   document.body.append(panel);
 
@@ -82,6 +99,12 @@ function hiPanel() {
     if (b.dataset.hiClose !== undefined) return closeImportPanel();
     if (b.dataset.hiTab !== undefined) return hiOpenInTab();
     if (b.dataset.hiDownload !== undefined) return hiDownload();
+    if (b.dataset.hiOptions !== undefined) return openMenu(b, hiOptionsMenu(), { align: 'right' });
+    if (b.dataset.hiSettings !== undefined) {
+      setLabDock(!hiSettingsOpen());
+      HI.openedSettings = false; // the user decides from now on
+      return hiSyncSettingsButton();
+    }
     if (b.dataset.hiView) HI.view = b.dataset.hiView;
     else if (b.dataset.hiTheme) HI.theme = b.dataset.hiTheme;
     else if (b.dataset.hiWidth) HI.width = b.dataset.hiWidth;
@@ -89,31 +112,11 @@ function hiPanel() {
     refreshImportPanel();
   });
 
-  // Drag the left edge to resize; the width is remembered.
-  const handle = $('.hi-resize', panel);
-  handle.addEventListener('pointerdown', e => {
-    e.preventDefault();
-    handle.classList.add('on');
-    handle.setPointerCapture(e.pointerId);
-    const frame = $('.hi-frame', panel);
-    frame.style.pointerEvents = 'none'; // keep receiving moves over the frame
-    const move = ev => setPanelWidth(innerWidth - ev.clientX);
-    const up = () => {
-      handle.classList.remove('on');
-      frame.style.pointerEvents = '';
-      handle.removeEventListener('pointermove', move);
-      store(HI_PANEL_KEY, String(parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hi-w'), 10) || 620));
-    };
-    handle.addEventListener('pointermove', move);
-    handle.addEventListener('pointerup', up, { once: true });
-  });
-  setPanelWidth(parseInt(store(HI_PANEL_KEY), 10) || Math.round(innerWidth * 0.48));
-
-  // Esc closes the panel unless a dialog or menu is open.
+  // Esc closes the preview unless a dialog or menu is open.
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && !panel.hidden && !modalStack.length && !menuEl) closeImportPanel();
   });
-  // The panel belongs to the Import page.
+  // The preview belongs to the Import page.
   window.addEventListener('hashchange', () => {
     if (!panel.hidden && (!currentRoute || currentRoute.name !== 'import')) closeImportPanel();
   });
@@ -123,7 +126,9 @@ function hiPanel() {
   const watch = new MutationObserver(() => {
     clearTimeout(timer);
     timer = setTimeout(() => {
-      if (!panel.hidden && hiStyleKey() !== hiDrawnKey) refreshImportPanel();
+      if (panel.hidden) return;
+      hiSyncSettingsButton();
+      if (hiStyleKey() !== hiDrawnKey) refreshImportPanel();
     }, 120);
   });
   watch.observe(document.documentElement, { attributes: true });
@@ -131,36 +136,49 @@ function hiPanel() {
   return panel;
 }
 
-/** What the converted page depends on: the active theme and its resolved tokens. */
-let hiDrawnKey = '';
-const hiStyleKey = () => hiTheme() + JSON.stringify(dnThemeTokens());
-
-function setPanelWidth(px) {
-  const w = clamp(Math.round(px), 380, Math.max(380, innerWidth - 320));
-  document.documentElement.style.setProperty('--hi-w', w + 'px');
+function hiSyncSettingsButton() {
+  const b = $('[data-hi-settings]');
+  if (b) b.setAttribute('aria-pressed', String(hiSettingsOpen()));
 }
 
-/** Shows the panel with the current import. */
+/** Import options, also on the Import page. */
+function hiOptionsMenu() {
+  const item = (name, label) => ({
+    label,
+    icon: HI.options[name] ? 'check' : null,
+    onClick: () => hiSetOption(name, !HI.options[name])
+  });
+  return [item('keepInlineStyles', 'Keep inline styles'), item('keepClasses', 'Keep original class names')];
+}
+
+/** Shows the preview with the current import, and the Design lab settings beside it on wide screens. */
 function openImportPanel() {
   if (!HI.result) return;
   const panel = hiPanel();
-  if (typeof setLabDock === 'function' && !$('#labDock').hidden) setLabDock(false); // one docked panel at a time
   panel.hidden = false;
   document.documentElement.setAttribute('data-hipanel', 'open');
+  if (innerWidth > 1100 && !hiSettingsOpen()) {
+    setLabDock(true);
+    HI.openedSettings = true;
+  }
+  hiSyncSettingsButton();
   refreshImportPanel();
   $('[data-hi-close]', panel).focus();
 }
 
+/** Returns to the Import page; closes the settings panel if the preview opened it. */
 function closeImportPanel() {
   const panel = $('#hiPanel');
   if (!panel || panel.hidden) return;
   panel.hidden = true;
   document.documentElement.removeAttribute('data-hipanel');
+  if (HI.openedSettings && hiSettingsOpen()) setLabDock(false);
+  HI.openedSettings = false;
   const opener = $('[data-hi-preview]');
   if (opener) opener.focus();
 }
 
-/** Redraws the toolbar and the frame from HI. */
+/** Redraws the toolbar, the note and the frame from HI. */
 function refreshImportPanel() {
   const panel = $('#hiPanel');
   if (!panel || !HI.result) return;
@@ -170,8 +188,10 @@ function refreshImportPanel() {
     segment('view', [['converted', 'Converted'], ['original', 'Original']], HI.view) +
     (converted ? segment('theme', HI_THEMES, hiTheme()) : '') +
     segment('width', HI_WIDTHS, HI.width);
+  const lang = LABX.LANGS.find(l => l[0] === LABX.state.lang);
   $('[data-hi-note]', panel).textContent = converted
-    ? dnName() + ' v' + (dnMeta.version || '1.0.0') + ' styleguide'
+    ? 'Live: ' + dnName() + ' v' + (dnMeta.version || '1.0.0') + ' · ' + (lang ? lang[1] : LABX.state.lang) + ' · ' +
+      HI_THEMES.find(t => t[0] === hiTheme())[1]
     : 'Original file, scripts blocked';
   const frame = $('.hi-frame', panel);
   const w = HI_WIDTHS.find(x => x[0] === HI.width)[2];
@@ -182,7 +202,7 @@ function refreshImportPanel() {
   $('[data-hi-download]', panel).disabled = !converted;
 }
 
-/** Saves the converted page in the theme shown. */
+/** Saves the converted page as previewed: current styleguide, design lab settings and theme. */
 function hiDownload() {
   if (!HI.result) return;
   const name = hiFileName(HI.fileName, hiTheme());

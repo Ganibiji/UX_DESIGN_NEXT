@@ -146,7 +146,11 @@ function dnTabs(active) {
     (active === 'guide' ? ' on' : '') +
     '" role="tab" href="#/design/styleguide">' +
     icon('book', 16) +
-    '<span>3 · Styleguide</span></a><span class="muted dn-count">' +
+    '<span>3 · Styleguide</span></a><a class="dn-tab' +
+    (active === 'import' ? ' on' : '') +
+    '" role="tab" href="#/import">' +
+    icon('inbox', 16) +
+    '<span>4 · Import HTML</span></a><span class="muted dn-count">' +
     dnTotal() +
     ' variants selected in ' +
     DN_ALL.filter(c => dnGet(c.s).length).length +

@@ -16,9 +16,10 @@ A browser application with three parts:
   stock, goods receipt, goods issue, transfers, adjustments, counts, planning, reports, audit,
   purchasing and sales). It is off by default and loads when you switch on the
   **Inventory workflow** toggle in the header.
-- **Import HTML module** — converts any HTML page you provide to your styleguide, shows it in a
-  preview side panel (converted or original, light / dark / high contrast, desktop / tablet / mobile)
-  and downloads it. It loads the first time you open **Import HTML** in the menu.
+- **Import HTML module** — converts any HTML page you provide (file, pasted HTML or a sample) to
+  your styleguide and shows it in a **preview on the left of the screen, with the Design lab settings
+  on the right**: change the theme, design language, brand, density or fonts and the page updates at
+  once. Download saves it with those settings. It loads the first time you open **Import HTML**.
 
 It runs entirely in the browser. There is **no server, database or login**: data is generated sample
 data held in memory, and settings are saved in the browser's `localStorage`.
@@ -150,9 +151,11 @@ CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm t
 | Build your design system | Header → **Design**. Step 1 *Build*: tick component variants. Step 2 *Preview and download*. Step 3 *Styleguide*: enter name, version and description. |
 | Download formats | On Preview or Styleguide → **Download**: workflow app, workflow mock-up, styleguide, design system, Markdown, JSON, CSS, SCSS, Tailwind, W3C tokens. |
 | Download the workflow app | Styleguide page → **Download workflow** (or Download → *Workflow app with styleguide*). Saves one HTML file: the working inventory app in your theme, with your styleguide as a page, and no design tools. Open it by double-click; it needs no other file. |
-| Import an HTML page | Left menu → **Import HTML**. Drop a `.html` / `.htm` file (up to 5 MB), click to choose one, or **Try a sample page**. The page is converted in your browser (nothing is uploaded) and opens in the **preview side panel**. |
-| Use the preview panel | Toolbar: **Converted / Original**, **Light / Dark / High contrast**, **Desktop / Tablet / Mobile**. Drag its left edge to resize. **Open in new tab** or **Download** at the bottom; `Esc` or ✕ closes it. It follows theme, brand and design lab changes while open. |
-| Import options | **Keep inline styles** (for layout the design system does not cover) and **Keep original class names** (to add the page's own CSS back later). Changing one re-converts at once. |
+| Import an HTML page | Left menu → **Import HTML**, or Design → tab **4 · Import HTML**. Three ways: drop a `.html` / `.htm` file (up to 5 MB) or click to choose one; **Paste HTML** (a whole page or a fragment); or **Try a sample page**. The page is converted in your browser (nothing is uploaded) and the preview opens. |
+| Showcase it with your settings | The preview fills the left of the screen and the **Design lab** opens on the right. Change theme, design language, brand, size, density, fonts, shape or navbar there and the page updates at once; the footer shows what it is styled with. **Design settings** hides or shows the settings panel. |
+| Preview toolbar | **Converted / Original**, **Light / Dark / High contrast** (preview only), **Desktop / Tablet / Mobile**, **Options**. **Open in new tab** or **Download** at the bottom; `Esc` or ✕ returns to the Import page (and closes the settings panel if the preview opened it). |
+| Import options | **Keep inline styles** (for layout the design system does not cover) and **Keep original class names** (to add the page's own CSS back later). On the Import page or in the preview's **Options** menu; changing one re-converts at once. |
+| Download the updated page | **Download** (preview footer or Import page) saves the page with the current styleguide, design lab settings and theme, as `<file>-<styleguide>-<theme>.html`. |
 | Keyboard | `/` search · `[` collapse menu · `Shift`+`T` light / dark · `Shift`+`?` help · `Esc` close |
 
 **From `index.html`,** *Download workflow* opens `dist/lab5.html` in a new tab, which builds and saves
@@ -295,7 +298,8 @@ your .html file ──► converter.js ──► stylesheet.js + document.js ─
 ```
 
 1. **Read.** `page.js` reads the file in the browser (`File.text()`): `.html`, `.htm` or `.xhtml`,
-   up to 5 MB. Nothing is uploaded anywhere.
+   up to 5 MB; or takes pasted HTML (`hiPasteDialog`) or the sample (`sample.js`). Nothing is
+   uploaded anywhere.
 2. **Clean** (`converter.js`, `convertHtml`). Using the browser's `DOMParser` (no code runs while
    parsing), it removes `<script>`, `<noscript>`, `<style>`, `<link>`, `<meta>`, `<base>`, frames,
    `<object>` / `<embed>`; every `on…` event attribute; `javascript:`, `vbscript:` and `data:text/html`
@@ -324,9 +328,11 @@ your .html file ──► converter.js ──► stylesheet.js + document.js ─
    with the heading sizes from the styleguide's type scale.
 5. **Page** (`document.js`). `hiBuildDocument()` wraps the result in a complete page: tokens, styles
    and the app's web fonts, **no scripts**. `data-theme` on `<html>` picks the theme.
-6. **Preview** (`side-panel.js`). A docked, resizable panel on the right (the page moves over, like the
-   design lab sidebar) shows the page in an `<iframe sandbox="">`: nothing in it can run, submit forms
-   or open windows, even in the *Original* view. It redraws when the resolved styleguide changes.
+6. **Preview** (`side-panel.js`). The preview fills the screen from the left up to the Design lab
+   panel (`design/lab-dock.js`), which it opens on screens wider than 1,100 px and closes again
+   when it closes. The page is shown in an `<iframe sandbox="">`: nothing in it can run, submit
+   forms or open windows, even in the *Original* view. A `MutationObserver` watches the theme, brand
+   and design lab, and the preview redraws only when the resolved tokens actually change.
 7. **Report.** The Import page lists what was mapped (buttons, fields, tables, cards, badges, alerts,
    links) and what was removed, and warns about images with relative paths, which cannot load
    outside the original site.
@@ -349,7 +355,6 @@ The module's api, for other code: `loadFeatureModule('html-import')` resolves wi
 | `kagami-design` | Variants selected in the design builder |
 | `kagami-design-meta` | Styleguide name, version and description |
 | `kagami-inventory` | Inventory workflow toggle on / off |
-| `kagami-import-panel` | Width of the Import HTML preview panel |
 
 To reset everything: open the browser's developer tools → Application → Local Storage → delete the
 `kagami-*` keys, then reload. Inventory data and the imported page reset on every reload.

@@ -1,8 +1,9 @@
 # Workflow Lab 5
 
 Kagami ERP design system with an on-demand **inventory workflow module**, split into small,
-documented source files. Lab 5 adds **Import HTML**: convert any HTML page to your styleguide, preview it
-in a side panel and download it. It is a separate module, loaded the first time you open it.
+documented source files. Lab 5 adds **Import HTML**: convert any HTML page (file, pasted or sample) to
+your styleguide, preview it on the left with the Design lab settings on the right so every change shows
+at once, and download it. It is a separate module, loaded the first time you open it.
 
 **New here?** Read [`docs/GUIDE.md`](docs/GUIDE.md): software required, how to run, build and test,
 how to use the app, and how it is implemented.
@@ -49,7 +50,7 @@ src/
     stylesheet.js           token CSS for every theme + styles for the kg-* classes
     document.js             wraps converted markup in a complete page
     ui-styles.js            styles for the Import page and the side panel
-    side-panel.js           docked, resizable, sandboxed preview panel
+    side-panel.js           sandboxed preview on the left, beside the Design lab settings
     page.js                 the #/import page
     register.js             registerFeatureModule('html-import', api)
 ```

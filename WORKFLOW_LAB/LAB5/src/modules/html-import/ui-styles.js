@@ -10,7 +10,6 @@
 const HI_UI_CSS = `
 /* page layout: two columns, one while the preview panel takes the right side */
 .hi-layout { display: grid; gap: 16px; grid-template-columns: minmax(0, 1fr) 340px; align-items: start; }
-html[data-hipanel='open'] .hi-layout { grid-template-columns: minmax(0, 1fr); }
 @media (max-width: 1100px) { .hi-layout { grid-template-columns: minmax(0, 1fr); } }
 
 /* drop zone */
@@ -44,23 +43,21 @@ html[data-hipanel='open'] .hi-layout { grid-template-columns: minmax(0, 1fr); }
 .hi-opts { display: grid; gap: 8px; }
 @media (max-width: 760px) { .hi-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* preview side panel (docked, non-modal; follows the design lab sidebar pattern) */
-.hi-panel { position: fixed; top: 0; right: 0; bottom: 0; width: var(--hi-w, 620px); max-width: 100%; z-index: 56;
-  display: flex; flex-direction: column; background: var(--surface); border-left: 1px solid var(--border); box-shadow: var(--shadow-lg); }
+/* preview showcase: fills the screen from the left up to the Design lab settings panel on the right */
+.hi-panel { position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 54; display: flex; flex-direction: column;
+  background: var(--surface); border-right: 1px solid var(--border); }
 .hi-panel[hidden] { display: none !important; }
-html[data-hipanel='open'] body { padding-right: var(--hi-w, 620px); }
-/* toasts move clear of the panel, so they never cover its Download button */
-html[data-hipanel='open'] .toasts { right: calc(var(--hi-w, 620px) + 16px); }
-@media (max-width: 1100px) {
-  html[data-hipanel='open'] body { padding-right: 0; }
-  html[data-hipanel='open'] .toasts { right: 16px; bottom: 72px; }
-}
-.hi-resize { position: absolute; left: -4px; top: 0; bottom: 0; width: 8px; cursor: col-resize; z-index: 1; }
-.hi-resize:hover, .hi-resize.on { background: var(--primary-soft); }
+html[data-labdock='open'] .hi-panel { right: 420px; }
+/* toasts sit bottom left, clear of the Download button and the settings panel */
+html[data-hipanel='open'] .toasts { left: 16px; right: auto; bottom: 72px; }
+@media (max-width: 1100px) { html[data-labdock='open'] .hi-panel { right: 0; } }
 .hi-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); min-height: var(--hh); }
 .hi-head h3 { font-size: 15px; font-weight: 650; }
 .hi-head small { display: block; font-size: 12px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.hi-bar { display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--surface-secondary); }
+.hi-bar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--border);
+  background: var(--surface-secondary); }
+.hi-bar-l, .hi-bar-r { display: flex; flex-wrap: wrap; gap: 8px; }
+.hi-bar-r .btn[aria-pressed='true'] { background: var(--primary-soft); border-color: var(--primary); color: var(--primary-text); }
 .hi-seg { display: inline-flex; padding: 2px; gap: 2px; border: 1px solid var(--border); border-radius: var(--r-md); background: var(--surface); }
 .hi-seg button { height: 28px; padding: 0 10px; border-radius: calc(var(--r-md) - 2px); background: transparent; color: var(--text-muted);
   font: inherit; font-size: 12.5px; font-weight: 500; cursor: pointer; }

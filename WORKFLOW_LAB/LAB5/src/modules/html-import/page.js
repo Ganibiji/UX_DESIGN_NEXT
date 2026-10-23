@@ -6,7 +6,7 @@
    showcase and download it. Replaces the loading route that manifest.js
    registered.
 
-   Provides: HI_MAX_BYTES, hiConvert, hiSetOption, hiReadFile, hiLoad,
+   Provides: HI_MAX_BYTES, hiConvert, hiSetOption, hiModeHTML, hiReadFile, hiLoad,
    hiPasteDialog, hiResultHTML, hiStyleguideHTML, #/import
    ========================================================================= */
 'use strict';
@@ -22,13 +22,29 @@ function hiConvert() {
 /** Changes an import option from the page or the preview's Options menu: re-converts and redraws both. */
 function hiSetOption(name, on) {
   HI.options[name] = on;
-  const toggle = $('#page [name="' + name + '"]');
-  if (toggle) toggle.checked = on;
-  if (!HI.source) return;
-  hiConvert();
-  const result = $('#hiResult .card-body');
-  if (result) result.innerHTML = hiResultHTML();
+  if (HI.source) hiConvert();
+  // The output mode changes which options apply, so the page is drawn again; toggles update in place.
+  if (name === 'mode') {
+    if (currentRoute && currentRoute.name === 'import') renderRoute();
+  } else {
+    const toggle = $('#page [name="' + name + '"]');
+    if (toggle) toggle.checked = on;
+    const result = $('#hiResult .card-body');
+    if (result && HI.result) result.innerHTML = hiResultHTML();
+  }
   refreshImportPanel();
+}
+
+/** Output mode choice for the Options card. */
+function hiModeHTML() {
+  return (
+    '<div class="hi-modes" role="radiogroup" aria-label="Download as">' +
+    HI_MODES.map(([value, label, hint]) =>
+      '<label class="hi-mode"><input type="radio" name="hiMode" value="' + value + '"' + (HI.options.mode === value ? ' checked' : '') +
+        '><span><b>' + esc(label) + '</b><small>' + esc(hint) + '</small></span></label>'
+    ).join('') +
+    '</div>'
+  );
 }
 
 /** Paste HTML: a dialog with a text box; Convert takes the text like a file. */
@@ -97,12 +113,17 @@ function hiLoad(name, text, size) {
 
 /** The result card: file, counts, cleanup and warnings. */
 function hiResultHTML() {
-  const r = HI.result.report;
+  const r = HI.result.report, keepFile = r.mode === 'original';
   const stat = (label, n) => '<div><small>' + label + '</small><b>' + fmtN(n) + '</b></div>';
-  const clean = [
-    ['scripts', 'script'], ['stylesheets', 'stylesheet'], ['inlineStyles', 'inline style'], ['handlers', 'event handler'],
-    ['embeds', 'embedded frame'], ['unsafeUrls', 'unsafe link'], ['legacy', 'legacy markup item']
-  ].filter(([k]) => r[k]);
+  const chips = (list, word, tone) => list.filter(([k]) => r[k]).map(([k, w]) => badge(pl(r[k], w) + ' ' + word, tone(k))).join('');
+  const risky = k => (k === 'scripts' || k === 'handlers' || k === 'unsafeUrls' ? 'danger' : 'neutral');
+  const runnable = [['scripts', 'script'], ['handlers', 'event handler'], ['embeds', 'embedded frame'], ['unsafeUrls', 'javascript: link']];
+  const styling = [['stylesheets', 'stylesheet'], ['inlineStyles', 'inline style'], ['legacy', 'legacy markup item']];
+  const changes = keepFile
+    ? chips([['stylesheets', 'stylesheet']], 'replaced by the styleguide', () => 'info') +
+      chips(styling.slice(1), 'removed', () => 'neutral') +
+      chips(runnable, 'kept as in your file', () => 'neutral')
+    : chips(runnable.concat(styling), 'removed', risky);
   return (
     '<div class="hi-file"><span class="doc-ico">' + icon('file', 18) + '</span><div style="flex:1;min-width:0"><b>' + esc(HI.fileName) +
     '</b><small>' + (HI.fileSize / 1024).toFixed(1) + ' KB' + (HI.result.title ? ' · ' + esc(HI.result.title) : '') +
@@ -110,11 +131,12 @@ function hiResultHTML() {
     '<p class="hi-h">Mapped to the design system</p><div class="hi-stats">' +
     stat('Buttons', r.buttons) + stat('Form fields', r.fields) + stat('Checkboxes and radios', r.choices) + stat('Tables', r.tables) +
     stat('Cards', r.cards) + stat('Badges', r.badges) + stat('Alerts', r.alerts) + stat('Links', r.links) + '</div>' +
-    '<p class="hi-h">Cleaned up</p><div class="hi-clean">' +
-    (clean.length
-      ? clean.map(([k, word]) => badge(pl(r[k], word) + ' removed', k === 'scripts' || k === 'handlers' || k === 'unsafeUrls' ? 'danger' : 'neutral')).join('')
-      : '<span class="muted">Nothing needed removing.</span>') +
+    '<p class="hi-h">' + (keepFile ? 'Your file' : 'Cleaned up') + '</p><div class="hi-clean">' +
+    (changes || '<span class="muted">Nothing needed changing.</span>') +
     '</div>' +
+    (keepFile
+      ? '<p class="muted mt-8" style="font-size:12.5px">Download keeps your whole file (head, structure, ids, classes, scripts) and replaces its look with the styleguide.</p>'
+      : '') +
     (HI.result.warnings.length
       ? '<div class="alert alert-warning mt-16">' + icon('alert', 16) + '<span>' + HI.result.warnings.map(esc).join('<br>') + '</span></div>'
       : '')
@@ -171,11 +193,15 @@ ROUTES.import = () => ({
     '</div><div class="stack">' +
     card(
       'Options',
-      '<div class="hi-opts">' +
+      '<p class="hi-h" style="margin-top:0">Download as</p>' +
+        hiModeHTML() +
+        '<p class="hi-h">Styles</p><div class="hi-opts">' +
         F({ name: 'keepInlineStyles', label: 'Keep inline styles', type: 'toggle', span: 12, value: HI.options.keepInlineStyles,
             hint: 'For layout the design system does not cover. Inline colors and fonts then override the styleguide.' }) +
-        F({ name: 'keepClasses', label: 'Keep original class names', type: 'toggle', span: 12, value: HI.options.keepClasses,
-            hint: 'Useful if you will add the page’s own CSS back later.' }) +
+        (HI.options.mode === 'clean'
+          ? F({ name: 'keepClasses', label: 'Keep original class names', type: 'toggle', span: 12, value: HI.options.keepClasses,
+              hint: 'Useful if you will add the page’s own CSS back later.' })
+          : '') +
         '</div>'
     ) +
     card('Styleguide', hiStyleguideHTML(), { sub: 'The page is converted to' }) +
@@ -211,6 +237,8 @@ ROUTES.import = () => ({
     page.addEventListener('change', e => {
       const t = e.target.closest('[name="keepInlineStyles"],[name="keepClasses"]');
       if (t) hiSetOption(t.name, t.checked);
+      const m = e.target.closest('[name="hiMode"]');
+      if (m) hiSetOption('mode', m.value);
     });
   }
 });

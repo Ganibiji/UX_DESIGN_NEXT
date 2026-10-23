@@ -41,6 +41,14 @@ const HI_UI_CSS = `
 .hi-dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13px; margin-top: 12px; }
 .hi-dl dt { color: var(--text-muted); }
 .hi-opts { display: grid; gap: 8px; }
+.hi-modes { display: grid; gap: 8px; }
+.hi-mode { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: var(--r-md); cursor: pointer; }
+.hi-mode:hover { border-color: var(--border-strong); }
+.hi-mode:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); }
+.hi-mode input { margin-top: 3px; accent-color: var(--primary); }
+.hi-mode b { display: block; font-weight: 600; }
+.hi-mode small { display: block; font-size: 12.5px; color: var(--text-muted); }
 @media (max-width: 760px) { .hi-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* preview showcase: fills the screen from the left up to the Design lab settings panel on the right */

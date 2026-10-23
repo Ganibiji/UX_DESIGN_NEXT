@@ -116,12 +116,12 @@ async function testHtmlImport(browser, file, errors) {
     return {
       open: !document.querySelector('#hiPanel').hidden,
       sandboxed: frame.getAttribute('sandbox') === '',
-      clean: !/<script|onclick=|onload=|javascript:|<iframe/i.test(body),
+      clean: !/<script|onclick=|onload=/i.test(body), // original mode keeps frames and links; scripts never reach the preview
       mapped: /kg-btn kg-btn--primary/.test(body) && /kg-table/.test(body) && /kg-card/.test(body)
     };
   });
   check(s.open && s.sandboxed, 'sample converts and opens in the sandboxed side panel');
-  check(s.clean && s.mapped, 'converted page is clean and uses design-system classes');
+  check(s.clean && s.mapped, 'preview has no scripts and uses design-system classes');
   await page.click('[data-hi-download]');
   let saved = null;
   for (let i = 0; i < 20 && !saved; i++) {

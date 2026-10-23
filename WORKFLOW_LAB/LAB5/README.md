@@ -3,7 +3,7 @@
 Kagami ERP design system with an on-demand **inventory workflow module**, split into small,
 documented source files. Lab 5 adds **Import HTML**: convert any HTML page (file, pasted or sample) to
 your styleguide, preview it on the left with the Design lab settings on the right so every change shows
-at once, and download it. It is a separate module, loaded the first time you open it.
+at once, and download it: your original file as it is, restyled, or a clean page. It is a separate module, loaded the first time you open it.
 
 **New here?** Read [`docs/GUIDE.md`](docs/GUIDE.md): software required, how to run, build and test,
 how to use the app, and how it is implemented.
@@ -46,9 +46,9 @@ src/
   modules/html-import/      Import HTML, loaded the first time its page opens
     manifest.js             file list, menu item and #/import route (the only file loaded up front)
     sample.js               sample page for "Try a sample page"
-    converter.js            cleans the HTML and maps it to design-system classes (kg-*)
+    converter.js            keeps your file (or just its content) and maps it to design-system classes (kg-*)
     stylesheet.js           token CSS for every theme + styles for the kg-* classes
-    document.js             wraps converted markup in a complete page
+    document.js             puts the styleguide into your file, or wraps content in a new page
     ui-styles.js            styles for the Import page and the side panel
     side-panel.js           sandboxed preview on the left, beside the Design lab settings
     page.js                 the #/import page

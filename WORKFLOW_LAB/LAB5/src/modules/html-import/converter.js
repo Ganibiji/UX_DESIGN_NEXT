@@ -1,31 +1,46 @@
 /* =========================================================================
    HTML IMPORT · CONVERTER
-   Turns any HTML page into markup that the design system styles:
+   Turns any HTML page into markup that the design system styles. Two
+   output modes:
 
-   1. Cleans it: scripts, stylesheets, embedded frames, event handlers and
-      javascript: links are removed, so nothing from the file can run.
-   2. Strips its own look: inline styles, class names and legacy
-      presentational tags and attributes (optional, see the options).
-   3. Maps what is left to design-system classes (kg-*): buttons, fields,
-      choices, tables, cards, badges, alerts, header, navigation, footer
-      and simple rows / columns, read from tags, roles and the old class
-      names (Bootstrap-style names are recognised).
+   original  Your file as it is: head, title, meta, structure, ids, class
+             names, scripts and event handlers stay. Only its stylesheets
+             are taken out (document.js puts the styleguide in their place)
+             and legacy presentational attributes are dropped.
+   clean     Content only: scripts, stylesheets, embedded frames, event
+             handlers, javascript: links, class names and legacy tags are
+             removed, so nothing from the file can run.
 
-   The result is plain markup: stylesheet.js and document.js turn it into a
-   page in the current styleguide. Pure function, no DOM side effects.
+   In both modes, inline styles go unless kept, and elements are mapped to
+   design-system classes (kg-*): buttons, fields, choices, tables, cards,
+   badges, alerts, header, navigation, footer and simple rows / columns,
+   read from tags, roles and the old class names (Bootstrap-style names are
+   recognised). The kg-* classes are added next to the original ones, so
+   the file's own scripts still find their elements.
 
-   Provides: HI_DEFAULT_OPTIONS, hiTone, convertHtml
+   Pure function, no DOM side effects.
+
+   Provides: HI_DEFAULT_OPTIONS, HI_MODES, hiTone, convertHtml
    ========================================================================= */
 'use strict';
 
 /** Options shown on the Import page. */
 const HI_DEFAULT_OPTIONS = {
+  mode: 'original', // 'original' keeps the whole file; 'clean' keeps the content only
   keepInlineStyles: false, // keep style="" attributes (layout the design system does not cover)
-  keepClasses: false // keep the original class names next to the design-system ones
+  keepClasses: false // clean mode: keep the original class names next to the design-system ones
 };
 
-/** Removed with their content: they could run code, load other content or restyle the page. */
+/** Output modes, for the options UI. */
+const HI_MODES = [
+  ['original', 'Original file, restyled', 'Your file as it is (head, structure, classes, scripts) with its stylesheets replaced by your styleguide.'],
+  ['clean', 'Clean page', 'Content only: scripts, the file’s own classes and embedded frames are removed.']
+];
+
+/** Clean mode removes these with their content: they could run code, load other content or restyle the page. */
 const HI_DROP = 'script,noscript,style,link,meta,base,iframe,frame,frameset,object,embed,applet,template,portal';
+/** Original mode removes only the file's stylesheets: the styleguide replaces them. */
+const HI_DROP_STYLES = 'style,link[rel~="stylesheet" i],link[rel~="preload" i][as="style" i]';
 /** Legacy presentational tags: replaced by their content. */
 const HI_UNWRAP = 'font,center,big,blink,marquee';
 /** Legacy presentational attributes. */
@@ -50,53 +65,66 @@ function hiTone(className, text) {
  * Converts an HTML page.
  * @param {string} source  the file's HTML
  * @param {object} [options] see HI_DEFAULT_OPTIONS
- * @returns {{title:string, html:string, report:object, warnings:string[], options:object}}
- *          html is the converted <body> content; report counts what was mapped and removed.
+ * @returns {{mode:string, title:string, html:string, full:string, report:object, warnings:string[], options:object}}
+ *          html is the converted <body> content; full (original mode) is the whole converted file;
+ *          report counts what was mapped, removed and, in original mode, kept.
  */
 function convertHtml(source, options) {
   const opt = Object.assign({}, HI_DEFAULT_OPTIONS, options);
+  const keepFile = opt.mode === 'original';
   const doc = new DOMParser().parseFromString(String(source || ''), 'text/html');
   const report = {
+    mode: opt.mode,
     // mapped to the design system
     buttons: 0, fields: 0, choices: 0, forms: 0, tables: 0, cards: 0, badges: 0, alerts: 0, links: 0, images: 0, headings: 0,
-    // removed or neutralised
-    scripts: 0, stylesheets: 0, embeds: 0, handlers: 0, unsafeUrls: 0, inlineStyles: 0, legacy: 0
+    // removed (clean mode) or kept as in the file (original mode)
+    scripts: 0, embeds: 0, handlers: 0, unsafeUrls: 0,
+    // replaced or removed in both modes
+    stylesheets: 0, inlineStyles: 0, legacy: 0
   };
   const warnings = [];
   const title = (doc.title || '').trim();
 
-  // 1. Remove what must never run, and the file's own stylesheets.
-  doc.querySelectorAll(HI_DROP).forEach(node => {
-    const tag = node.localName;
-    if (tag === 'script' || tag === 'noscript') report.scripts++;
-    else if (tag === 'style' || (tag === 'link' && /stylesheet/i.test(node.getAttribute('rel') || ''))) report.stylesheets++;
-    else if (/^(iframe|frame|frameset|object|embed|applet|portal)$/.test(tag)) report.embeds++;
+  // 1. Take out the file's own stylesheets, and in clean mode everything that could run or load content.
+  doc.querySelectorAll(HI_DROP_STYLES).forEach(node => {
     node.remove();
+    report.stylesheets++;
   });
-
-  // 2. Legacy tags such as <font> and <center> give way to their content.
-  doc.querySelectorAll(HI_UNWRAP).forEach(node => {
-    node.replaceWith(...node.childNodes);
-    report.legacy++;
+  doc.querySelectorAll('script,noscript').forEach(node => {
+    report.scripts++;
+    if (!keepFile) node.remove();
   });
+  doc.querySelectorAll('iframe,frame,frameset,object,embed,applet,portal').forEach(node => {
+    report.embeds++;
+    if (!keepFile) node.remove();
+  });
+  if (!keepFile) doc.querySelectorAll(HI_DROP).forEach(node => node.remove());
 
-  // 3. Clean attributes. Old class names are remembered first: the mapping below reads them.
+  // 2. Clean mode: legacy tags such as <font> and <center> give way to their content.
+  if (!keepFile)
+    doc.querySelectorAll(HI_UNWRAP).forEach(node => {
+      node.replaceWith(...node.childNodes);
+      report.legacy++;
+    });
+
+  // 3. Attributes. Old class names are remembered first: the mapping below reads them.
   const oldClass = new Map();
   [doc.body, ...doc.body.querySelectorAll('*')].forEach(node => {
     oldClass.set(node, (node.getAttribute('class') || '').toLowerCase());
     for (const attr of Array.from(node.attributes)) {
       const name = attr.name.toLowerCase();
       if (name.startsWith('on')) {
-        node.removeAttribute(attr.name);
         report.handlers++;
+        if (!keepFile) node.removeAttribute(attr.name);
       } else if (HI_URL_ATTRS.includes(name) && /^\s*(javascript|vbscript|data:text\/html)/i.test(attr.value)) {
+        report.unsafeUrls++;
+        if (keepFile) continue;
         if (name === 'href') node.setAttribute('href', '#');
         else node.removeAttribute(attr.name);
-        report.unsafeUrls++;
       } else if (name === 'style' && !opt.keepInlineStyles) {
         node.removeAttribute('style');
         report.inlineStyles++;
-      } else if (name === 'class' && !opt.keepClasses) {
+      } else if (name === 'class' && !keepFile && !opt.keepClasses) {
         node.removeAttribute('class');
       } else if (HI_LEGACY_ATTRS.includes(name) && node.localName !== 'img') {
         node.removeAttribute(attr.name);
@@ -200,14 +228,15 @@ function convertHtml(source, options) {
     report.forms++;
   });
 
-  // Tables, in a scroll wrapper.
+  // Tables: in a scroll wrapper, or styled in place when the file's structure must stay as it is.
   all('table').forEach(n => {
     add(n, 'kg-table');
+    report.tables++;
+    if (keepFile) return add(n, 'kg-table--bare');
     const wrap = doc.createElement('div');
     wrap.className = 'kg-table-wrap';
     n.replaceWith(wrap);
     wrap.append(n);
-    report.tables++;
   });
 
   // Links, images and headings.
@@ -227,9 +256,25 @@ function convertHtml(source, options) {
   // 5. Things the user should know.
   if (!text(doc.body) && !report.images) warnings.push('The file has no visible content.');
   if (relativeImages)
-    warnings.push(pl(relativeImages, 'image') + ' use a path relative to the original file and will not show. Use full web addresses or embed them.');
+    warnings.push(
+      pl(relativeImages, 'image') +
+        (keepFile
+          ? ' use a path relative to the original file: they show when the downloaded file sits in the original’s folder, not in the preview.'
+          : ' use a path relative to the original file and will not show. Use full web addresses or embed them.')
+    );
   if (opt.keepInlineStyles && report.inlineStyles === 0 && /style=/i.test(source))
     warnings.push('Inline styles are kept: colors and fonts set inline do not follow the styleguide.');
+  if (keepFile && (report.scripts || report.handlers))
+    warnings.push('Scripts and event handlers stay in the download, as in your file. They never run in the preview.');
 
-  return { title, html: doc.body.innerHTML.trim(), report, warnings, options: opt };
+  const doctype = doc.doctype ? new XMLSerializer().serializeToString(doc.doctype) : '<!DOCTYPE html>';
+  return {
+    mode: opt.mode,
+    title,
+    html: doc.body.innerHTML.trim(),
+    full: keepFile ? doctype + '\n' + doc.documentElement.outerHTML : '',
+    report,
+    warnings,
+    options: opt
+  };
 }

@@ -46,8 +46,11 @@ function themeKeyOfApp() {
 /** Theme the converted page is shown and downloaded in. */
 const hiTheme = () => HI.theme || themeKeyOfApp();
 
-/** The converted page as a full document. */
-const hiCurrentDocument = () => hiBuildDocument(HI.result, hiTheme());
+/**
+ * The converted page as a full document.
+ * @param {{preview?:boolean}} [o] preview: without scripts (the preview frame and "Open in new tab")
+ */
+const hiCurrentDocument = o => hiBuildDocument(HI.result, hiTheme(), o);
 
 /** The file for the Original view: its own styles kept; scripts, frames and inline handlers removed (they could not run in the sandbox anyway). */
 function hiOriginalDocument() {
@@ -141,14 +144,21 @@ function hiSyncSettingsButton() {
   if (b) b.setAttribute('aria-pressed', String(hiSettingsOpen()));
 }
 
-/** Import options, also on the Import page. */
+/** Import options, also on the Import page: output mode, then the toggles that apply to it. */
 function hiOptionsMenu() {
   const item = (name, label) => ({
     label,
     icon: HI.options[name] ? 'check' : null,
     onClick: () => hiSetOption(name, !HI.options[name])
   });
-  return [item('keepInlineStyles', 'Keep inline styles'), item('keepClasses', 'Keep original class names')];
+  const modes = HI_MODES.map(([value, label]) => ({
+    label,
+    icon: HI.options.mode === value ? 'check' : null,
+    onClick: () => hiSetOption('mode', value)
+  }));
+  return [{ label: 'DOWNLOAD AS', disabled: true }, ...modes, '-', item('keepInlineStyles', 'Keep inline styles')].concat(
+    HI.options.mode === 'clean' ? [item('keepClasses', 'Keep original class names')] : []
+  );
 }
 
 /** Shows the preview with the current import, and the Design lab settings beside it on wide screens. */
@@ -191,29 +201,36 @@ function refreshImportPanel() {
   const lang = LABX.LANGS.find(l => l[0] === LABX.state.lang);
   $('[data-hi-note]', panel).textContent = converted
     ? 'Live: ' + dnName() + ' v' + (dnMeta.version || '1.0.0') + ' · ' + (lang ? lang[1] : LABX.state.lang) + ' · ' +
-      HI_THEMES.find(t => t[0] === hiTheme())[1]
+      HI_THEMES.find(t => t[0] === hiTheme())[1] + ' · ' + HI_MODES.find(m => m[0] === HI.result.mode)[1]
     : 'Original file, scripts blocked';
   const frame = $('.hi-frame', panel);
   const w = HI_WIDTHS.find(x => x[0] === HI.width)[2];
   frame.style.width = w ? w + 'px' : '100%';
-  frame.srcdoc = converted ? hiCurrentDocument() : hiOriginalDocument();
+  frame.srcdoc = converted ? hiCurrentDocument({ preview: true }) : hiOriginalDocument();
   hiDrawnKey = hiStyleKey();
   $('[data-hi-tab]', panel).disabled = !converted;
   $('[data-hi-download]', panel).disabled = !converted;
 }
 
-/** Saves the converted page as previewed: current styleguide, design lab settings and theme. */
+/**
+ * Saves the page as previewed: current styleguide, design lab settings and theme. In original mode it is
+ * your whole file, scripts included, with the new styles in place of its own.
+ */
 function hiDownload() {
   if (!HI.result) return;
-  const name = hiFileName(HI.fileName, hiTheme());
+  const name = hiFileName(HI.fileName, hiTheme(), HI.result.mode);
   dnDownload(name, 'text/html', hiCurrentDocument());
-  toast('success', 'Download ready', 'Saved ' + name + ' in your ' + dnName() + ' styleguide.');
+  toast(
+    'success',
+    'Download ready',
+    'Saved ' + name + (HI.result.mode === 'original' ? ': your file, restyled with ' : ' in your ') + dnName() + ' styleguide.'
+  );
 }
 
-/** Opens the converted page in a new tab (it has no scripts). */
+/** Opens the page in a new tab, without scripts (the tab shares this app's origin). */
 function hiOpenInTab() {
   if (!HI.result) return;
-  const url = URL.createObjectURL(new Blob([hiCurrentDocument()], { type: 'text/html' }));
+  const url = URL.createObjectURL(new Blob([hiCurrentDocument({ preview: true })], { type: 'text/html' }));
   window.open(url, '_blank');
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }

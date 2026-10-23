@@ -18180,32 +18180,47 @@ const HI_SAMPLE = `<!DOCTYPE html>
 
 /* =========================================================================
    HTML IMPORT · CONVERTER
-   Turns any HTML page into markup that the design system styles:
+   Turns any HTML page into markup that the design system styles. Two
+   output modes:
 
-   1. Cleans it: scripts, stylesheets, embedded frames, event handlers and
-      javascript: links are removed, so nothing from the file can run.
-   2. Strips its own look: inline styles, class names and legacy
-      presentational tags and attributes (optional, see the options).
-   3. Maps what is left to design-system classes (kg-*): buttons, fields,
-      choices, tables, cards, badges, alerts, header, navigation, footer
-      and simple rows / columns, read from tags, roles and the old class
-      names (Bootstrap-style names are recognised).
+   original  Your file as it is: head, title, meta, structure, ids, class
+             names, scripts and event handlers stay. Only its stylesheets
+             are taken out (document.js puts the styleguide in their place)
+             and legacy presentational attributes are dropped.
+   clean     Content only: scripts, stylesheets, embedded frames, event
+             handlers, javascript: links, class names and legacy tags are
+             removed, so nothing from the file can run.
 
-   The result is plain markup: stylesheet.js and document.js turn it into a
-   page in the current styleguide. Pure function, no DOM side effects.
+   In both modes, inline styles go unless kept, and elements are mapped to
+   design-system classes (kg-*): buttons, fields, choices, tables, cards,
+   badges, alerts, header, navigation, footer and simple rows / columns,
+   read from tags, roles and the old class names (Bootstrap-style names are
+   recognised). The kg-* classes are added next to the original ones, so
+   the file's own scripts still find their elements.
 
-   Provides: HI_DEFAULT_OPTIONS, hiTone, convertHtml
+   Pure function, no DOM side effects.
+
+   Provides: HI_DEFAULT_OPTIONS, HI_MODES, hiTone, convertHtml
    ========================================================================= */
 'use strict';
 
 /** Options shown on the Import page. */
 const HI_DEFAULT_OPTIONS = {
+  mode: 'original', // 'original' keeps the whole file; 'clean' keeps the content only
   keepInlineStyles: false, // keep style="" attributes (layout the design system does not cover)
-  keepClasses: false // keep the original class names next to the design-system ones
+  keepClasses: false // clean mode: keep the original class names next to the design-system ones
 };
 
-/** Removed with their content: they could run code, load other content or restyle the page. */
+/** Output modes, for the options UI. */
+const HI_MODES = [
+  ['original', 'Original file, restyled', 'Your file as it is (head, structure, classes, scripts) with its stylesheets replaced by your styleguide.'],
+  ['clean', 'Clean page', 'Content only: scripts, the file’s own classes and embedded frames are removed.']
+];
+
+/** Clean mode removes these with their content: they could run code, load other content or restyle the page. */
 const HI_DROP = 'script,noscript,style,link,meta,base,iframe,frame,frameset,object,embed,applet,template,portal';
+/** Original mode removes only the file's stylesheets: the styleguide replaces them. */
+const HI_DROP_STYLES = 'style,link[rel~="stylesheet" i],link[rel~="preload" i][as="style" i]';
 /** Legacy presentational tags: replaced by their content. */
 const HI_UNWRAP = 'font,center,big,blink,marquee';
 /** Legacy presentational attributes. */
@@ -18230,53 +18245,66 @@ function hiTone(className, text) {
  * Converts an HTML page.
  * @param {string} source  the file's HTML
  * @param {object} [options] see HI_DEFAULT_OPTIONS
- * @returns {{title:string, html:string, report:object, warnings:string[], options:object}}
- *          html is the converted <body> content; report counts what was mapped and removed.
+ * @returns {{mode:string, title:string, html:string, full:string, report:object, warnings:string[], options:object}}
+ *          html is the converted <body> content; full (original mode) is the whole converted file;
+ *          report counts what was mapped, removed and, in original mode, kept.
  */
 function convertHtml(source, options) {
   const opt = Object.assign({}, HI_DEFAULT_OPTIONS, options);
+  const keepFile = opt.mode === 'original';
   const doc = new DOMParser().parseFromString(String(source || ''), 'text/html');
   const report = {
+    mode: opt.mode,
     // mapped to the design system
     buttons: 0, fields: 0, choices: 0, forms: 0, tables: 0, cards: 0, badges: 0, alerts: 0, links: 0, images: 0, headings: 0,
-    // removed or neutralised
-    scripts: 0, stylesheets: 0, embeds: 0, handlers: 0, unsafeUrls: 0, inlineStyles: 0, legacy: 0
+    // removed (clean mode) or kept as in the file (original mode)
+    scripts: 0, embeds: 0, handlers: 0, unsafeUrls: 0,
+    // replaced or removed in both modes
+    stylesheets: 0, inlineStyles: 0, legacy: 0
   };
   const warnings = [];
   const title = (doc.title || '').trim();
 
-  // 1. Remove what must never run, and the file's own stylesheets.
-  doc.querySelectorAll(HI_DROP).forEach(node => {
-    const tag = node.localName;
-    if (tag === 'script' || tag === 'noscript') report.scripts++;
-    else if (tag === 'style' || (tag === 'link' && /stylesheet/i.test(node.getAttribute('rel') || ''))) report.stylesheets++;
-    else if (/^(iframe|frame|frameset|object|embed|applet|portal)$/.test(tag)) report.embeds++;
+  // 1. Take out the file's own stylesheets, and in clean mode everything that could run or load content.
+  doc.querySelectorAll(HI_DROP_STYLES).forEach(node => {
     node.remove();
+    report.stylesheets++;
   });
-
-  // 2. Legacy tags such as <font> and <center> give way to their content.
-  doc.querySelectorAll(HI_UNWRAP).forEach(node => {
-    node.replaceWith(...node.childNodes);
-    report.legacy++;
+  doc.querySelectorAll('script,noscript').forEach(node => {
+    report.scripts++;
+    if (!keepFile) node.remove();
   });
+  doc.querySelectorAll('iframe,frame,frameset,object,embed,applet,portal').forEach(node => {
+    report.embeds++;
+    if (!keepFile) node.remove();
+  });
+  if (!keepFile) doc.querySelectorAll(HI_DROP).forEach(node => node.remove());
 
-  // 3. Clean attributes. Old class names are remembered first: the mapping below reads them.
+  // 2. Clean mode: legacy tags such as <font> and <center> give way to their content.
+  if (!keepFile)
+    doc.querySelectorAll(HI_UNWRAP).forEach(node => {
+      node.replaceWith(...node.childNodes);
+      report.legacy++;
+    });
+
+  // 3. Attributes. Old class names are remembered first: the mapping below reads them.
   const oldClass = new Map();
   [doc.body, ...doc.body.querySelectorAll('*')].forEach(node => {
     oldClass.set(node, (node.getAttribute('class') || '').toLowerCase());
     for (const attr of Array.from(node.attributes)) {
       const name = attr.name.toLowerCase();
       if (name.startsWith('on')) {
-        node.removeAttribute(attr.name);
         report.handlers++;
+        if (!keepFile) node.removeAttribute(attr.name);
       } else if (HI_URL_ATTRS.includes(name) && /^\s*(javascript|vbscript|data:text\/html)/i.test(attr.value)) {
+        report.unsafeUrls++;
+        if (keepFile) continue;
         if (name === 'href') node.setAttribute('href', '#');
         else node.removeAttribute(attr.name);
-        report.unsafeUrls++;
       } else if (name === 'style' && !opt.keepInlineStyles) {
         node.removeAttribute('style');
         report.inlineStyles++;
-      } else if (name === 'class' && !opt.keepClasses) {
+      } else if (name === 'class' && !keepFile && !opt.keepClasses) {
         node.removeAttribute('class');
       } else if (HI_LEGACY_ATTRS.includes(name) && node.localName !== 'img') {
         node.removeAttribute(attr.name);
@@ -18380,14 +18408,15 @@ function convertHtml(source, options) {
     report.forms++;
   });
 
-  // Tables, in a scroll wrapper.
+  // Tables: in a scroll wrapper, or styled in place when the file's structure must stay as it is.
   all('table').forEach(n => {
     add(n, 'kg-table');
+    report.tables++;
+    if (keepFile) return add(n, 'kg-table--bare');
     const wrap = doc.createElement('div');
     wrap.className = 'kg-table-wrap';
     n.replaceWith(wrap);
     wrap.append(n);
-    report.tables++;
   });
 
   // Links, images and headings.
@@ -18407,11 +18436,27 @@ function convertHtml(source, options) {
   // 5. Things the user should know.
   if (!text(doc.body) && !report.images) warnings.push('The file has no visible content.');
   if (relativeImages)
-    warnings.push(pl(relativeImages, 'image') + ' use a path relative to the original file and will not show. Use full web addresses or embed them.');
+    warnings.push(
+      pl(relativeImages, 'image') +
+        (keepFile
+          ? ' use a path relative to the original file: they show when the downloaded file sits in the original’s folder, not in the preview.'
+          : ' use a path relative to the original file and will not show. Use full web addresses or embed them.')
+    );
   if (opt.keepInlineStyles && report.inlineStyles === 0 && /style=/i.test(source))
     warnings.push('Inline styles are kept: colors and fonts set inline do not follow the styleguide.');
+  if (keepFile && (report.scripts || report.handlers))
+    warnings.push('Scripts and event handlers stay in the download, as in your file. They never run in the preview.');
 
-  return { title, html: doc.body.innerHTML.trim(), report, warnings, options: opt };
+  const doctype = doc.doctype ? new XMLSerializer().serializeToString(doc.doctype) : '<!DOCTYPE html>';
+  return {
+    mode: opt.mode,
+    title,
+    html: doc.body.innerHTML.trim(),
+    full: keepFile ? doctype + '\n' + doc.documentElement.outerHTML : '',
+    report,
+    warnings,
+    options: opt
+  };
 }
 
 /* =========================================================================
@@ -18521,6 +18566,9 @@ fieldset.kg-card legend { font-weight: 600; padding: 0 6px; }
 .kg-table th { text-align: left; font-size: 12px; font-weight: 600; color: var(--text-muted); background: var(--surface-secondary); white-space: nowrap; }
 .kg-table th, .kg-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .kg-table tr:last-child td { border-bottom: 0; }
+/* original mode keeps the file's structure, so tables are framed in place instead of wrapped */
+.kg-table--bare { border-collapse: separate; border-spacing: 0; margin: 0 0 16px; border: 1px solid var(--border);
+  border-radius: var(--r-md); background: var(--surface); overflow: hidden; }
 .kg-table tbody tr:hover td { background: var(--surface-hover); }
 
 /* badges and alerts */
@@ -18546,14 +18594,40 @@ fieldset.kg-card legend { font-weight: 600; padding: 0 6px; }
 
 /* =========================================================================
    HTML IMPORT · DOCUMENT
-   Wraps converted markup in a complete, self-contained page: the
-   styleguide's tokens for every theme, the design-system styles and the
-   same web fonts as the app. Used for the preview and the download.
-   The page has no scripts.
+   Builds the page that is previewed and downloaded, with the styleguide's
+   tokens for every theme, the design-system styles and the same web fonts
+   as the app.
 
-   Provides: hiFontsLink, hiBuildDocument, hiFileName
+   Original mode: your whole file (head, structure, classes, scripts) with
+   the styleguide added at the end of <head>, where its stylesheets were.
+   Clean mode: a new page around the converted content, with no scripts.
+   For the preview and "Open in new tab", scripts and event handlers are
+   always left out.
+
+   Provides: hiFontsLink, hiStyleBlock, hiBuildDocument, hiStripScripts,
+   hiFileName
    ========================================================================= */
 'use strict';
+
+/** The styleguide as one <style> block (plus the fonts link). */
+function hiStyleBlock() {
+  const name = dnName(), version = dnMeta.version || '1.0.0';
+  return (
+    hiFontsLink() +
+    '\n<style id="kg-styleguide">\n' +
+    '/* Styleguide: ' + name.replace(/\*\//g, '') + ' v' + version + ' (Kagami design system). Change data-theme on <html> to light, dark or hc. */\n' +
+    hiTokenCss() + '\n' + hiDocCss() +
+    '</style>\n'
+  );
+}
+
+/** Removes scripts and inline handlers from a document: used for the preview, never for the download. */
+function hiStripScripts(doc) {
+  doc.querySelectorAll('script,noscript').forEach(n => n.remove());
+  doc.querySelectorAll('*').forEach(n => {
+    for (const a of Array.from(n.attributes)) if (/^on/i.test(a.name)) n.removeAttribute(a.name);
+  });
+}
 
 /** The app's Google Fonts stylesheet link, so the page loads the styleguide's fonts. */
 function hiFontsLink() {
@@ -18565,10 +18639,29 @@ function hiFontsLink() {
  * Builds the converted page.
  * @param {{title:string, html:string}} result  from convertHtml
  * @param {'light'|'dark'|'hc'} theme           theme the page opens in (all three are included)
+ * @param {{preview?:boolean}} [o]              preview: leave scripts and event handlers out
  * @returns {string} a complete HTML document
  */
-function hiBuildDocument(result, theme) {
+function hiBuildDocument(result, theme, o) {
+  const preview = !!(o && o.preview);
   const name = dnName(), version = dnMeta.version || '1.0.0';
+  if (result.mode === 'original') {
+    const doc = new DOMParser().parseFromString(result.full, 'text/html');
+    if (preview) hiStripScripts(doc);
+    doc.documentElement.setAttribute('data-theme', theme);
+    doc.body.classList.add('kg-doc', 'kg-page');
+    let gen = doc.head.querySelector('meta[name="generator"]');
+    if (!gen) {
+      gen = doc.createElement('meta');
+      gen.setAttribute('name', 'generator');
+      doc.head.prepend(gen);
+    }
+    gen.setAttribute('content', name + ' v' + version + ' styleguide · Kagami design system');
+    // last in <head>, so the styleguide wins over anything the file still sets there
+    doc.head.insertAdjacentHTML('beforeend', hiStyleBlock());
+    const doctype = result.full.match(/^<!DOCTYPE[^>]*>/i);
+    return (doctype ? doctype[0] : '<!DOCTYPE html>') + '\n' + doc.documentElement.outerHTML + '\n';
+  }
   return [
     '<!DOCTYPE html>',
     '<html lang="en" data-theme="' + esc(theme) + '">',
@@ -18577,12 +18670,7 @@ function hiBuildDocument(result, theme) {
     '<meta name="viewport" content="width=device-width, initial-scale=1">',
     '<meta name="generator" content="' + esc(name + ' v' + version) + ' styleguide · Kagami design system">',
     '<title>' + esc(result.title || 'Imported page') + '</title>',
-    hiFontsLink(),
-    '<style>',
-    '/* Styleguide tokens: ' + name.replace(/\*\//g, '') + ' v' + version + '. Change data-theme on <html> to light, dark or hc. */',
-    hiTokenCss(),
-    hiDocCss(),
-    '</style>',
+    hiStyleBlock(),
     '</head>',
     '<body class="kg-doc">',
     '<div class="kg-page">',
@@ -18594,10 +18682,10 @@ function hiBuildDocument(result, theme) {
   ].join('\n');
 }
 
-/** Download name: <original name>-<styleguide name>-<theme>.html */
-function hiFileName(fileName, theme) {
+/** Download name: <original name>[-clean]-<styleguide name>-<theme>.html */
+function hiFileName(fileName, theme, mode) {
   const slug = s => String(s).toLowerCase().replace(/\.[a-z0-9]+$/, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  return (slug(fileName) || 'imported-page') + '-' + (slug(dnName()) || 'design-system') + '-' + theme + '.html';
+  return (slug(fileName) || 'imported-page') + (mode === 'clean' ? '-clean' : '') + '-' + (slug(dnName()) || 'design-system') + '-' + theme + '.html';
 }
 
 /* =========================================================================
@@ -18643,6 +18731,14 @@ const HI_UI_CSS = `
 .hi-dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; font-size: 13px; margin-top: 12px; }
 .hi-dl dt { color: var(--text-muted); }
 .hi-opts { display: grid; gap: 8px; }
+.hi-modes { display: grid; gap: 8px; }
+.hi-mode { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: var(--r-md); cursor: pointer; }
+.hi-mode:hover { border-color: var(--border-strong); }
+.hi-mode:has(input:checked) { border-color: var(--primary); background: var(--primary-soft); }
+.hi-mode input { margin-top: 3px; accent-color: var(--primary); }
+.hi-mode b { display: block; font-weight: 600; }
+.hi-mode small { display: block; font-size: 12.5px; color: var(--text-muted); }
 @media (max-width: 760px) { .hi-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* preview showcase: fills the screen from the left up to the Design lab settings panel on the right */
@@ -18723,8 +18819,11 @@ function themeKeyOfApp() {
 /** Theme the converted page is shown and downloaded in. */
 const hiTheme = () => HI.theme || themeKeyOfApp();
 
-/** The converted page as a full document. */
-const hiCurrentDocument = () => hiBuildDocument(HI.result, hiTheme());
+/**
+ * The converted page as a full document.
+ * @param {{preview?:boolean}} [o] preview: without scripts (the preview frame and "Open in new tab")
+ */
+const hiCurrentDocument = o => hiBuildDocument(HI.result, hiTheme(), o);
 
 /** The file for the Original view: its own styles kept; scripts, frames and inline handlers removed (they could not run in the sandbox anyway). */
 function hiOriginalDocument() {
@@ -18818,14 +18917,21 @@ function hiSyncSettingsButton() {
   if (b) b.setAttribute('aria-pressed', String(hiSettingsOpen()));
 }
 
-/** Import options, also on the Import page. */
+/** Import options, also on the Import page: output mode, then the toggles that apply to it. */
 function hiOptionsMenu() {
   const item = (name, label) => ({
     label,
     icon: HI.options[name] ? 'check' : null,
     onClick: () => hiSetOption(name, !HI.options[name])
   });
-  return [item('keepInlineStyles', 'Keep inline styles'), item('keepClasses', 'Keep original class names')];
+  const modes = HI_MODES.map(([value, label]) => ({
+    label,
+    icon: HI.options.mode === value ? 'check' : null,
+    onClick: () => hiSetOption('mode', value)
+  }));
+  return [{ label: 'DOWNLOAD AS', disabled: true }, ...modes, '-', item('keepInlineStyles', 'Keep inline styles')].concat(
+    HI.options.mode === 'clean' ? [item('keepClasses', 'Keep original class names')] : []
+  );
 }
 
 /** Shows the preview with the current import, and the Design lab settings beside it on wide screens. */
@@ -18868,29 +18974,36 @@ function refreshImportPanel() {
   const lang = LABX.LANGS.find(l => l[0] === LABX.state.lang);
   $('[data-hi-note]', panel).textContent = converted
     ? 'Live: ' + dnName() + ' v' + (dnMeta.version || '1.0.0') + ' · ' + (lang ? lang[1] : LABX.state.lang) + ' · ' +
-      HI_THEMES.find(t => t[0] === hiTheme())[1]
+      HI_THEMES.find(t => t[0] === hiTheme())[1] + ' · ' + HI_MODES.find(m => m[0] === HI.result.mode)[1]
     : 'Original file, scripts blocked';
   const frame = $('.hi-frame', panel);
   const w = HI_WIDTHS.find(x => x[0] === HI.width)[2];
   frame.style.width = w ? w + 'px' : '100%';
-  frame.srcdoc = converted ? hiCurrentDocument() : hiOriginalDocument();
+  frame.srcdoc = converted ? hiCurrentDocument({ preview: true }) : hiOriginalDocument();
   hiDrawnKey = hiStyleKey();
   $('[data-hi-tab]', panel).disabled = !converted;
   $('[data-hi-download]', panel).disabled = !converted;
 }
 
-/** Saves the converted page as previewed: current styleguide, design lab settings and theme. */
+/**
+ * Saves the page as previewed: current styleguide, design lab settings and theme. In original mode it is
+ * your whole file, scripts included, with the new styles in place of its own.
+ */
 function hiDownload() {
   if (!HI.result) return;
-  const name = hiFileName(HI.fileName, hiTheme());
+  const name = hiFileName(HI.fileName, hiTheme(), HI.result.mode);
   dnDownload(name, 'text/html', hiCurrentDocument());
-  toast('success', 'Download ready', 'Saved ' + name + ' in your ' + dnName() + ' styleguide.');
+  toast(
+    'success',
+    'Download ready',
+    'Saved ' + name + (HI.result.mode === 'original' ? ': your file, restyled with ' : ' in your ') + dnName() + ' styleguide.'
+  );
 }
 
-/** Opens the converted page in a new tab (it has no scripts). */
+/** Opens the page in a new tab, without scripts (the tab shares this app's origin). */
 function hiOpenInTab() {
   if (!HI.result) return;
-  const url = URL.createObjectURL(new Blob([hiCurrentDocument()], { type: 'text/html' }));
+  const url = URL.createObjectURL(new Blob([hiCurrentDocument({ preview: true })], { type: 'text/html' }));
   window.open(url, '_blank');
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
@@ -18903,7 +19016,7 @@ function hiOpenInTab() {
    showcase and download it. Replaces the loading route that manifest.js
    registered.
 
-   Provides: HI_MAX_BYTES, hiConvert, hiSetOption, hiReadFile, hiLoad,
+   Provides: HI_MAX_BYTES, hiConvert, hiSetOption, hiModeHTML, hiReadFile, hiLoad,
    hiPasteDialog, hiResultHTML, hiStyleguideHTML, #/import
    ========================================================================= */
 'use strict';
@@ -18919,13 +19032,29 @@ function hiConvert() {
 /** Changes an import option from the page or the preview's Options menu: re-converts and redraws both. */
 function hiSetOption(name, on) {
   HI.options[name] = on;
-  const toggle = $('#page [name="' + name + '"]');
-  if (toggle) toggle.checked = on;
-  if (!HI.source) return;
-  hiConvert();
-  const result = $('#hiResult .card-body');
-  if (result) result.innerHTML = hiResultHTML();
+  if (HI.source) hiConvert();
+  // The output mode changes which options apply, so the page is drawn again; toggles update in place.
+  if (name === 'mode') {
+    if (currentRoute && currentRoute.name === 'import') renderRoute();
+  } else {
+    const toggle = $('#page [name="' + name + '"]');
+    if (toggle) toggle.checked = on;
+    const result = $('#hiResult .card-body');
+    if (result && HI.result) result.innerHTML = hiResultHTML();
+  }
   refreshImportPanel();
+}
+
+/** Output mode choice for the Options card. */
+function hiModeHTML() {
+  return (
+    '<div class="hi-modes" role="radiogroup" aria-label="Download as">' +
+    HI_MODES.map(([value, label, hint]) =>
+      '<label class="hi-mode"><input type="radio" name="hiMode" value="' + value + '"' + (HI.options.mode === value ? ' checked' : '') +
+        '><span><b>' + esc(label) + '</b><small>' + esc(hint) + '</small></span></label>'
+    ).join('') +
+    '</div>'
+  );
 }
 
 /** Paste HTML: a dialog with a text box; Convert takes the text like a file. */
@@ -18994,12 +19123,17 @@ function hiLoad(name, text, size) {
 
 /** The result card: file, counts, cleanup and warnings. */
 function hiResultHTML() {
-  const r = HI.result.report;
+  const r = HI.result.report, keepFile = r.mode === 'original';
   const stat = (label, n) => '<div><small>' + label + '</small><b>' + fmtN(n) + '</b></div>';
-  const clean = [
-    ['scripts', 'script'], ['stylesheets', 'stylesheet'], ['inlineStyles', 'inline style'], ['handlers', 'event handler'],
-    ['embeds', 'embedded frame'], ['unsafeUrls', 'unsafe link'], ['legacy', 'legacy markup item']
-  ].filter(([k]) => r[k]);
+  const chips = (list, word, tone) => list.filter(([k]) => r[k]).map(([k, w]) => badge(pl(r[k], w) + ' ' + word, tone(k))).join('');
+  const risky = k => (k === 'scripts' || k === 'handlers' || k === 'unsafeUrls' ? 'danger' : 'neutral');
+  const runnable = [['scripts', 'script'], ['handlers', 'event handler'], ['embeds', 'embedded frame'], ['unsafeUrls', 'javascript: link']];
+  const styling = [['stylesheets', 'stylesheet'], ['inlineStyles', 'inline style'], ['legacy', 'legacy markup item']];
+  const changes = keepFile
+    ? chips([['stylesheets', 'stylesheet']], 'replaced by the styleguide', () => 'info') +
+      chips(styling.slice(1), 'removed', () => 'neutral') +
+      chips(runnable, 'kept as in your file', () => 'neutral')
+    : chips(runnable.concat(styling), 'removed', risky);
   return (
     '<div class="hi-file"><span class="doc-ico">' + icon('file', 18) + '</span><div style="flex:1;min-width:0"><b>' + esc(HI.fileName) +
     '</b><small>' + (HI.fileSize / 1024).toFixed(1) + ' KB' + (HI.result.title ? ' · ' + esc(HI.result.title) : '') +
@@ -19007,11 +19141,12 @@ function hiResultHTML() {
     '<p class="hi-h">Mapped to the design system</p><div class="hi-stats">' +
     stat('Buttons', r.buttons) + stat('Form fields', r.fields) + stat('Checkboxes and radios', r.choices) + stat('Tables', r.tables) +
     stat('Cards', r.cards) + stat('Badges', r.badges) + stat('Alerts', r.alerts) + stat('Links', r.links) + '</div>' +
-    '<p class="hi-h">Cleaned up</p><div class="hi-clean">' +
-    (clean.length
-      ? clean.map(([k, word]) => badge(pl(r[k], word) + ' removed', k === 'scripts' || k === 'handlers' || k === 'unsafeUrls' ? 'danger' : 'neutral')).join('')
-      : '<span class="muted">Nothing needed removing.</span>') +
+    '<p class="hi-h">' + (keepFile ? 'Your file' : 'Cleaned up') + '</p><div class="hi-clean">' +
+    (changes || '<span class="muted">Nothing needed changing.</span>') +
     '</div>' +
+    (keepFile
+      ? '<p class="muted mt-8" style="font-size:12.5px">Download keeps your whole file (head, structure, ids, classes, scripts) and replaces its look with the styleguide.</p>'
+      : '') +
     (HI.result.warnings.length
       ? '<div class="alert alert-warning mt-16">' + icon('alert', 16) + '<span>' + HI.result.warnings.map(esc).join('<br>') + '</span></div>'
       : '')
@@ -19068,11 +19203,15 @@ ROUTES.import = () => ({
     '</div><div class="stack">' +
     card(
       'Options',
-      '<div class="hi-opts">' +
+      '<p class="hi-h" style="margin-top:0">Download as</p>' +
+        hiModeHTML() +
+        '<p class="hi-h">Styles</p><div class="hi-opts">' +
         F({ name: 'keepInlineStyles', label: 'Keep inline styles', type: 'toggle', span: 12, value: HI.options.keepInlineStyles,
             hint: 'For layout the design system does not cover. Inline colors and fonts then override the styleguide.' }) +
-        F({ name: 'keepClasses', label: 'Keep original class names', type: 'toggle', span: 12, value: HI.options.keepClasses,
-            hint: 'Useful if you will add the page’s own CSS back later.' }) +
+        (HI.options.mode === 'clean'
+          ? F({ name: 'keepClasses', label: 'Keep original class names', type: 'toggle', span: 12, value: HI.options.keepClasses,
+              hint: 'Useful if you will add the page’s own CSS back later.' })
+          : '') +
         '</div>'
     ) +
     card('Styleguide', hiStyleguideHTML(), { sub: 'The page is converted to' }) +
@@ -19108,6 +19247,8 @@ ROUTES.import = () => ({
     page.addEventListener('change', e => {
       const t = e.target.closest('[name="keepInlineStyles"],[name="keepClasses"]');
       if (t) hiSetOption(t.name, t.checked);
+      const m = e.target.closest('[name="hiMode"]');
+      if (m) hiSetOption('mode', m.value);
     });
   }
 });

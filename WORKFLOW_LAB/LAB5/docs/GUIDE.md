@@ -154,8 +154,8 @@ CHROME_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" npm t
 | Import an HTML page | Left menu → **Import HTML**, or Design → tab **4 · Import HTML**. Three ways: drop a `.html` / `.htm` file (up to 5 MB) or click to choose one; **Paste HTML** (a whole page or a fragment); or **Try a sample page**. The page is converted in your browser (nothing is uploaded) and the preview opens. |
 | Showcase it with your settings | The preview fills the left of the screen and the **Design lab** opens on the right. Change theme, design language, brand, size, density, fonts, shape or navbar there and the page updates at once; the footer shows what it is styled with. **Design settings** hides or shows the settings panel. |
 | Preview toolbar | **Converted / Original**, **Light / Dark / High contrast** (preview only), **Desktop / Tablet / Mobile**, **Options**. **Open in new tab** or **Download** at the bottom; `Esc` or ✕ returns to the Import page (and closes the settings panel if the preview opened it). |
-| Import options | **Keep inline styles** (for layout the design system does not cover) and **Keep original class names** (to add the page's own CSS back later). On the Import page or in the preview's **Options** menu; changing one re-converts at once. |
-| Download the updated page | **Download** (preview footer or Import page) saves the page with the current styleguide, design lab settings and theme, as `<file>-<styleguide>-<theme>.html`. |
+| Import options | **Download as**: **Original file, restyled** (default) or **Clean page** (see below). **Keep inline styles** (for layout the design system does not cover) and, for a clean page, **Keep original class names**. On the Import page or in the preview's **Options** menu; changing one re-converts at once. |
+| Download the updated page | **Download** (preview footer or Import page) saves the page with the current styleguide, design lab settings and theme. **Original file, restyled** gives back *your file as it is* (doctype, head, title, meta, structure, ids, class names, scripts, event handlers, frames) with its stylesheets replaced by the styleguide and its components mapped, saved as `<file>-<styleguide>-<theme>.html`. **Clean page** gives the content only, without scripts, as `<file>-clean-<styleguide>-<theme>.html`. |
 | Keyboard | `/` search · `[` collapse menu · `Shift`+`T` light / dark · `Shift`+`?` help · `Esc` close |
 
 **From `index.html`,** *Download workflow* opens `dist/lab5.html` in a new tab, which builds and saves
@@ -300,11 +300,17 @@ your .html file ──► converter.js ──► stylesheet.js + document.js ─
 1. **Read.** `page.js` reads the file in the browser (`File.text()`): `.html`, `.htm` or `.xhtml`,
    up to 5 MB; or takes pasted HTML (`hiPasteDialog`) or the sample (`sample.js`). Nothing is
    uploaded anywhere.
-2. **Clean** (`converter.js`, `convertHtml`). Using the browser's `DOMParser` (no code runs while
-   parsing), it removes `<script>`, `<noscript>`, `<style>`, `<link>`, `<meta>`, `<base>`, frames,
-   `<object>` / `<embed>`; every `on…` event attribute; `javascript:`, `vbscript:` and `data:text/html`
-   URLs; inline `style` and `class` attributes (unless the options keep them); and legacy tags and
-   attributes such as `<font>`, `<center>`, `bgcolor`, `align`, `border`.
+2. **Clean** (`converter.js`, `convertHtml`), using the browser's `DOMParser` (no code runs while
+   parsing). It depends on the output mode (`HI_MODES`):
+
+   | | Original file, restyled (`original`, default) | Clean page (`clean`) |
+   |---|---|---|
+   | `<style>`, stylesheet `<link>`s | replaced by the styleguide | removed |
+   | `<script>`, `on…` handlers, `javascript:` links, frames, `<meta>`, `<base>` | **kept** | removed |
+   | class names | **kept**, `kg-*` added next to them | removed (unless kept) |
+   | ids, structure, `<head>`, title, doctype | **kept** | content only, in a new page |
+   | inline `style` | removed unless kept | removed unless kept |
+   | legacy presentational attributes (`bgcolor`, `align`, `border`, …) | removed | removed, and `<font>` / `<center>` unwrapped |
 3. **Map** to design-system classes, from tags, ARIA roles and the old class names (Bootstrap-style
    names are recognised):
 
@@ -326,8 +332,12 @@ your .html file ──► converter.js ──► stylesheet.js + document.js ─
 4. **Style** (`stylesheet.js`). `hiTokenCss()` resolves your styleguide's tokens for light, dark and
    high contrast with `dnThemeTokens()`; `hiDocCss()` styles the `kg-*` classes using only those tokens,
    with the heading sizes from the styleguide's type scale.
-5. **Page** (`document.js`). `hiBuildDocument()` wraps the result in a complete page: tokens, styles
-   and the app's web fonts, **no scripts**. `data-theme` on `<html>` picks the theme.
+5. **Page** (`document.js`, `hiBuildDocument()`). Original mode: your whole file, with the
+   styleguide (`<style id="kg-styleguide">`, tokens + styles + the app's web fonts) added at the end of
+   `<head>` where its stylesheets were, `kg-doc kg-page` added to `<body>` and tables framed in place
+   (`kg-table--bare`) instead of wrapped. Clean mode: a new page around the content, with no scripts.
+   `data-theme` on `<html>` picks the theme. The preview and *Open in new tab* always get a copy
+   without scripts or event handlers (`hiStripScripts`); only the download keeps them.
 6. **Preview** (`side-panel.js`). The preview fills the screen from the left up to the Design lab
    panel (`design/lab-dock.js`), which it opens on screens wider than 1,100 px and closes again
    when it closes. The page is shown in an `<iframe sandbox="">`: nothing in it can run, submit

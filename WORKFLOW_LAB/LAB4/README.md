@@ -3,6 +3,9 @@
 Kagami ERP design system with an on-demand **inventory workflow module**, split into small,
 documented source files. Same features as Lab 3; the code is reorganised for readability and reuse.
 
+**New here?** Read [`docs/GUIDE.md`](docs/GUIDE.md): software required, how to run, build and test,
+how to use the app, and how it is implemented.
+
 ## Open it
 
 | File | Use it for |
@@ -86,5 +89,7 @@ The test needs Chrome or Edge; set `CHROME_PATH` if it is installed somewhere un
 
 - `src/design/data/*.js` and `src/design/component-lab.html` are generated catalogues; they are kept
   unformatted on purpose.
-- *Download workflow* needs the single-file build. In `index.html` it explains that and stops.
+- *Download workflow* packages the single-file build. In `index.html` it opens `dist/lab4.html` in a
+  new tab, sends it your settings, and that tab saves the file; run `node build.js` first so the
+  build includes your latest changes. Allow pop-ups for the page if the browser asks.
 - Data is sample data held in memory; it resets on reload.

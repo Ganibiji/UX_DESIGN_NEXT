@@ -5,7 +5,8 @@
 
    Provides: DN_TOKENS, dnSnapshot, dnDownload, dnCollect, dnBuildDoc,
    WF_DEFAULT, WF_SCREENS, WF_ICONS, dnBuildWorkflow, DN_LOCAL, DN_SOFT,
-   dnPreset, dnBuildApp, dnExport, dnPreview
+   dnPreset, dnBuildApp, DN_BUILT, dnHandOffWorkflow, dnServeHandOff,
+   dnExport, dnPreview
    ========================================================================= */
 'use strict';
 
@@ -427,23 +428,29 @@ function dnPreset() {
   P['kagami-inventory'] = 'on';
   return P;
 }
-async function dnBuildApp() {
+/**
+ * Builds the workflow app: this single-file page with the user's settings baked in.
+ * @param {{preset?:Object, name?:string}} [from] settings sent by the multi-file page (see dnHandOffWorkflow)
+ */
+async function dnBuildApp(from) {
   if (!KG_SRC)
     throw new Error(
       'Download workflow works from the single-file build. Run "node build.js" and use dist/lab4.html'
     );
   if (KG_SRC.indexOf('id="kg-inventory-module"') < 0)
     throw new Error('This page has no built-in inventory module');
+  const preset = (from && from.preset) || dnPreset();
+  const name = (from && from.name) || dnName();
   const js = s => s.replace(/<\/script/gi, '<\\/script').replace(/<\!--/g, '<\\!--');
   const boot =
     '(function(){var P=' +
-    JSON.stringify(dnPreset()) +
+    JSON.stringify(preset) +
     ',S=' +
     JSON.stringify(DN_SOFT) +
     ',g=Storage.prototype.getItem;' +
     'Storage.prototype.getItem=function(k){var own=false;try{own=this===window.localStorage}catch(e){}if(own&&Object.prototype.hasOwnProperty.call(P,k)){var v=S.indexOf(k)<0?null:g.call(this,k);return v==null?P[k]:v}return g.call(this,k)};' +
     'window.KG_EXPORT={name:' +
-    JSON.stringify(dnName()) +
+    JSON.stringify(name) +
     '};document.documentElement.setAttribute("data-export","")})();';
   const put = (s, at, add) => {
     const i = s.indexOf(at);
@@ -457,9 +464,54 @@ async function dnBuildApp() {
   out = put(out, '<meta charset="utf-8">', '<meta charset="utf-8">\n<script>' + js(boot) + '</script>');
   out = out.replace(
     /<title>[^<]*<\/title>/,
-    () => '<title>' + esc(dnName()) + ' · Inventory workflow</title>'
+    () => '<title>' + esc(name) + ' · Inventory workflow</title>'
   );
   return out;
+}
+
+/* ---------- Multi-file page: hand the workflow download to the single-file build ----------
+   index.html is spread over many files and cannot copy itself. It opens dist/lab4.html in a new tab
+   and sends it this page's settings; that tab builds and saves the file (dnServeHandOff). */
+const DN_BUILT = 'dist/lab4.html';
+
+/** Multi-file side. Must run inside the click handler (before any await) so the new tab is not blocked. */
+function dnHandOffWorkflow(file) {
+  const tab = window.open(DN_BUILT + '?download=workflow#/design/styleguide', '_blank');
+  if (!tab) {
+    toast('error', 'Pop-up blocked', 'Allow pop-ups for this page, then try Download workflow again.');
+    return;
+  }
+  toast('info', 'Building workflow', 'Packing it in a new tab from ' + DN_BUILT + '…');
+  let answered = false;
+  const onMessage = e => {
+    if (e.source !== tab || !e.data || e.data.type !== 'kagami-wf-ready') return;
+    answered = true;
+    window.removeEventListener('message', onMessage);
+    tab.postMessage({ type: 'kagami-wf-settings', preset: dnPreset(), name: dnName(), file }, '*');
+  };
+  window.addEventListener('message', onMessage);
+  setTimeout(() => {
+    if (answered) return;
+    window.removeEventListener('message', onMessage);
+    toast('error', 'Workflow download unavailable', 'Could not open ' + DN_BUILT + '. Run "node build.js" first.');
+  }, 10000);
+}
+
+/** Single-file side: when opened by the multi-file page, wait for its settings, then build and save. */
+function dnServeHandOff() {
+  if (!KG_SRC || !window.opener || new URLSearchParams(location.search).get('download') !== 'workflow') return;
+  const onMessage = async e => {
+    if (e.source !== window.opener || !e.data || e.data.type !== 'kagami-wf-settings') return;
+    window.removeEventListener('message', onMessage);
+    try {
+      dnDownload(e.data.file, 'text/html', await dnBuildApp(e.data));
+      toast('success', 'Download ready', 'Saved ' + e.data.file + '. You can close this tab.');
+    } catch (err) {
+      toast('error', 'Export failed', String((err && err.message) || err));
+    }
+  };
+  window.addEventListener('message', onMessage);
+  window.opener.postMessage({ type: 'kagami-wf-ready' }, '*');
 }
 async function dnExport(kind, btn, copy) {
   const s = dnSnapshot(),
@@ -473,6 +525,10 @@ async function dnExport(kind, btn, copy) {
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '') || 'design-system';
   if (kind === 'app') {
+    if (!KG_SRC) {
+      dnHandOffWorkflow(base + '-workflow-' + stamp + '.html');
+      return;
+    }
     toast('info', 'Building workflow', 'Packing the inventory app with your theme and styleguide…');
     let h;
     try {

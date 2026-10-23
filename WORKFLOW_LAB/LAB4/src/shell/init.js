@@ -22,6 +22,7 @@
       history.replaceState(null, '', '#/' + homeRoute());
     syncInventoryUI();
     renderRoute();
+    dnServeHandOff(); // a workflow download requested by index.html (design/export.js)
   };
   if (store(INV_KEY) === 'on')
     loadInventory()

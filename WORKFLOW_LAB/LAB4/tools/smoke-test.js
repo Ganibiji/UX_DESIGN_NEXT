@@ -96,11 +96,15 @@ async function testDesignSystem(browser, file, errors) {
   return page;
 }
 
-async function testWorkflowDownload(browser, page, errors) {
-  console.log('\n== Download workflow');
+/** Clicks Download workflow on `page` and checks the saved app in a clean browser profile. */
+async function testWorkflowDownload(browser, page, errors, label, appName) {
+  console.log('\n== Download workflow from ' + label);
   fs.rmSync(DOWNLOADS, { recursive: true, force: true });
   fs.mkdirSync(DOWNLOADS, { recursive: true });
-  await page.evaluate(() => localStorage.setItem('kagami-design-meta', JSON.stringify({ name: 'Smoke Test Ops', version: '9.9.9', desc: 'Smoke test' })));
+  await page.evaluate(
+    n => localStorage.setItem('kagami-design-meta', JSON.stringify({ name: n, version: '9.9.9', desc: 'Smoke test' })),
+    appName
+  );
   await page.reload({ waitUntil: 'load' }); // the styleguide details are read at start-up
   await sleep(800);
   await visit(page, 'design/styleguide');
@@ -123,18 +127,21 @@ async function testWorkflowDownload(browser, page, errors) {
     nav: document.querySelector('#sidebar').textContent
   }));
   check(s.exported && s.h1 === 'Inventory Dashboard', 'downloaded app opens on the inventory dashboard');
-  check(/Smoke Test Ops/.test(s.title) && /Styleguide/.test(s.nav), 'downloaded app is named after the styleguide and lists it');
+  check(s.title.includes(appName) &&/Styleguide/.test(s.nav), 'downloaded app is named after the styleguide and lists it');
   const v = await visit(app, 'design/styleguide');
   check(v.h1 === 'Styleguide', 'downloaded app shows the styleguide');
 }
 
 (async () => {
-  const browser = await puppeteer.launch({ executablePath: findChrome(), headless: true, args: ['--allow-file-access-from-files'] });
+  const browser = await puppeteer.launch({ executablePath: findChrome(), headless: true });
   const errors = [];
   try {
     await testDesignSystem(browser, 'index.html', errors);
     const built = await testDesignSystem(browser, 'dist/lab4.html', errors);
-    await testWorkflowDownload(browser, built, errors);
+    await testWorkflowDownload(browser, built, errors, 'dist/lab4.html', 'Smoke Test Ops');
+    // index.html cannot copy itself: it hands the download to dist/lab4.html in a new tab
+    const { page: dev } = await openPage(browser, fileUrl('index.html'), errors, 'index.html');
+    await testWorkflowDownload(browser, dev, errors, 'index.html', 'Dev Handoff Ops');
     check(errors.length === 0, 'no script errors' + (errors.length ? ':\n  ' + errors.join('\n  ') : ''));
   } finally {
     await browser.close();

@@ -121,21 +121,22 @@ function hiResultHTML() {
   const styling = [['stylesheets', 'stylesheet'], ['inlineStyles', 'inline style'], ['legacy', 'legacy markup item']];
   const changes = keepFile
     ? chips([['stylesheets', 'stylesheet']], 'replaced by the styleguide', () => 'info') +
-      chips(styling.slice(1), 'removed', () => 'neutral') +
-      chips(runnable, 'kept as in your file', () => 'neutral')
+      chips([['inlineStyles', 'inline style']], 'removed', () => 'neutral') +
+      chips([['keptInlineStyles', 'inline style']].concat(runnable), 'unchanged', () => 'neutral')
     : chips(runnable.concat(styling), 'removed', risky);
   return (
     '<div class="hi-file"><span class="doc-ico">' + icon('file', 18) + '</span><div style="flex:1;min-width:0"><b>' + esc(HI.fileName) +
     '</b><small>' + (HI.fileSize / 1024).toFixed(1) + ' KB' + (HI.result.title ? ' · ' + esc(HI.result.title) : '') +
     '</small></div>' + btn('Remove', 'x', 'ghost sm', 'type="button" data-hi-clear') + '</div>' +
-    '<p class="hi-h">Mapped to the design system</p><div class="hi-stats">' +
+    '<p class="hi-h">' + (keepFile ? 'Styled by the design system' : 'Mapped to the design system') + '</p><div class="hi-stats">' +
     stat('Buttons', r.buttons) + stat('Form fields', r.fields) + stat('Checkboxes and radios', r.choices) + stat('Tables', r.tables) +
     stat('Cards', r.cards) + stat('Badges', r.badges) + stat('Alerts', r.alerts) + stat('Links', r.links) + '</div>' +
     '<p class="hi-h">' + (keepFile ? 'Your file' : 'Cleaned up') + '</p><div class="hi-clean">' +
     (changes || '<span class="muted">Nothing needed changing.</span>') +
     '</div>' +
     (keepFile
-      ? '<p class="muted mt-8" style="font-size:12.5px">Download keeps your whole file (head, structure, ids, classes, scripts) and replaces its look with the styleguide.</p>'
+      ? '<p class="muted mt-8" style="font-size:12.5px">The download is your file, character for character, except for these style changes. ' +
+        'The preview shows exactly that file, scripts included (in a sandbox).</p>'
       : '') +
     (HI.result.warnings.length
       ? '<div class="alert alert-warning mt-16">' + icon('alert', 16) + '<span>' + HI.result.warnings.map(esc).join('<br>') + '</span></div>'

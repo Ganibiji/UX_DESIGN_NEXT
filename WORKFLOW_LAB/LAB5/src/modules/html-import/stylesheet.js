@@ -13,13 +13,15 @@
    ========================================================================= */
 'use strict';
 
-/** Custom properties for every theme: :root[data-theme="light" | "dark" | "hc"] { --primary: … }. */
-function hiTokenCss() {
-  return DN_THEMES.map(([key]) => {
-    const tokens = dnThemeTokens(key);
-    const body = Object.keys(tokens).map(k => '  ' + k + ': ' + tokens[k] + ';').join('\n');
-    return ':root[data-theme="' + key + '"] {\n' + body + '\n}';
-  }).join('\n');
+/**
+ * Custom properties for every theme: :root[data-theme="light" | "dark" | "hc"] { --primary: … }.
+ * @param {string} [defaultTheme] also as plain :root, for a page whose <html> has no data-theme (original files)
+ */
+function hiTokenCss(defaultTheme) {
+  const block = (selector, tokens) =>
+    selector + ' {\n' + Object.keys(tokens).map(k => '  ' + k + ': ' + tokens[k] + ';').join('\n') + '\n}';
+  const themes = DN_THEMES.map(([key]) => block(':root[data-theme="' + key + '"]', dnThemeTokens(key)));
+  return (defaultTheme ? [block(':root', dnThemeTokens(defaultTheme))] : []).concat(themes).join('\n');
 }
 
 /** Heading sizes from the styleguide's type scale. */
@@ -105,9 +107,6 @@ fieldset.kg-card legend { font-weight: 600; padding: 0 6px; }
 .kg-table th { text-align: left; font-size: 12px; font-weight: 600; color: var(--text-muted); background: var(--surface-secondary); white-space: nowrap; }
 .kg-table th, .kg-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
 .kg-table tr:last-child td { border-bottom: 0; }
-/* original mode keeps the file's structure, so tables are framed in place instead of wrapped */
-.kg-table--bare { border-collapse: separate; border-spacing: 0; margin: 0 0 16px; border: 1px solid var(--border);
-  border-radius: var(--r-md); background: var(--surface); overflow: hidden; }
 .kg-table tbody tr:hover td { background: var(--surface-hover); }
 
 /* badges and alerts */

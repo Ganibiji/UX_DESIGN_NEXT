@@ -112,16 +112,21 @@ async function testHtmlImport(browser, file, errors) {
   await sleep(1200);
   const s = await page.evaluate(() => {
     const frame = document.querySelector('#hiPanel .hi-frame');
-    const body = frame.srcdoc.split('<body')[1] || '';
+    const page = hiCurrentDocument();
+    // only the stylesheets change: the file without the styleguide block equals the file without its own stylesheets
+    const withoutGuide = page.replace(/<link[^>]*fonts\.googleapis[^>]*>\n<style id="kg-styleguide">[\s\S]*?<\/style>\n/, '');
     return {
       open: !document.querySelector('#hiPanel').hidden,
-      sandboxed: frame.getAttribute('sandbox') === '',
-      clean: !/<script|onclick=|onload=/i.test(body), // original mode keeps frames and links; scripts never reach the preview
-      mapped: /kg-btn kg-btn--primary/.test(body) && /kg-table/.test(body) && /kg-card/.test(body)
+      sandboxed: frame.getAttribute('sandbox') === 'allow-scripts', // scripts in their own origin, nothing else
+      same: frame.srcdoc === page,
+      onlyStyles:
+        withoutGuide === hiSwapStylesheets(HI.source, false).text &&
+        !/bootstrap\.min\.css/.test(page) &&
+        /onload="init\(\)"/.test(page)
     };
   });
-  check(s.open && s.sandboxed, 'sample converts and opens in the sandboxed side panel');
-  check(s.clean && s.mapped, 'preview has no scripts and uses design-system classes');
+  check(s.open && s.sandboxed, 'sample opens in the sandboxed preview');
+  check(s.same && s.onlyStyles, 'preview equals the download; only the stylesheets changed');
   await page.click('[data-hi-download]');
   let saved = null;
   for (let i = 0; i < 20 && !saved; i++) {

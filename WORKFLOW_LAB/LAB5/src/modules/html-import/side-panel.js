@@ -10,11 +10,14 @@
    Footer: what the page is styled with, open in a new tab, download.
    Esc or the close button returns to the Import page.
 
-   The frame has an empty sandbox: nothing in the page can run, submit
-   forms or open windows, even in the original view.
+   The preview shows exactly the file that downloads (and the Original
+   view exactly the file you imported), so the two differ only in styles.
+   Your page's scripts run, inside a sandbox (HI_SANDBOX): a separate
+   origin with no access to this app or its data, and no forms, pop-ups,
+   dialogs or navigation of the app. A clean page has no scripts at all.
 
-   Provides: HI, HI_WIDTHS, HI_THEMES, hiTheme, themeKeyOfApp,
-   hiCurrentDocument, hiOriginalDocument, segment, hiPanel, hiDrawnKey,
+   Provides: HI, HI_WIDTHS, HI_THEMES, HI_SANDBOX, hiTheme, themeKeyOfApp,
+   hiCurrentDocument, segment, hiPanel, hiDrawnKey,
    hiStyleKey, hiSettingsOpen, hiSyncSettingsButton, hiOptionsMenu,
    openImportPanel, closeImportPanel, refreshImportPanel, hiDownload,
    hiOpenInTab
@@ -46,21 +49,11 @@ function themeKeyOfApp() {
 /** Theme the converted page is shown and downloaded in. */
 const hiTheme = () => HI.theme || themeKeyOfApp();
 
-/**
- * The converted page as a full document.
- * @param {{preview?:boolean}} [o] preview: without scripts (the preview frame and "Open in new tab")
- */
-const hiCurrentDocument = o => hiBuildDocument(HI.result, hiTheme(), o);
+/** The page as it downloads: same text the preview shows. */
+const hiCurrentDocument = () => hiBuildDocument(HI.result, hiTheme());
 
-/** The file for the Original view: its own styles kept; scripts, frames and inline handlers removed (they could not run in the sandbox anyway). */
-function hiOriginalDocument() {
-  const doc = new DOMParser().parseFromString(HI.source, 'text/html');
-  doc.querySelectorAll('script,noscript,iframe,frame,object,embed').forEach(n => n.remove());
-  doc.querySelectorAll('*').forEach(n => {
-    for (const a of Array.from(n.attributes)) if (/^on/i.test(a.name)) n.removeAttribute(a.name);
-  });
-  return '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
-}
+/** Frame sandbox: scripts may run, but in their own origin; nothing else is allowed. */
+const HI_SANDBOX = 'allow-scripts';
 
 /** A segmented control: one pressed button per group. */
 const segment = (key, list, current) =>
@@ -88,7 +81,7 @@ function hiPanel() {
       btn('Options', 'filter', 'sm', 'type="button" data-hi-options aria-haspopup="menu"') +
       btn('Design settings', 'sliders', 'sm', 'type="button" data-hi-settings aria-pressed="false"') +
       '</div></div>' +
-      '<div class="hi-stage"><iframe class="hi-frame" sandbox="" title="Imported page preview"></iframe></div>' +
+      '<div class="hi-stage"><iframe class="hi-frame" sandbox="' + HI_SANDBOX + '" title="Imported page preview"></iframe></div>' +
       '<div class="hi-foot"><small data-hi-note></small><span class="spacer"></span>' +
       btn('Open in new tab', 'export', 'sm', 'type="button" data-hi-tab') +
       btn('Download', 'save', 'primary sm', 'type="button" data-hi-download') +
@@ -206,7 +199,7 @@ function refreshImportPanel() {
   const frame = $('.hi-frame', panel);
   const w = HI_WIDTHS.find(x => x[0] === HI.width)[2];
   frame.style.width = w ? w + 'px' : '100%';
-  frame.srcdoc = converted ? hiCurrentDocument({ preview: true }) : hiOriginalDocument();
+  frame.srcdoc = converted ? hiCurrentDocument() : HI.source;
   hiDrawnKey = hiStyleKey();
   $('[data-hi-tab]', panel).disabled = !converted;
   $('[data-hi-download]', panel).disabled = !converted;
@@ -227,10 +220,10 @@ function hiDownload() {
   );
 }
 
-/** Opens the page in a new tab, without scripts (the tab shares this app's origin). */
+/** Opens the page in a new tab. Without its scripts: a tab opened from here shares this app's origin. */
 function hiOpenInTab() {
   if (!HI.result) return;
-  const url = URL.createObjectURL(new Blob([hiCurrentDocument({ preview: true })], { type: 'text/html' }));
+  const url = URL.createObjectURL(new Blob([hiStripScripts(hiCurrentDocument())], { type: 'text/html' }));
   window.open(url, '_blank');
   setTimeout(() => URL.revokeObjectURL(url), 60000);
 }

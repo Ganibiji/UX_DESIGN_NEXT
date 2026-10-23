@@ -13,6 +13,7 @@ const HTML_IMPORT_FILES = [
   'src/modules/html-import/sample.js',
   'src/modules/html-import/converter.js',
   'src/modules/html-import/stylesheet.js',
+  'src/modules/html-import/original-file.js',
   'src/modules/html-import/document.js',
   'src/modules/html-import/ui-styles.js',
   'src/modules/html-import/side-panel.js',
